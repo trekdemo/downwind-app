@@ -1,0 +1,20 @@
+PATH
+  remote: ../fit4ruby
+  specs:
+    fit4ruby (3.13.0)
+      bindata (~> 2.4.14)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    bindata (2.4.15)
+
+PLATFORMS
+  arm64-darwin-23
+  ruby
+
+DEPENDENCIES
+  fit4ruby!
+
+BUNDLED WITH
+   2.5.10
