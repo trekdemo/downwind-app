@@ -7,7 +7,23 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    base64 (0.2.0)
     bindata (2.4.15)
+    csv (3.3.0)
+    geocoder (1.8.3)
+      base64 (>= 0.1.0)
+      csv (>= 3.0.0)
+    gpx (1.1.1)
+      nokogiri (~> 1.7)
+      rake
+    mini_portile2 (2.8.7)
+    nokogiri (1.16.6)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
+    nokogiri (1.16.6-arm64-darwin)
+      racc (~> 1.4)
+    racc (1.8.0)
+    rake (13.2.1)
 
 PLATFORMS
   arm64-darwin-23
@@ -15,6 +31,8 @@ PLATFORMS
 
 DEPENDENCIES
   fit4ruby!
+  geocoder
+  gpx
 
 BUNDLED WITH
    2.5.10
