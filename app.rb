@@ -1,23 +1,31 @@
 # frozen_string_literal: true
 
 require 'sinatra'
+require 'json'
+require 'sinatra/reloader'
 require 'gpx'
 require 'geocoder'
-
-# Parse the GPX file
-gpx = GPX::GPXFile.new(gpx_file: './activity_15920387501.gpx')
-
-# Extract speed information
-points = gpx.tracks[0].points
-speeds = points.each_cons(2).map do |a, b|
-  # Calculate speed in km/h
-  distance_km = Geocoder::Calculations.distance_between([a.lat, a.lon], [b.lat, b.lon], units: :km)
-  time_difference_sec = b.time - a.time
-
-  # Calculate speed in km/h
-  (distance_km / time_difference_sec.to_f * 3_600).round(2)
-end
+require_relative 'speed'
 
 get '/' do
-  erb :speed, locals: { speeds: }
+  speeds = Speed.new('./activity_15920387501.gpx').speeds
+  averages = speeds.each_cons(5).map do |speeds|
+    {
+      time: speeds.last[:time],
+      distance_km: speeds.last[:distance_km],
+      cum_distance_km: speeds.last[:cum_distance_km],
+      speed: speeds.sum { |speed| speed[:speed] } / 4
+    }
+  end
+  total_distance = speeds.last[:cum_distance_km]
+  on_foil_distance = speeds
+                     .select { |speed| speed[:speed] > 12 }
+                     .sum { |speed| speed[:distance_km] }
+
+  erb :speed, locals: {
+    speeds:,
+    averages:,
+    on_foil_distance:,
+    total_distance:
+  }
 end

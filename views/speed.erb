@@ -14,18 +14,29 @@
             font-size: 14px;
         }
     </style>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 <body>
-    <h1>D3.js Bar Chart Example</h1>
+    <div>
+        <p><%= total_distance.round(2) %> km in total</p>
+        <p><%= on_foil_distance.round(2) %> km on foil</p>
+        <p><%= (on_foil_distance / total_distance * 100).round(2) %>% on foil</p>
+    </div>
     <svg width="100%" height="100%"></svg>
-    <script>
-        const data = [<%= speeds.join(', ') %>];
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script type="module">
+        window.averages = (<%= JSON.dump(averages) %>).map(d => {
+            d.time = new Date(d.time);
+            return d;
+        })
+        window.data = (<%= JSON.dump(speeds) %>).map(d => {
+            d.time = new Date(d.time);
+            return d;
+        })
 
         // Set dimensions and margins for the graph
-        const margin = { top: 20, right: 30, bottom: 40, left: 40 };
-        const width = 1200 - margin.left - margin.right;
-        const height = 600 - margin.top - margin.bottom;
+        const margin = { top: 20, right: 20, bottom: 50, left: 50 };
+        const width = window.innerWidth - margin.left - margin.right;
+        const height = 300 - margin.top - margin.bottom;
 
         // Create SVG container
         const svg = d3.select("svg")
@@ -35,25 +46,47 @@
             .attr("transform", `translate(${margin.left},${margin.top})`);
 
         // Set up scales
-        const x = d3.scaleBand()
-            .domain(data.map((d, i) => i))
-            .range([0, width])
-            .padding(0.1);
+        const xTime = d3.scaleTime()
+        // parse time from string to date
+            .domain(d3.extent(data.map((d, i) => d.time)))
+            .range([0, width]);
+        const xDistance = d3.scaleLinear()
+            .domain(d3.extent(data.map((d, i) => d.cum_distance_km)))
+            .range([0, width]);
+        const x = xDistance;
 
         const y = d3.scaleLinear()
-            .domain([0, d3.max(data)])
-            .nice()
-            .range([height, 0]);
+            .domain(d3.extent(data, d => d.speed).reverse())
+            .range([0, height])
+            .nice(); // round to nearest nice number
+        const y2 = d3.scaleLinear()
+            .domain(d3.extent(data, d => d.hr).reverse())
+            .range([0, height/2])
+            .nice(); // round to nearest nice number
 
-        // Create bars
-        svg.selectAll(".bar")
-            .data(data)
-          .enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", (d, i) => x(i))
-            .attr("y", d => y(d))
-            .attr("width", x.bandwidth())
-            .attr("height", d => height - y(d));
+        // Declare the line generator.
+        const speedBelow = d3.line()
+            .x(d => x(d.cum_distance_km))
+            .y(d => y(d.speed))
+        const speedAbove = d3.line()
+            .x(d => x(d.cum_distance_km))
+            .y(d => y(d.speed))
+            .defined(d => d.speed >= 12);
+        const hr = d3.line()
+            .x(d => x(d.cum_distance_km))
+            .y(d => y2(d.hr));
+
+        svg.append("path")
+        .attr("fill", "none")
+        .attr("stroke", "gray")
+        .attr("stroke-width", 0.5)
+        .attr("d", speedBelow(data));
+
+        svg.append("path")
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2)
+        .attr("d", speedAbove(averages));
 
         // Add the x-axis
         svg.append("g")
@@ -77,7 +110,24 @@
             .attr("x", -height / 2)
             .attr("y", -margin.left + 10)
             .attr("fill", "black")
-            .text("Speed");
+            .text("Speed (km/h)");
+
+        // Plot the HR
+        // svg.append("path")
+        // .attr("fill", "none")
+        // .attr("stroke", "red")
+        // .attr("stroke-width", 0.5)
+        // .attr("d", hr(data));
+        // svg.append("g")
+        //     .attr("class", "y-axis")
+        //     .call(d3.axisRight(y2))
+        //   .append("text")
+        //     .attr("class", "axis-label")
+        //     .attr("transform", "rotate(-90)")
+        //     .attr("x", -height / 2)
+        //     .attr("y", -margin.right + 10)
+        //     .attr("fill", "black")
+        //     .text("HR");
     </script>
 </body>
 </html>

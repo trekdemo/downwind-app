@@ -11,3 +11,9 @@ gem 'gpx'
 gem 'sinatra'
 
 gem "rackup", "~> 2.1"
+
+gem "shotgun", "~> 0.9.2"
+
+gem "sinatra-contrib", "~> 4.0"
+
+gem "moving_average", "~> 0.1.1"
