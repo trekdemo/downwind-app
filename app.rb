@@ -3,29 +3,11 @@
 require 'sinatra'
 require 'json'
 require 'sinatra/reloader'
-require 'gpx'
-require 'geocoder'
-require_relative 'speed'
+require_relative 'foil_analyzer'
 
 get '/' do
-  speeds = Speed.new('./activity_15920387501.gpx').speeds
-  averages = speeds.each_cons(5).map do |speeds|
-    {
-      time: speeds.last[:time],
-      distance_km: speeds.last[:distance_km],
-      cum_distance_km: speeds.last[:cum_distance_km],
-      speed: speeds.sum { |speed| speed[:speed] } / 4
-    }
-  end
-  total_distance = speeds.last[:cum_distance_km]
-  on_foil_distance = speeds
-                     .select { |speed| speed[:speed] > 12 }
-                     .sum { |speed| speed[:distance_km] }
+  files = Dir.glob('activities/*.gpx')
+  activities = files.map { |file| FoilAnalyzer.new(file, 12) }
 
-  erb :speed, locals: {
-    speeds:,
-    averages:,
-    on_foil_distance:,
-    total_distance:
-  }
+  erb :speed, locals: { activities: }
 end
