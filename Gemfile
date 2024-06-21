@@ -10,10 +10,14 @@ gem 'geocoder'
 gem 'gpx'
 gem 'sinatra'
 
-gem "rackup", "~> 2.1"
+gem 'rackup', '~> 2.1'
 
-gem "shotgun", "~> 0.9.2"
+gem 'shotgun', '~> 0.9.2'
 
-gem "sinatra-contrib", "~> 4.0"
+gem 'sinatra-contrib', '~> 4.0'
 
-gem "moving_average", "~> 0.1.1"
+gem 'daru', '~> 0.3'
+
+gem "daru-view", "~> 0.2.6"
+
+gem "matrix", "~> 0.4.2"
