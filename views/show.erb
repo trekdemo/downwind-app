@@ -14,9 +14,7 @@
 <pre>Speed (max) = <%= @fa.speed_max.round(2) %>m/s</pre>
 
 <pre>Duration = <%= @fa.duration.to_i %> sec</pre>
-<pre>Time on foil = <%= @fa.time_on_foil.round(2) %>sec</pre>
-<pre>Time on foil = <%= @fa.time_on_foil_percentage.round(0) %>%</pre>
+<pre>Time on foil = <%= @fa.time_on_foil.round(0) %>sec (<%= @fa.time_on_foil_percentage.round(0) %>%)</pre>
 
-<pre>Total Distance = <%= @fa.total_distance.round(2) %>m</pre>
-<pre>Distance on foil = <%= @fa.distance_on_foil.round(2) %>m</pre>
-<pre>Distance on foil = <%= @fa.distance_on_foil_percentage.round(0) %>%</pre>
+<pre>Total Distance = <%= @fa.total_distance.round(0) %>m</pre>
+<pre>Distance on foil = <%= @fa.distance_on_foil.round(0) %>m (<%= @fa.distance_on_foil_percentage.round(0) %>%)</pre>
