@@ -1,0 +1,17 @@
+<h1 class="mt-2 mb-4 text-2xl font-bold">Activities</h1>
+
+<table>
+  <tr>
+    <th>Activity</td>
+    <th>Paddle ups</td>
+    <th>Distance on foil</td>
+  </tr>
+  <% analyses.each do |a| %>
+  <tr>
+      <td class=""><%= a.activity.start_time.strftime('%Y-%m-%d') %></td>
+    <td><a class="underline text-sky-800" href="/activities/<%= File.basename(a.file, '.gpx') %>"><%= a.activity.title %></td>
+    <td class="text-right"><%= a.paddle_ups %></td>
+    <td class="text-right"><%= a.distance_on_foil.round(2) %>m</td>
+  </tr>
+  <% end %>
+</table>

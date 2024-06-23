@@ -21,3 +21,5 @@ gem 'daru', '~> 0.3'
 gem "daru-view", "~> 0.2.6"
 
 gem "matrix", "~> 0.4.2"
+
+gem "rspec", "~> 3.13"

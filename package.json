@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "@garmin/fitsdk": "^21.141.0"
-  }
-}

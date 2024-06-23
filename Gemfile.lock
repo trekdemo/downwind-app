@@ -43,6 +43,7 @@ GEM
       lazy_high_charts
       nyaplot
       thor
+    diff-lcs (1.5.1)
     drb (2.2.1)
     erubi (1.13.0)
     geocoder (1.8.3)
@@ -92,6 +93,19 @@ GEM
       loofah (~> 2.21)
       nokogiri (~> 1.14)
     rake (13.2.1)
+    rspec (3.13.0)
+      rspec-core (~> 3.13.0)
+      rspec-expectations (~> 3.13.0)
+      rspec-mocks (~> 3.13.0)
+    rspec-core (3.13.0)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-support (3.13.1)
     ruby2_keywords (0.0.5)
     shotgun (0.9.2)
       rack (>= 1.0)
@@ -125,6 +139,7 @@ DEPENDENCIES
   gpx
   matrix (~> 0.4.2)
   rackup (~> 2.1)
+  rspec (~> 3.13)
   shotgun (~> 0.9.2)
   sinatra
   sinatra-contrib (~> 4.0)
