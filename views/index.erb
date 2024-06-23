@@ -2,16 +2,23 @@
 
 <table>
   <tr>
-    <th>Activity</td>
-    <th>Paddle ups</td>
-    <th>Distance on foil</td>
+    <th colspan="3">Activity</th>
+    <th>Paddle ups</th>
+    <th>Total Distance</th>
+    <th>Distance on foil</th>
+    <th>On foil %</th>
   </tr>
-  <% analyses.each do |a| %>
+  <% analyses.each_with_index do |a, i| %>
   <tr>
-      <td class=""><%= a.activity.start_time.strftime('%Y-%m-%d') %></td>
-    <td><a class="underline text-sky-800" href="/activities/<%= File.basename(a.file, '.gpx') %>"><%= a.activity.title %></td>
+    <td class="text-right">#<%= i %></td>
+    <td class=""><%= a.activity.start_time.strftime('%Y-%m-%d') %></td>
+    <td class="">
+        <a class="underline text-sky-800" href="/activities/<%= File.basename(a.file, '.gpx') %>"><%= a.activity.title %>
+    </td>
     <td class="text-right"><%= a.paddle_ups %></td>
-    <td class="text-right"><%= a.distance_on_foil.round(2) %>m</td>
+    <td class="text-right"><%= a.total_distance.round(0) %>m</td>
+    <td class="text-right"><%= a.distance_on_foil.round(0) %>m</td>
+    <td class="text-right"><%= a.distance_on_foil_percentage.round(2) %>%</td>
   </tr>
   <% end %>
 </table>

@@ -21,7 +21,11 @@ class FoilActivityAnalyzer
     @lift_speed = lift_speed
     @data_frame = Daru::DataFrame.new(activity.trackpoints).tap do |df|
       df[:distance_cumsum_m] = df[:distance_m].cumsum
-      df[:on_foil] = df[:speed_m_s].rolling_mean(5).replace_nils(0).dichotomize(lift_speed / 3.6)
+
+      # On foil when the average speed is above the lift speed for 15 seconds
+      # TODO: Is there a way to specify time instead of N number of points?
+      loopback = (15 / df[:ellapsed_sec].mean).to_i
+      df[:on_foil] = df[:speed_m_s].rolling_mean(loopback).replace_nils(0).dichotomize(lift_speed / 3.6)
     end
   end
 
