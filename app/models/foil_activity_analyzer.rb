@@ -5,11 +5,14 @@ original_verbosity = $VERBOSE
 $VERBOSE = nil
 require 'daru'
 $VERBOSE = original_verbosity
+require 'gpx'
+require 'geocoder'
 
 class FoilActivityAnalyzer
-  attr_reader :lift_speed, :data_frame
+  attr_reader :gpx_file, :lift_speed, :data_frame
 
-  def initialize(trackpoints, lift_speed)
+  def initialize(gpx_file, lift_speed)
+    @gpx_file = gpx_file
     @lift_speed = lift_speed
     @data_frame = Daru::DataFrame.new(trackpoints).tap do |df|
       df[:distance_cumsum_m] = df[:distance_m].cumsum
@@ -38,4 +41,39 @@ class FoilActivityAnalyzer
   private
 
   def on_foil = data_frame.where(data_frame[:on_foil].eq(1))
+
+  # @return [Array<Hash>] Coordinates with timestamp and heart rate data
+  def trackpoints
+    @trackpoints ||= begin
+      gpx = GPX::GPXFile.new(gpx_file:)
+
+      gpx.tracks.flat_map do |track|
+        prev_point = track.points.first
+
+        track.points.map do |p|
+          distance_m = distance_between(prev_point.lat, prev_point.lon, p.lat, p.lon)
+          ellapsed_sec = p.time - prev_point.time
+          prev_point = p
+
+          {
+            timestamp: p.time,
+            lat: p.lat,
+            lon: p.lon,
+            hr: p.extensions.xpath('ns3:TrackPointExtension/ns3:hr')&.inner_text&.to_i,
+            ellapsed_sec:,
+            distance_m:,
+            speed_m_s: ellapsed_sec.positive? ? (distance_m / ellapsed_sec.to_f).round(2) : 0.0
+          }
+        end
+      end
+    end
+  end
+
+  def distance_between(a_lat, a_lon, b_lat, b_lon)
+    Geocoder::Calculations.distance_between(
+      [a_lat, a_lon],
+      [b_lat, b_lon],
+      units: :km
+    ) * 1_000
+  end
 end
