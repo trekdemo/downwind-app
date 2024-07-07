@@ -4,3 +4,9 @@ vendor/bundle
 
 # Ignore Jupiter notebook checkpoints
 docs/jupyter/.ipynb_checkpoints
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+
+/app/assets/builds/*
+!/app/assets/builds/.keep
