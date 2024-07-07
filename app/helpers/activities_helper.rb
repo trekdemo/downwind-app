@@ -1,2 +1,5 @@
 module ActivitiesHelper
+  def number_to_distance(distance)
+    number_to_human(distance, units: { unit: 'm', thousand: 'km' })
+  end
 end
