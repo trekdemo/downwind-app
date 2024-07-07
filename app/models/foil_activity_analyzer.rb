@@ -5,21 +5,13 @@ original_verbosity = $VERBOSE
 $VERBOSE = nil
 require 'daru'
 $VERBOSE = original_verbosity
-require_relative 'activity'
 
-# # Usage
-#
-#   activity = Activity.from_gpx('activities/2023-12-28-wing.gpx')
-#   fa = FoilAnalyzer.new(activity, 12)
-#   df = fa.data_frame
 class FoilActivityAnalyzer
-  attr_reader :activity, :lift_speed, :file, :data_frame
+  attr_reader :lift_speed, :data_frame
 
-  def initialize(gpx_file, lift_speed)
-    @file = gpx_file
-    @activity = Activity.from_gpx(gpx_file)
+  def initialize(trackpoints, lift_speed)
     @lift_speed = lift_speed
-    @data_frame = Daru::DataFrame.new(activity.trackpoints).tap do |df|
+    @data_frame = Daru::DataFrame.new(trackpoints).tap do |df|
       df[:distance_cumsum_m] = df[:distance_m].cumsum
 
       # On foil when the average speed is above the lift speed for T seconds
