@@ -1,7 +1,16 @@
+<% if notice.present? %>
+  <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+<% end %>
+
+<div class="min-w-full mt-5">
+  <%= link_to "Back", activities_path, class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+  <%= link_to "Edit", edit_activity_path(@activity), class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+
+  <%= render @activity, details: true %>
+
 <div id="<%= dom_id @activity %>">
   <div class="lg:flex lg:items-center lg:justify-between">
     <div class="min-w-0 flex-1">
-      <%= link_to "Back", activities_path, class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
       <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
         <%= @activity.title %>
       </h2>
@@ -30,7 +39,6 @@
     </div>
 
     <div class="mt-5 flex lg:ml-4 lg:mt-0">
-      <%= link_to "Edit", edit_activity_path(@activity), class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
     </div>
   </div>
 
@@ -51,3 +59,4 @@
   </div>
 </div>
 
+</div>

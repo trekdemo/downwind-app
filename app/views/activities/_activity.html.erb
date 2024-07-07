@@ -1,26 +1,33 @@
-<div id="<%= dom_id activity %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Title:</strong>
-    <%= activity.title %>
-  </p>
+<%# locals: (activity:, details: false) %>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Lift speed:</strong>
-    <%= activity.lift_speed_kmh %>
-  </p>
+<div id="<%= dom_id activity %>" class="mb-5 p-4 rounded-lg bg-gradient-to-br from-slate-200 to-slate-100 shadow-md shadow-slate-300">
+  <div class="flex justify-between items-baseline">
+    <h2 class="text-lg font-bold text-slate-700"><%= activity.title %></h2>
+    <time class="text-xs basis-1/3 text-right text-slate-600" datetime="<%= activity.started_at.iso8601 %>"><%= l(activity.started_at, format: :short) %></time>
+  </div>
 
-  <%= raw @line_graph.init_script %>
-  <%= raw @line_graph.div %>
-
-  <pre>Lift Speed = <%= @lift_speed %>km/h</pre>
-  <pre>Paddle ups = <%= @fa.paddle_ups %></pre>
-
-  <pre>Speed (avg) = <%= @fa.speed_avg.round(2) %>m/s</pre>
-  <pre>Speed (max) = <%= @fa.speed_max.round(2) %>m/s</pre>
-
-  <pre>Duration = <%= @fa.duration.to_i %> sec</pre>
-  <pre>Time on foil = <%= @fa.time_on_foil.round(0) %>sec (<%= @fa.time_on_foil_percentage.round(0) %>%)</pre>
-
-  <pre>Total Distance = <%= @fa.total_distance.round(0) %>m</pre>
-  <pre>Distance on foil = <%= @fa.distance_on_foil.round(0) %>m (<%= @fa.distance_on_foil_percentage.round(0) %>%)</pre>
+  <div id="<%= dom_id activity, :stats %>" class="grid grid-cols-4 text-center items-stretch text-s mt-2 divide-x divide-slate-300 divide-dotted">
+    <div class="px-1 my-2 text-slate-700 font-semibold flex flex-col justify-between"><div class="text-xs font-light">Paddle ups</div><%= activity.analysis.paddle_ups %></div>
+    <div class="px-1 my-2 text-slate-700 font-semibold flex flex-col justify-between"><div class="text-xs font-light">Distance (total)</div><%= number_to_distance(activity.analysis.total_distance) %></div>
+    <div class="px-1 my-2 text-slate-700 font-semibold flex flex-col justify-between"><div class="text-xs font-light">Distance (on foil)</div><%= number_to_distance(activity.analysis.distance_on_foil) %></div>
+    <div class="px-1 my-2 text-slate-700 font-semibold flex flex-col justify-between"><div class="text-xs font-light">Distance (on foil)</div><%= number_to_percentage(activity.analysis.distance_on_foil_percentage, precision: 0) %></div>
+  </div>
 </div>
+
+<% if details %>
+  <div>
+    <%#= raw @line_graph.init_script %>
+    <%#= raw @line_graph.div %>
+
+    <pre>Lift Speed = <%= number_to_speed(activity.lift_speed_kmh) %></pre>
+
+    <pre>Speed (avg) = <%= number_to_speed(activity.analysis.speed_avg * 3.6) %></pre>
+    <pre>Speed (max) = <%= number_to_speed(activity.analysis.speed_max * 3.6) %></pre>
+
+    <pre>Duration = <%= activity.analysis.duration.to_i %> sec</pre>
+    <pre>Time on foil = <%= activity.analysis.time_on_foil.round(0) %>sec (<%= activity.analysis.time_on_foil_percentage.round(0) %>%)</pre>
+
+    <pre>Total Distance = <%= activity.analysis.total_distance.round(0) %>m</pre>
+    <pre>Distance on foil = <%= activity.analysis.distance_on_foil.round(0) %>m (<%= activity.analysis.distance_on_foil_percentage.round(0) %>%)</pre>
+  </div>
+<% end %>
