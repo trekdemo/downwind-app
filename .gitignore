@@ -1,3 +1,6 @@
 tmp/
 activities/
 vendor/bundle
+
+# Ignore Jupiter notebook checkpoints
+docs/jupyter/.ipynb_checkpoints
