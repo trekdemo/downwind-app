@@ -1,0 +1,32 @@
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <% content_for :title, "Activities" %>
+
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-4xl">Activities</h1>
+    <%= link_to "Upload activity", new_activity_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+  </div>
+
+  <div id="activities" class="min-w-full">
+      <% @activities.each do |activity| %>
+        <div id="<%= dom_id activity %>" class="my-2 p-4 border border-gray-200 rounded-lg bg-gray-50">
+            <%= link_to activity do %>
+              <h2 class="text-xl font-bold"><%= activity.title %></h2>
+              <time datetime="<%= activity.started_at.iso8601 %>"><%= l(activity.started_at, format: :short) %></time>
+            <% end %>
+            hello
+          </h2>
+
+          <div id="<%= dom_id activity, :stats %>">
+            <div><%= activity.analysis.paddle_ups %></div>
+            <div><%= activity.analysis.total_distance.round(0) %>m</div>
+            <div><%= activity.analysis.distance_on_foil.round(0) %>m</div>
+            <div><%= activity.analysis.distance_on_foil_percentage.round(2) %>%</div>
+          </div>
+        </div>
+      <% end %>
+  </div>
+</div>

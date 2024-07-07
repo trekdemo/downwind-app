@@ -35,7 +35,7 @@ class ActivitiesController < ApplicationController
   def edit; end
 
   def create
-    @activity = Activity.create_from_gpx(activity_params[:gpx_file], activity_params[:lift_speed])
+    @activity = Activity.create_from_gpx(activity_params[:gpx_file], activity_params[:lift_speed_kmh])
 
     if @activity.save
       redirect_to @activity, notice: 'Activity was successfully created.'
@@ -66,6 +66,6 @@ class ActivitiesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def activity_params
-    params.require(:activity).permit(:lift_speed, :gpx_file)
+    params.require(:activity).permit(:lift_speed_kmh, :gpx_file)
   end
 end

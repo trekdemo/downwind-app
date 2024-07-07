@@ -1,8 +1,8 @@
 tmp/
-activities/
+/activities/*.gpx
 vendor/bundle
 storage/
-log/
+log/*
 
 # Ignore Jupiter notebook checkpoints
 docs/jupyter/.ipynb_checkpoints

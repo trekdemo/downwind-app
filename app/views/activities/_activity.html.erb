@@ -1,0 +1,26 @@
+<div id="<%= dom_id activity %>">
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Title:</strong>
+    <%= activity.title %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Lift speed:</strong>
+    <%= activity.lift_speed_kmh %>
+  </p>
+
+  <%= raw @line_graph.init_script %>
+  <%= raw @line_graph.div %>
+
+  <pre>Lift Speed = <%= @lift_speed %>km/h</pre>
+  <pre>Paddle ups = <%= @fa.paddle_ups %></pre>
+
+  <pre>Speed (avg) = <%= @fa.speed_avg.round(2) %>m/s</pre>
+  <pre>Speed (max) = <%= @fa.speed_max.round(2) %>m/s</pre>
+
+  <pre>Duration = <%= @fa.duration.to_i %> sec</pre>
+  <pre>Time on foil = <%= @fa.time_on_foil.round(0) %>sec (<%= @fa.time_on_foil_percentage.round(0) %>%)</pre>
+
+  <pre>Total Distance = <%= @fa.total_distance.round(0) %>m</pre>
+  <pre>Distance on foil = <%= @fa.distance_on_foil.round(0) %>m (<%= @fa.distance_on_foil_percentage.round(0) %>%)</pre>
+</div>
