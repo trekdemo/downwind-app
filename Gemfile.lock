@@ -102,9 +102,6 @@ GEM
     irb (1.14.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    jbuilder (2.12.0)
-      actionview (>= 5.0.0)
-      activesupport (>= 5.0.0)
     litestack (0.4.4)
       erubi (~> 1)
       oj (~> 3)
@@ -256,7 +253,6 @@ DEPENDENCIES
   bootsnap
   debug
   importmap-rails
-  jbuilder
   litestack (~> 0.4.4)
   puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.4)
