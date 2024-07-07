@@ -1,9 +1,3 @@
-PATH
-  remote: ../fit4ruby
-  specs:
-    fit4ruby (3.13.0)
-      bindata (~> 2.4.14)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -25,7 +19,6 @@ GEM
       tzinfo (~> 2.0)
     base64 (0.2.0)
     bigdecimal (3.1.8)
-    bindata (2.4.15)
     builder (3.3.0)
     concurrent-ruby (1.3.3)
     connection_pool (2.4.1)
@@ -134,7 +127,6 @@ PLATFORMS
 DEPENDENCIES
   daru (~> 0.3)
   daru-view (~> 0.2.6)
-  fit4ruby!
   geocoder
   gpx
   matrix (~> 0.4.2)
