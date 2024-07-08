@@ -30,7 +30,11 @@ class FoilActivityAnalyzer
   def paddle_ups = data_frame[:on_foil].diff.count(1)
 
   def speed_avg = data_frame[:speed_m_s].mean
+  def speed_avg_on_foil = on_foil[:speed_m_s].mean
   def speed_max = data_frame[:speed_m_s].max
+
+  def hr_avg = data_frame[:hr].mean
+  def hr_max = data_frame[:hr].max
 
   # On foil stats
   def time_on_foil                = on_foil[:ellapsed_sec].sum || 0

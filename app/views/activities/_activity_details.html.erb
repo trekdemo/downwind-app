@@ -1,0 +1,36 @@
+<h2 class="border-b mt-3">General</h2>
+<%= render 'activity_summary', activity: activity %>
+
+<h2 class="mt-4">On foil from <%= number_to_speed(activity.lift_speed_kmh) %></h2>
+<div id="<%= dom_id activity, :stats %>" class="grid grid-cols-4 text-center items-stretch text-s divide-x divide-slate-300 divide-dotted">
+  <% {
+    'Distance (on foil)' => number_to_distance(activity.distance_on_foil),
+    'Distance % (on foil)' => number_to_percentage(activity.distance_on_foil_percentage, precision: 0),
+    'Time' => number_to_duration(activity.time_on_foil),
+    'Time %' => number_to_percentage(activity.time_on_foil_percentage, precision: 0),
+  }.each_pair do |label, value| %>
+    <div class="px-1 my-2 text-slate-700 font-semibold flex flex-col justify-between">
+      <div class="text-xs font-light"><%= label %></div>
+      <%= value %>
+    </div>
+  <% end %>
+</div>
+
+<h2 class="mt-4">Speed</h2>
+<div id="<%= dom_id activity, :speed %>" class="grid grid-cols-4 text-center items-stretch text-s divide-x divide-slate-300 divide-dotted">
+  <% {
+    'Lift Speed' => number_to_speed(activity.lift_speed_kmh),
+    'Speed (avg)' => number_to_speed(activity.analysis.speed_avg * 3.6),
+    'Speed (max)' => number_to_speed(activity.analysis.speed_max * 3.6),
+    'Speed (avg) on foil' => number_to_speed(activity.speed_avg_on_foil * 3.6),
+  }.each_pair do |label, value| %>
+    <div class="px-1 my-2 text-slate-700 font-semibold flex flex-col justify-between">
+      <div class="text-xs font-light"><%= label %></div>
+      <%= value %>
+    </div>
+  <% end %>
+</div>
+<div id="<%= dom_id activity, :speed_chart %>" class="text-center items-stretch">
+  <%= speed_chart(activity) %>
+</div>
+

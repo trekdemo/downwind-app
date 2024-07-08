@@ -6,6 +6,7 @@ require 'gpx'
 # coordinates in time with heart rate information.
 class Activity < ApplicationRecord
   has_one_attached :gpx_file
+  delegate_missing_to :analysis
 
   def self.create_from_gpx(gpx_file, lift_speed)
     gpx = GPX::GPXFile.new(gpx_file:)
