@@ -3,9 +3,9 @@ require_relative '../foil_activity_analyzer'
 RSpec.describe FoilActivityAnalyzer do
   subject(:analyzer) { FoilActivityAnalyzer.new(fixture('wing-activity.gpx'), 15) }
 
-  describe '#paddle_ups' do
+  describe '#starts' do
     it 'counts the number of time the average speed is above the lift speed' do
-      expect(analyzer.paddle_ups).to eq(17)
+      expect(analyzer.starts).to eq(17)
     end
   end
 
