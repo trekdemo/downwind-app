@@ -24,13 +24,28 @@ class FoilActivityAnalyzer
     end
   end
 
+  # - [x] Time on foil
+
+  # - [x] Starts
+  # - [ ] Max distance per start (m)
+
+  # - [x] Distance (m)
+  # - [x] Distance on foil %
+  # - [x] Distance on foil (m)
+  # - [ ] Distance per start (m)
+  # - [ ] Cumulative distance on foil (km)
+  # - [ ] Cumulative distance off foil (km)
+
+  # - [x] Average speed (km/h)
+  # - [ ] fastest_kilometer_full_km
+  # - [ ] slowest_kilometer_full_km
+
   def duration = data_frame[:timestamp].range
   def total_distance = data_frame[:distance_cumsum_m].max
 
-  def paddle_ups = data_frame[:on_foil].diff.count(1)
+  def starts = data_frame[:on_foil].diff.count(1)
 
   def speed_avg = data_frame[:speed_m_s].mean
-  def speed_avg_on_foil = on_foil[:speed_m_s].mean
   def speed_max = data_frame[:speed_m_s].max
 
   def hr_avg = data_frame[:hr].mean
@@ -41,6 +56,7 @@ class FoilActivityAnalyzer
   def time_on_foil_percentage     = time_on_foil / duration * 100
   def distance_on_foil            = on_foil[:distance_m].sum || 0
   def distance_on_foil_percentage = distance_on_foil / total_distance * 100
+  def speed_avg_on_foil = on_foil[:speed_m_s].mean
 
   private
 
