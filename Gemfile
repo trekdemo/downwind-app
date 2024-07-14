@@ -32,7 +32,6 @@ gem 'geocoder'
 gem 'gpx'
 
 gem 'daru', '~> 0.3'
-gem 'daru-view', '~> 0.2.6'
 gem 'matrix', '~> 0.4.2'
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
@@ -65,4 +64,4 @@ group :development do
   # gem "spring"
 end
 
-gem "chartkick", "~> 5.0"
+gem 'chartkick', '~> 5.0'
