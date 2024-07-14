@@ -3,7 +3,7 @@
     'Duration' => number_to_duration(activity.duration),
     'Distance' => number_to_distance(activity.total_distance),
     'Heartrate (avg)' => number_with_precision(activity.hr_avg, precision: 0),
-    'Paddle ups' => activity.paddle_ups,
+    'Paddle ups' => activity.starts,
   }.each_pair do |label, value| %>
     <div class="px-1 my-2 text-slate-700 font-semibold flex flex-col justify-between">
       <div class="text-xs font-light"><%= label %></div>

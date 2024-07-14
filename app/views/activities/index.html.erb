@@ -11,6 +11,11 @@
         class: "rounded-lg py-3 px-5 bg-gradient-to-b from-blue-700 to-sky-600 text-sky-50 block font-medium" %>
   </div>
 
+  <div>
+    <h2 class="font-bold text-lg">On foil % by distance</h2>
+    <%= on_foil_percentage_chart(@activities) %>
+  </div>
+
   <div id="activities" class="min-w-full mt-4">
     <% @activities.each do |activity| %>
       <%= link_to activity do %>

@@ -14,6 +14,7 @@ class FoilActivityAnalyzer
   def initialize(gpx_file, lift_speed)
     @gpx_file = gpx_file
     @lift_speed = lift_speed
+
     @data_frame = Daru::DataFrame.new(trackpoints).tap do |df|
       df[:distance_cumsum_m] = df[:distance_m].cumsum
 
@@ -22,6 +23,10 @@ class FoilActivityAnalyzer
       loopback = (20 / df[:ellapsed_sec].mean).to_i
       df[:on_foil] = df[:speed_m_s].rolling_mean(loopback).replace_nils(0).dichotomize(lift_speed / 3.6)
     end
+  end
+
+  def inspect
+    "#<#{self.class.name} trackpoints=#{trackpoints.size} lift_speed=#{lift_speed}>"
   end
 
   # - [x] Time on foil
@@ -56,7 +61,16 @@ class FoilActivityAnalyzer
   def time_on_foil_percentage     = time_on_foil / duration * 100
   def distance_on_foil            = on_foil[:distance_m].sum || 0
   def distance_on_foil_percentage = distance_on_foil / total_distance * 100
-  def speed_avg_on_foil = on_foil[:speed_m_s].mean
+
+  def speed_avg_on_foil = on_foil[:speed_m_s].mean || 0
+
+  def fastest_kilometer_on_foil
+    dist = on_foil[:distance_cumsum_m]
+    on_foil.map_rows do |start|
+      one_km = on_foil.where(dist.gt(start[:distance_cumsum_m] + 1_000)).first
+      one_km[:timestamp] - start[:timestamp]
+    end
+  end
 
   private
 

@@ -41,4 +41,19 @@ module ActivitiesHelper
       code: true
     )
   end
+
+  # @param activities Array<Activity>
+  def on_foil_percentage_chart(activities)
+    on_foil = activities.map do |activity|
+      [activity.started_at, activity.analysis.distance_on_foil_percentage]
+    end
+
+    line_chart(
+      [{ name: 'On foil % by distance', data: on_foil }],
+      # title: 'Speed'
+      legend: false,
+      suffix: '%',
+      round: 1
+    )
+  end
 end
