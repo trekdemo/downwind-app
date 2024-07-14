@@ -65,3 +65,5 @@ group :development do
 end
 
 gem 'chartkick', '~> 5.0'
+
+gem "clearance", "~> 2.7"
