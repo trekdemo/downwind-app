@@ -1,8 +1,9 @@
 class ActivitiesController < ApplicationController
+  before_action :require_login
   before_action :set_activity, only: %i[show edit update destroy]
 
   def index
-    @activities = Activity.order(started_at: :desc)
+    @activities = current_user.activities.order(started_at: :desc)
   end
 
   def show; end
@@ -40,7 +41,7 @@ class ActivitiesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_activity
-    @activity = Activity.find(params[:id])
+    @activity = current_user.activities.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.

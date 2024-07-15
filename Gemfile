@@ -28,6 +28,10 @@ gem 'stimulus-rails'
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
 gem 'tailwindcss-rails'
 
+gem 'chartkick', '~> 5.0'
+
+gem 'clearance', '~> 2.7'
+
 gem 'geocoder'
 gem 'gpx'
 
@@ -62,8 +66,6 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  gem 'strong_migrations', '~> 2.0'
 end
-
-gem 'chartkick', '~> 5.0'
-
-gem "clearance", "~> 2.7"

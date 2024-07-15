@@ -5,6 +5,8 @@ require 'gpx'
 # Activity represents an activity and its trackpoints. Trackpoints represent a
 # coordinates in time with heart rate information.
 class Activity < ApplicationRecord
+  belongs_to :user
+
   has_one_attached :gpx_file
   delegate_missing_to :analysis, allow_nil: true
 
