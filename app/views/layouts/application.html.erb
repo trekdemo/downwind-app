@@ -12,14 +12,21 @@
     <%= hotwire_livereload_tags if Rails.env.development? %>
   </head>
 
-  <body class="bg-slate-50">
-    <main class="container mx-auto px-5 flex">
-      <% if signed_in? %>
-        Signed in as: <%= current_user.email %>
-        <%= button_to 'Sign out', sign_out_path, method: :delete %>
-      <% else %>
-        <%= link_to 'Sign in', sign_in_path %>
-      <% end %>
+  <body class="">
+    <div class="w-full bg-cyan-950 text-gray-50">
+      <div class="container grid grid-cols-2 mx-auto text-sm">
+        <div class="p-5 font-bold">Downwind Logbook</div>
+        <div class="p-5 text-right">
+          <% if signed_in? %>
+            <%= link_to 'Sign out', sign_out_path, class: "", data: {turbo_method: :delete} %>
+          <% else %>
+            <%= link_to 'Sign in', sign_in_path, class: "" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <main class="container mx-auto">
       <%= yield %>
     </main>
   </body>
