@@ -1,9 +1,22 @@
-<div class="text-field">
-  <%= form.label :email %>
-  <%= form.email_field :email %>
-</div>
+<%= form_for @user do |form| %>
+  <div class="grid grid-cols-1 gap-4 text-2xl">
+    <div>
+      <%= form.label :email, class: 'text-sm' %>
+      <%= form.email_field :email, class: 'w-full rounded-md h-16' %>
+    </div>
 
-<div class="password-field">
-  <%= form.label :password %>
-  <%= form.password_field :password %>
-</div>
+    <div>
+      <%= form.label :password, class: 'text-sm' %>
+      <%= form.password_field :password, class: 'w-full rounded-md h-16' %>
+    </div>
+  </div>
+
+  <div class="mt-8 grid gap-4 md:gap-2 md:grid-cols-2 text-center">
+    <%= form.submit class: 'block rounded-lg py-4 bg-gradient-to-r from-green-400 to-green-300 text-green-950 font-bold' %>
+
+    <% if Clearance.configuration.allow_sign_up? %>
+      <%= link_to t('.sign_in'), sign_in_path, class: 'block rounded-lg py-4 bg-gray-300 text-gray-950' %>
+    <% end %>
+    <%#= link_to t(".forgot_password"), new_password_path %>
+  </div>
+<% end %>
