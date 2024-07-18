@@ -19,3 +19,6 @@ docs/jupyter/.ipynb_checkpoints
 
 # RSpec reports
 /spec/examples.txt
+
+/.env
+/.env.*.local
