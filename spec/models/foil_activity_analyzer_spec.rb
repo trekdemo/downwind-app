@@ -1,4 +1,4 @@
-require_relative '../foil_activity_analyzer'
+require 'rails_helper'
 
 RSpec.describe FoilActivityAnalyzer do
   subject(:analyzer) { FoilActivityAnalyzer.new(fixture('wing-activity.gpx'), 15) }

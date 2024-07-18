@@ -1,4 +1,4 @@
-require_relative '../activity'
+require 'rails_helper'
 
 RSpec.describe Activity do
   describe '.new' do

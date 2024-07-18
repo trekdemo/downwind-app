@@ -55,6 +55,7 @@ group :development, :test do
   gem 'debug', platforms: %i[mri windows]
   gem 'hotwire-livereload', '~> 1.4'
   gem 'rspec', '~> 3.13'
+  gem 'rspec-rails', '~> 6.1'
 end
 
 group :development do

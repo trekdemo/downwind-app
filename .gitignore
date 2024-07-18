@@ -16,3 +16,6 @@ docs/jupyter/.ipynb_checkpoints
 # Ignore default Litestack SQLite databases.
 /db/**/*.sqlite3
 /db/**/*.sqlite3-*
+
+# RSpec reports
+/spec/examples.txt
