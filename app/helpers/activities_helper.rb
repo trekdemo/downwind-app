@@ -53,7 +53,8 @@ module ActivitiesHelper
       # title: 'Speed'
       legend: false,
       suffix: '%',
-      round: 1
+      round: 1,
+      curve: false
     )
   end
 end
