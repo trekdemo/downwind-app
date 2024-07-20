@@ -113,6 +113,7 @@ GEM
     email_validator (2.2.4)
       activemodel
     erubi (1.13.0)
+    fast-polylines (2.2.2)
     ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-arm-linux-gnu)
     ffi (1.17.0-arm64-darwin)
@@ -330,6 +331,7 @@ DEPENDENCIES
   daru (~> 0.3)
   debug
   dotenv-rails
+  fast-polylines (~> 2.2)
   geocoder
   gpx
   hotwire-livereload (~> 1.4)

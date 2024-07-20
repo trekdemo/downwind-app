@@ -71,3 +71,5 @@ group :development do
 
   gem 'strong_migrations', '~> 2.0'
 end
+
+gem "fast-polylines", "~> 2.2"
