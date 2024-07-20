@@ -82,7 +82,8 @@ class FoilActivityAnalyzer
       .map do |points|
         lats = points.map { _1[:lat] }
         lons = points.map { _1[:lon] }
-        [lats.sum / lats.size, lons.sum / lons.size]
+        speeds = points.map { _1[:speed_m_s] }
+        [lats.sum / lats.size, lons.sum / lons.size, speeds.sum / speeds.size]
       end
   end
 

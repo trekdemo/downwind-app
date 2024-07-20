@@ -8,9 +8,8 @@ class StaticMapsController < ApplicationController
   before_action :set_activity, only: %i[show]
 
   def show
-    path = @activity.reduced_path(50)
-    url = path_map_url(path, size: params[:size], stroke_color: ColorScale.plasma[rand])
-    Rails.logger.info "Requesting URL = #{url}"
+    url = speed_map_url(@activity, size: params[:size])
+    Rails.logger.debug "Requesting URL = #{url}"
 
     image = Net::HTTP.get_response(URI(url))
     send_data image.body, type: image.content_type, disposition: 'inline'

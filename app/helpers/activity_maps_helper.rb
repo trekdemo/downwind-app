@@ -8,16 +8,34 @@ module ActivityMapsHelper
   # Mapbox credential
   #
   # https://docs.mapbox.com/api/maps/static-images/#path
-  def path_map_url(path, size:, stroke_width: 2, stroke_color: '000', stroke_opacity: 1)
+  def speed_map_url(activity, size:)
+    path = activity.reduced_path(100)
+    overlays =
+      path.each_slice(5).map do |coords|
+        speed_avg = coords.map(&:last).sum / coords.size
+        mapbox_overlay_path(
+          coords.map { _1.take(2) },
+          stroke_color: ColorScale.plasma[speed_avg / (activity.speed_avg + 1)],
+          stroke_width: 5
+        )
+      end
+
     format(
       'https://api.mapbox.com/styles/v1/mapbox/outdoors-v12/static/'\
-      'path-%<stroke_width>s+%<stroke_color>s-%<stroke_opacity>s(%<polyline>s)'\
-      '/auto/%<size>s@2x'\
+      '%<overlays>s/auto/%<size>s@2x'\
       '?access_token=%<token>s',
+      { size:, overlays: overlays.join(','), token: ENV.fetch('MAPBOX_ACCESS_TOKEN') }
+    )
+  end
+
+  def mapbox_overlay_path(path, stroke_color: '000', stroke_width: 1, stroke_opacity: 1)
+    format(
+      'path-%<stroke_width>s+%<stroke_color>s-%<stroke_opacity>s(%<polyline>s)',
       {
-        stroke_width:, stroke_color: stroke_color.sub('#', ''), stroke_opacity:, size:,
         polyline: CGI.escape(FastPolylines.encode(path)),
-        token: ENV.fetch('MAPBOX_ACCESS_TOKEN')
+        stroke_color: stroke_color.sub('#', ''),
+        stroke_width:,
+        stroke_opacity:
       }
     )
   end
