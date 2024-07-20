@@ -28,13 +28,13 @@ gem 'stimulus-rails'
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
 gem 'tailwindcss-rails'
 
-gem 'chartkick', '~> 5.0'
-
 gem 'clearance', '~> 2.7'
 
 gem 'geocoder'
 gem 'gpx'
+gem 'mapkick-rb', '~> 0.1.5'
 
+gem 'chartkick', '~> 5.0'
 gem 'daru', '~> 0.3'
 gem 'matrix', '~> 0.4.2'
 

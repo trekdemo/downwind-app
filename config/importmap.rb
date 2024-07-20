@@ -9,3 +9,4 @@ pin_all_from 'app/javascript/controllers', under: 'controllers'
 # gem "chartkick"
 pin 'chartkick', to: 'chartkick.js'
 pin 'Chart.bundle', to: 'Chart.bundle.js'
+pin 'mapkick/bundle', to: 'mapkick.bundle.js'
