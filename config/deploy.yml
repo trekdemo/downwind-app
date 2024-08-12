@@ -37,9 +37,10 @@ registry:
 #   clear:
 #     DB_HOST: 192.168.0.2
 
+# Files are in /var/lib/docker/volumes/<volume>/_data
 volumes:
-  - "storage:/rails/storage"
-  - "db:/rails/db"
+  - "/downwind-data/storage:/rails/storage"
+  - "/downwind-data/db:/rails/db"
 
 # Use a different ssh user than root
 # ssh:
