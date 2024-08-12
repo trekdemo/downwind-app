@@ -14,6 +14,10 @@ servers:
       traefik.http.routers.downwind-journal.rule: Host(`downwind.gergo.dev`)
       traefik.http.routers.downwind-journal.entrypoints: "websecure"
       traefik.http.routers.downwind-journal.tls.certresolver: "letsencrypt"
+    env:
+      secret:
+        - RAILS_MASTER_KEY
+        - MAPBOX_ACCESS_TOKEN
 
 # Credentials for your image host.
 registry:
@@ -27,9 +31,9 @@ registry:
 
 # Inject ENV variables into containers (secrets come from .env).
 # Remember to run `kamal env push` after making changes!
-env:
-  secret:
-    - RAILS_MASTER_KEY
+# env:
+#   secret:
+#     - RAILS_MASTER_KEY
 #   clear:
 #     DB_HOST: 192.168.0.2
 
