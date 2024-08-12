@@ -7,7 +7,13 @@ image: trekdemo/downwind-journal
 
 # Deploy to these servers.
 servers:
-  - 37.27.91.220
+  web:
+    hosts:
+      - 37.27.91.220
+    labels:
+      traefik.http.routers.downwind-journal.rule: Host(`downwind.gergo.dev`)
+      traefik.http.routers.downwind-journal.entrypoints: "websecure"
+      traefik.http.routers.downwind-journal.tls.certresolver: "letsencrypt"
 
 # Credentials for your image host.
 registry:
@@ -69,8 +75,22 @@ volumes:
 #       - data:/data
 
 # Configure custom arguments for Traefik. Be sure to reboot traefik when you modify it.
-# traefik:
-#   args:
+traefik:
+  options:
+    publish:
+      - "443:443"
+    volume:
+      - "/etc/letsencrypt/acme.json:/etc/letsencrypt/acme.json"
+  args:
+    entryPoints.web.address: ":80"
+    entryPoints.websecure.address: ":443"
+    entryPoints.web.http.redirections.entryPoint.to: "websecure"
+    entryPoints.web.http.redirections.entryPoint.scheme: "https"
+    entryPoints.web.http.redirections.entrypoint.permanent: true
+    certificatesResolvers.letsencrypt.acme.email: "gergo.sulymosi@gmail.com"
+    certificatesResolvers.letsencrypt.acme.storage: "/etc/letsencrypt/acme.json"
+    certificatesResolvers.letsencrypt.acme.httpchallenge: true
+    certificatesResolvers.letsencrypt.acme.httpchallenge.entrypoint: "web"
 #     accesslog: true
 #     accesslog.format: json
 
