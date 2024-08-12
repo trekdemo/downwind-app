@@ -35,8 +35,8 @@ gem 'gpx'
 gem 'mapkick-rb', '~> 0.1.5'
 
 gem 'chartkick', '~> 5.0'
-gem 'daru', '~> 0.3'
-gem 'matrix', '~> 0.4.2'
+gem 'daru', '~> 0.3', require: false
+gem 'matrix', '~> 0.4.2', require: false
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"

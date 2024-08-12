@@ -37,6 +37,7 @@ module ActivitiesHelper
       legend: false,
       suffix: 'km/h',
       round: 1,
+      curve: true,
       library: { options: { elements: { line: { borderWidth: 1 } } } },
       code: true
     )

@@ -5,3 +5,6 @@ import "controllers"
 // gem "chartkick"
 import "chartkick"
 import "Chart.bundle"
+
+// gem 'mapkick-rb'
+import "mapkick/bundle"
