@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gpx'
+require "gpx"
 
 # Activity represents an activity and its trackpoints. Trackpoints represent a
 # coordinates in time with heart rate information.

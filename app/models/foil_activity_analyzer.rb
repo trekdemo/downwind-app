@@ -3,10 +3,10 @@
 # The daru gem has a bunch of warnings that are not relevant to this project.
 original_verbosity = $VERBOSE
 $VERBOSE = nil
-require 'daru'
+require "daru"
 $VERBOSE = original_verbosity
-require 'gpx'
-require 'geocoder'
+require "gpx"
+require "geocoder"
 
 class FoilActivityAnalyzer
   attr_reader :gpx_file, :lift_speed, :data_frame
@@ -83,7 +83,7 @@ class FoilActivityAnalyzer
         lats = points.map { _1[:lat] }
         lons = points.map { _1[:lon] }
         speeds = points.map { _1[:speed_m_s] }
-        [lats.sum / lats.size, lons.sum / lons.size, speeds.sum / speeds.size]
+        [ lats.sum / lats.size, lons.sum / lons.size, speeds.sum / speeds.size ]
       end
   end
 
@@ -108,7 +108,7 @@ class FoilActivityAnalyzer
             timestamp: p.time,
             lat: p.lat,
             lon: p.lon,
-            hr: p.extensions.xpath('ns3:TrackPointExtension/ns3:hr')&.inner_text&.to_i,
+            hr: p.extensions.xpath("ns3:TrackPointExtension/ns3:hr")&.inner_text&.to_i,
             ellapsed_sec:,
             distance_m:,
             speed_m_s: ellapsed_sec.positive? ? (distance_m / ellapsed_sec.to_f).round(2) : 0.0
@@ -120,8 +120,8 @@ class FoilActivityAnalyzer
 
   def distance_between(a_lat, a_lon, b_lat, b_lon)
     Geocoder::Calculations.distance_between(
-      [a_lat, a_lon],
-      [b_lat, b_lon],
+      [ a_lat, a_lon ],
+      [ b_lat, b_lon ],
       units: :km
     ) * 1_000
   end

@@ -18,7 +18,7 @@ class ActivitiesController < ApplicationController
     @activity = Activity.create_from_gpx(activity_params[:gpx_file], activity_params[:lift_speed_kmh], current_user)
 
     if @activity.save
-      redirect_to @activity, notice: 'Activity was successfully created.'
+      redirect_to @activity, notice: "Activity was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -26,7 +26,7 @@ class ActivitiesController < ApplicationController
 
   def update
     if @activity.update(activity_params)
-      redirect_to @activity, notice: 'Activity was successfully updated.', status: :see_other
+      redirect_to @activity, notice: "Activity was successfully updated.", status: :see_other
     else
       render :edit, status: :unprocessable_entity
     end
@@ -34,7 +34,7 @@ class ActivitiesController < ApplicationController
 
   def destroy
     @activity.destroy!
-    redirect_to activities_url, notice: 'Activity was successfully destroyed.', status: :see_other
+    redirect_to activities_url, notice: "Activity was successfully destroyed.", status: :see_other
   end
 
   private

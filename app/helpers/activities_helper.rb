@@ -1,18 +1,18 @@
 module ActivitiesHelper
   def number_to_distance(distance)
-    number_to_human(distance, units: { unit: 'm', thousand: 'km' })
+    number_to_human(distance, units: { unit: "m", thousand: "km" })
   end
 
   def number_to_speed(distance)
-    number_to_human(distance, precision: 1, significant: false, units: { unit: 'km/h' })
+    number_to_human(distance, precision: 1, significant: false, units: { unit: "km/h" })
   end
 
   def number_to_duration(duration)
     ActiveSupport::Duration
       .build(duration)
       .parts.values_at(:hours, :minutes, :seconds).compact
-      .map { |n| format('%0.2d', n) }
-      .join(':')
+      .map { |n| format("%0.2d", n) }
+      .join(":")
   end
 
   def speed_chart(activity)
@@ -25,7 +25,7 @@ module ActivitiesHelper
     line_chart(
       [
         # { name: 'On foil', data: dist.to_a.zip((on_foil * speed.max).to_a) },
-        { name: 'Speed', data: dist.to_a.zip(speed.to_a) }
+        { name: "Speed", data: dist.to_a.zip(speed.to_a) }
         # { type: :line, name: 'HR', data: dist.to_a.zip(df[:hr].to_a) }
         # { type: :line, name: 'Speed AVG', data: dist.to_a.zip(speed.rolling_mean(5).to_a) }
       ],
@@ -35,7 +35,7 @@ module ActivitiesHelper
       # width: '100%'
       points: false,
       legend: false,
-      suffix: 'km/h',
+      suffix: "km/h",
       round: 1,
       curve: true,
       library: { options: { elements: { line: { borderWidth: 1 } } } },
@@ -46,14 +46,14 @@ module ActivitiesHelper
   # @param activities Array<Activity>
   def on_foil_percentage_chart(activities)
     on_foil = activities.map do |activity|
-      [activity.started_at, activity.analysis.distance_on_foil_percentage]
+      [ activity.started_at, activity.analysis.distance_on_foil_percentage ]
     end
 
     line_chart(
-      [{ name: 'On foil % by distance', data: on_foil }],
+      [ { name: "On foil % by distance", data: on_foil } ],
       # title: 'Speed'
       legend: false,
-      suffix: '%',
+      suffix: "%",
       round: 1,
       curve: false
     )

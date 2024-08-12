@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'net/http'
+require "net/http"
 
 class StaticMapsController < ApplicationController
   include ActivityMapsHelper
@@ -12,7 +12,7 @@ class StaticMapsController < ApplicationController
     Rails.logger.debug "Requesting URL = #{url}"
 
     image = Net::HTTP.get_response(URI(url))
-    send_data image.body, type: image.content_type, disposition: 'inline'
+    send_data image.body, type: image.content_type, disposition: "inline"
   end
 
   private
