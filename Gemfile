@@ -27,6 +27,7 @@ gem "stimulus-rails"
 
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
 gem "tailwindcss-rails"
+gem "material_icons"
 
 gem "clearance", "~> 2.7"
 
