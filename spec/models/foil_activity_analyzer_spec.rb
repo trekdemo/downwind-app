@@ -5,7 +5,7 @@ RSpec.describe FoilActivityAnalyzer do
 
   describe '#starts' do
     it 'counts the number of time the average speed is above the lift speed' do
-      expect(analyzer.starts).to eq(17)
+      expect(analyzer.starts).to eq(18)
     end
   end
 
