@@ -89,7 +89,7 @@ GEM
       racc
     builder (3.3.0)
     chartkick (5.0.7)
-    clearance (2.7.2)
+    clearance (2.8.0)
       actionmailer (>= 5.0)
       activemodel (>= 5.0)
       activerecord (>= 5.0)
@@ -377,7 +377,7 @@ DEPENDENCIES
   bootsnap
   brakeman (~> 6.1)
   chartkick (~> 5.0)
-  clearance (~> 2.7)
+  clearance (~> 2.8)
   daru (~> 0.3)
   debug
   dotenv-rails
