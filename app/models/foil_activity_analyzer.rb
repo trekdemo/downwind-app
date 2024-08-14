@@ -20,7 +20,7 @@ class FoilActivityAnalyzer
 
       # On foil when the average speed is above the lift speed for T seconds
       # TODO: Is there a way to specify time instead of N number of points?
-      loopback = (20 / df[:ellapsed_sec].mean).to_i
+      loopback = ([ 20, df.size ].min / df[:ellapsed_sec].mean).to_i
       df[:on_foil] = df[:speed_m_s].rolling_mean(loopback).replace_nils(0).dichotomize(lift_speed / 3.6)
     end
   end

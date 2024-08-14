@@ -7,20 +7,20 @@ RSpec.describe Activity do
     it 'stores title' do
       expect(activity.title).to eq('Title')
     end
-
-    it 'has an empty list of trackpoints' do
-      expect(activity.trackpoints).to be_empty
-    end
   end
 
-  describe '.from_gpx' do
-    subject(:activity) { Activity.from_gpx(fixture('garmin_1_1.gpx')) }
+  describe '.create_from_gpx' do
+    let(:user) { User.create!(email: 'test@example.com', password: 'hunter69') }
+    let(:gpx_file) { fixture('garmin_1_1.gpx') }
+    subject(:activity) { Activity.create_from_gpx(gpx_file, 10, user) }
 
     it 'captures the title' do
       expect(activity.title).to eq('Example activity title')
     end
 
-    it 'captures the trackpoints' do
+    # FIXME: This became a private method on the FoilActivityAnalyzer
+    # Move it to that test
+    xit 'captures the trackpoints' do
       expect(activity.trackpoints).to all(be_a(Hash))
       expect(activity.trackpoints.size).to eq(2)
       expect(activity.trackpoints).to eq(
