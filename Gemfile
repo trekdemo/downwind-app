@@ -29,7 +29,7 @@ gem "stimulus-rails"
 gem "tailwindcss-rails"
 gem "material_icons"
 
-gem "clearance", "~> 2.7"
+gem "clearance", "~> 2.8"
 
 gem "geocoder"
 gem "gpx"
