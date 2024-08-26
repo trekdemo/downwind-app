@@ -73,7 +73,7 @@ jobs:
         env:
           RAILS_ENV: test
         run: |
-          bin/rails db:setup
+          bin/rails db:setup assets:precompile
           bin/rspec --format RSpec::Github::Formatter
 
       - name: Keep screenshots from failed system tests
