@@ -52,7 +52,7 @@ RSpec.feature "Visitor resets password" do
     expect(ActionMailer::Base.deliveries).not_to be_empty
 
     message = ActionMailer::Base.deliveries.any? do |email|
-      email.to == [recipient] &&
+      email.to == [ recipient ] &&
         email.subject =~ /#{subject}/i &&
         email.html_part.body =~ /#{body}/ &&
         email.text_part.body =~ /#{body}/

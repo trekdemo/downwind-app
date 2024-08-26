@@ -1,13 +1,13 @@
 Rails.application.routes.draw do
-  namespace :admin do
-    resources :users, except: [ :create ]
-  end
   root "activities#index"
-
   resources :activities do
     resources :static_maps, only: :show, param: :size,
                             constraints: { size: /\d+x\d+/ },
                             defaults: { size: "100x100", format: "png" }
+  end
+
+  namespace :admin do
+    resources :users, except: [ :create ]
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
