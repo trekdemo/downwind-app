@@ -12,6 +12,7 @@ tmp/
 vendor/bundle
 storage/
 log/*
+/public/assets/*
 
 # Ignore Jupiter notebook checkpoints
 docs/jupyter/.ipynb_checkpoints
