@@ -82,4 +82,5 @@ end
 group :test do
   gem "brakeman", "~> 6.1", require: false
   gem "rspec-github", require: false
+  gem "capybara"
 end
