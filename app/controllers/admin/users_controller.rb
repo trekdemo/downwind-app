@@ -3,7 +3,7 @@ class Admin::UsersController < Admin::ApplicationController
 
   # GET /admin/users
   def index
-    @users = User.all
+    @users = User.limit(100)
   end
 
   # GET /admin/users/1
