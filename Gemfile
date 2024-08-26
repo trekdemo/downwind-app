@@ -37,7 +37,7 @@ gem "gpx"
 gem "fast-polylines", "~> 2.2"
 gem "mapkick-rb", "~> 0.1.5"
 
-gem "chartkick", "~> 5.0"
+gem "chartkick", "~> 5.1"
 gem "daru", "~> 0.3", require: false
 gem "matrix", "~> 0.4.2", require: false
 
