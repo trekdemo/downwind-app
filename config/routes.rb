@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    resources :users, except: [ :create ]
+  end
   root "activities#index"
 
   resources :activities do
