@@ -8,7 +8,6 @@ class Activity < ApplicationRecord
   belongs_to :user
 
   has_one_attached :gpx_file
-  delegate_missing_to :analysis, allow_nil: true
 
   def self.create_from_gpx(gpx_file, lift_speed, user)
     gpx = GPX::GPXFile.new(gpx_file:)

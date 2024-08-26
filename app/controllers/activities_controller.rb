@@ -3,7 +3,7 @@ class ActivitiesController < ApplicationController
   before_action :set_activity, only: %i[show edit update destroy]
 
   def index
-    @activities = current_user.activities.order(started_at: :desc)
+    @activities = current_user.activities.with_attached_gpx_file.order(started_at: :desc)
   end
 
   def show; end
