@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "3.3.1"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.1.3", ">= 7.1.3.4"
+gem "rails", "~> 7.2.1"
 
 gem "litestack", "~> 0.4.4"
 
