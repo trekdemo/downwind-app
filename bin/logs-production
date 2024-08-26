@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Do not list the healthchecks
+kamal app logs --follow --grep HealthController --grep-options="--invert-match"
