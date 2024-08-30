@@ -84,4 +84,5 @@ group :test do
   gem "rspec-github", require: false
   gem "capybara"
   gem "factory_bot_rails"
+  gem "shoulda-matchers", "~> 6.0"
 end
