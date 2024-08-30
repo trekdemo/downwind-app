@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# kamal app exec -p -q -d "$KAMAL_DESTINATION" --version "$KAMAL_VERSION" "bin/rails db:migrate"
+kamal app exec --primary --version "$KAMAL_VERSION" "bin/rails db:migrate"

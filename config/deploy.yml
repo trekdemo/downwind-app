@@ -100,7 +100,8 @@ traefik:
 #     accesslog.format: json
 
 # Configure a custom healthcheck (default is /up on port 3000)
-# healthcheck:
+healthcheck:
+  interval: 5s
 #   path: /healthz
 #   port: 4000
 
