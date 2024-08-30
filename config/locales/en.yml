@@ -29,3 +29,10 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+    attributes:
+      activity/kind:
+        sup_dw: Downwind SUP
+        sup_fwpu: Flatwater Paddle-up
+        dockstart: Dockstart
+        wingfoil: Wingfoil

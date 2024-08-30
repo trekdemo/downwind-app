@@ -8,6 +8,7 @@ class Activity < ApplicationRecord
   belongs_to :user
 
   has_one_attached :gpx_file
+  enum :kind, { sup_dw: 0, sup_fwpu: 1, dockstart: 2, wingfoil: 3 }
 
   def self.create_from_gpx(gpx_file, lift_speed, user)
     gpx = GPX::GPXFile.new(gpx_file:)

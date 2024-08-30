@@ -4,6 +4,7 @@ class ActivitiesController < ApplicationController
 
   def index
     @activities = current_user.activities.with_attached_gpx_file.order(started_at: :desc)
+    @activity_kind_counts = Activity.group(:kind).count
   end
 
   def show; end
@@ -46,6 +47,6 @@ class ActivitiesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def activity_params
-    params.require(:activity).permit(:lift_speed_kmh, :gpx_file)
+    params.require(:activity).permit(:lift_speed_kmh, :gpx_file, :kind)
   end
 end
