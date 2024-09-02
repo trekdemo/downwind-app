@@ -51,6 +51,7 @@ gem "tzinfo-data", platforms: %i[windows jruby]
 gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+gem "active_storage_validations"
 # gem "image_processing", "~> 1.2"
 
 # An attempt to tame Rails' default policy to log everything.
