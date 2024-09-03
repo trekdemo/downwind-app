@@ -79,7 +79,7 @@ jobs:
         env:
           RAILS_ENV: test
         run:
-          bin/rspec --format RSpec::Github::Formatter
+          bin/rspec --format RSpec::Github::Formatter --format documentation
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
