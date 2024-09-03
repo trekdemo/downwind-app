@@ -16,7 +16,7 @@ class ActivitiesController < ApplicationController
   def edit; end
 
   def create
-    @activity = Activity.create_from_gpx(activity_params[:gpx_file], activity_params[:lift_speed_kmh], current_user)
+    @activity = current_user.activities.create(activity_params)
 
     if @activity.save
       redirect_to @activity, notice: "Activity was successfully created."

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_08_29_152541) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_02_195415) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -40,9 +40,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_29_152541) do
   end
 
   create_table "activities", force: :cascade do |t|
-    t.string "title", null: false
+    t.string "title"
     t.decimal "lift_speed_kmh", default: "15.0", null: false
-    t.datetime "started_at", null: false
+    t.datetime "started_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false

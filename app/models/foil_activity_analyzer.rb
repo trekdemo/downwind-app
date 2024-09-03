@@ -8,6 +8,11 @@ $VERBOSE = original_verbosity
 require "gpx"
 require "geocoder"
 
+# TODO: Most probably it would be better to write this class using the
+# ActiveStorage::Analyzer
+# https://github.com/rails/rails/blob/main/activestorage/lib/active_storage/analyzer.rb
+# Rails can register these types and automatically run them for the uploaded
+# file.
 class FoilActivityAnalyzer
   attr_reader :gpx_file, :lift_speed, :data_frame
 
@@ -29,19 +34,10 @@ class FoilActivityAnalyzer
     "#<#{self.class.name} trackpoints=#{trackpoints.size} lift_speed=#{lift_speed}>"
   end
 
-  # - [x] Time on foil
-
-  # - [x] Starts
-  # - [ ] Max distance per start (m)
-
-  # - [x] Distance (m)
-  # - [x] Distance on foil %
-  # - [x] Distance on foil (m)
+  # TODO: These are the features needed to be implemented
   # - [ ] Distance per start (m)
-  # - [ ] Cumulative distance on foil (km)
+  # - [ ] Max distance per start (m)
   # - [ ] Cumulative distance off foil (km)
-
-  # - [x] Average speed (km/h)
   # - [ ] fastest_kilometer_full_km
   # - [ ] slowest_kilometer_full_km
 
@@ -74,7 +70,7 @@ class FoilActivityAnalyzer
 
   # Returns a list of coordinates
   # @param n [Integer] maximum amount of coordinates to return
-  # @return [Array<Array<Float>>] list of coordinates
+  # @return [Array<Array<Float>>] list of coordinates and speed
   def reduced_path(n = 10)
     nth = trackpoints.length / n
     trackpoints

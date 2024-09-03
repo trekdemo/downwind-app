@@ -9,6 +9,8 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": Rails.env.production? ? "reload" : "" %>
     <%= javascript_importmap_tags %>
+    <%= turbo_refreshes_with(method: :morph, scroll: :preserve) %>
+    <%= yield :head %>
     <%= hotwire_livereload_tags if Rails.env.development? %>
   </head>
 

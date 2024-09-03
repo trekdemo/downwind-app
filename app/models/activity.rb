@@ -6,23 +6,25 @@ require "gpx"
 # coordinates in time with heart rate information.
 class Activity < ApplicationRecord
   belongs_to :user
-
-  has_one_attached :gpx_file
   enum :kind, { sup_dw: 0, sup_fwpu: 1, dockstart: 2, wingfoil: 3 }
 
-  def self.create_from_gpx(gpx_file, lift_speed, user)
-    gpx = GPX::GPXFile.new(gpx_file:)
-    track = gpx.tracks[0]
-    started_at = track&.points&.first&.time || Time.current
+  has_one_attached :gpx_file # , strict_loading: true
+  validates :gpx_file, attached: true, content_type: "application/gpx+xml"
+  delegate :analyzed?, to: :gpx_file
+  after_create_commit :analyze_gpx_file_later
 
-    create(title: track.name, lift_speed_kmh: lift_speed, gpx_file:, started_at:, user:)
-  end
+  broadcasts_refreshes
 
   def analysis
-    return unless gpx_file.attached?
-
     @analysis ||= gpx_file.open { |file| FoilActivityAnalyzer.new(file, lift_speed_kmh) }
-  rescue ActiveStorage::FileNotFoundError
-    nil
+  end
+
+  def analyze_gpx_file_later
+    ActivityAnalyzerJob.perform_later(self)
+  end
+
+  def analyze_gpx_file!
+    gpx_file.analyze unless gpx_file.analyzed?
+    update! gpx_file.metadata.slice(:title, :started_at)
   end
 end

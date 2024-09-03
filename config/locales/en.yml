@@ -28,7 +28,6 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
   activerecord:
     attributes:
       activity/kind:
@@ -36,3 +35,6 @@ en:
         sup_fwpu: Flatwater Paddle-up
         dockstart: Dockstart
         wingfoil: Wingfoil
+      activity:
+        lift_speed_kmh: "Lift speed (km/h)"
+        gpx_file: "GPX file"
