@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_02_195415) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_04_195859) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -51,6 +51,27 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_02_195415) do
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
+  create_table "analyses", force: :cascade do |t|
+    t.integer "activity_id"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.float "duration"
+    t.integer "starts"
+    t.float "time_on_foil"
+    t.virtual "time_on_foil_percentage", type: :float, as: "time_on_foil / duration * 100", stored: true
+    t.integer "distance_total"
+    t.integer "distance_on_foil"
+    t.virtual "distance_on_foil_percentage", type: :float, as: "1.0 * distance_on_foil / distance_total * 100", stored: true
+    t.float "speed_avg"
+    t.float "speed_max"
+    t.float "speed_avg_on_foil"
+    t.float "hr_avg"
+    t.float "hr_max"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_analyses_on_activity_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -66,4 +87,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_02_195415) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "users"
+  add_foreign_key "analyses", "activities"
 end

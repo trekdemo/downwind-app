@@ -15,9 +15,10 @@ class Activity < ApplicationRecord
 
   broadcasts_refreshes
 
-  def analysis
-    @analysis ||= gpx_file.open { |file| FoilActivityAnalyzer.new(file, lift_speed_kmh) }
-  end
+  has_one :analysis, dependent: :delete
+
+  scope :with_analysis, -> { includes(:analysis) }
+
 
   def analyze_gpx_file_later
     ActivityAnalyzerJob.perform_later(self)
@@ -25,6 +26,11 @@ class Activity < ApplicationRecord
 
   def analyze_gpx_file!
     gpx_file.analyze unless gpx_file.analyzed?
+
+    analysis.delete if analysis
+    foil = gpx_file.open { |file| FoilActivityAnalyzer.new(file, lift_speed_kmh) }
+
+    create_analysis foil.metadata
     update! gpx_file.metadata.slice(:title, :started_at)
   end
 end

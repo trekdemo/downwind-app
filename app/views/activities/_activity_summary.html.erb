@@ -2,7 +2,7 @@
   <% analysis = activity.analysis %>
   <% {
     'Duration' => number_to_duration(analysis.duration),
-    'Distance' => number_to_distance(analysis.total_distance),
+    'Distance' => number_to_distance(analysis.distance_total),
     'Heartrate (avg)' => number_with_precision(analysis.hr_avg, precision: 0),
     'Paddle ups' => analysis.starts,
   }.each_pair do |label, value| %>

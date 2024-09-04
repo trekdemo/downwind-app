@@ -34,6 +34,23 @@ class FoilActivityAnalyzer
     "#<#{self.class.name} trackpoints=#{trackpoints.size} lift_speed=#{lift_speed}>"
   end
 
+  def metadata
+    {
+      started_at:,
+      ended_at:,
+      duration:,
+      starts:,
+      time_on_foil:,
+      distance_total:,
+      distance_on_foil:,
+      speed_avg:,
+      speed_max:,
+      speed_avg_on_foil:,
+      hr_avg:,
+      hr_max:
+    }
+  end
+
   # TODO: These are the features needed to be implemented
   # - [ ] Distance per start (m)
   # - [ ] Max distance per start (m)
@@ -41,8 +58,10 @@ class FoilActivityAnalyzer
   # - [ ] fastest_kilometer_full_km
   # - [ ] slowest_kilometer_full_km
 
+  def started_at = data_frame[:timestamp].min
+  def ended_at = data_frame[:timestamp].max
   def duration = data_frame[:timestamp].range
-  def total_distance = data_frame[:distance_cumsum_m].max
+  def distance_total = data_frame[:distance_cumsum_m].max
 
   def starts = data_frame[:on_foil].diff.count(1)
 

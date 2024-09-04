@@ -48,12 +48,18 @@ module ActivitiesHelper
     on_foil = activities.map do |activity|
       [ activity.started_at, activity.analysis.distance_on_foil_percentage ]
     end
+    starts = activities.map do |activity|
+      [ activity.started_at, activity.analysis.starts ]
+    end
 
     line_chart(
-      [ { name: "On foil % by distance", data: on_foil } ],
+      [
+        { name: "On foil % by distance", data: on_foil },
+        { name: "Starts", data: starts }
+      ],
       # title: 'Speed'
       legend: false,
-      suffix: "%",
+      # suffix: "%",
       round: 1,
       curve: false
     )
