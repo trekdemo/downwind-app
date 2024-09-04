@@ -63,7 +63,7 @@ group :development, :test do
   gem "dotenv-rails"
   gem "hotwire-livereload", "~> 1.4"
   gem "rspec", "~> 3.13"
-  gem "rspec-rails", "~> 6.1"
+  gem "rspec-rails", "~> 7.0"
 end
 
 group :development do
