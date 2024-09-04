@@ -1,7 +1,9 @@
 <div class="mx-auto md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New activity</h1>
+  <div class="sticky top-0 flex justify-between items-center pt-4 pb-6">
+    <h1 class="font-bold text-4xl text-slate-800">New activity</h1>
+    <%= link_to "Back to activities", activities_path,
+        class: "rounded-lg py-3 px-5 block font-medium" %>
+  </div>
 
   <%= render "form", activity: @activity %>
-
-  <%= link_to "Back to activities", activities_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
 </div>

@@ -1,4 +1,4 @@
-<%= form_with(model: activity, class: "contents", id: dom_id(activity)) do |form| %>
+<%= form_with(model: activity, class: "p-2 sm:p-0", id: dom_id(activity)) do |form| %>
   <% if activity.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
       <h2><%= pluralize(activity.errors.count, "error") %> prohibited this activity from being saved:</h2>
@@ -11,21 +11,23 @@
     </div>
   <% end %>
 
-  <div class="my-5">
-    <div class="flex items-center justify-center w-full">
-        <%= form.label :gpx_file, class: "flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600" do %>
-            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                </svg>
-                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold">Upload your GPX file!</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Click or drag&amp;drop</p>
-            </div>
-            <%= form.hidden_field :gpx_file, value: form.object.gpx_file.signed_id if form.object.gpx_file.attached? %>
-            <%= form.file_field :gpx_file, class: "hidden" %>
-          <% end %>
+  <% unless form.object.gpx_file.attached? %>
+    <div class="my-5">
+      <div class="flex items-center justify-center w-full">
+          <%= form.label :gpx_file, class: "flex flex-col items-center justify-center w-full h-32 sm:h-64 shadow border border-gray-400 rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600" do %>
+              <div class="flex flex-col items-center justify-center">
+                  <svg class="w-8 h-8 m-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                  </svg>
+                  <p class="mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold">Upload your GPX file!</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">Click or drag&amp;drop</p>
+              </div>
+              <%= form.hidden_field :gpx_file, value: form.object.gpx_file.signed_id if form.object.gpx_file.attached? %>
+              <%= form.file_field :gpx_file, class: "hidden" %>
+            <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="my-5">
     <%= form.label :lift_speed_kmh %>
@@ -33,13 +35,21 @@
   </div>
 
   <div class="my-5">
-    <%= form.label :kind %>
-    <%= form.select :kind, options_for_enum(Activity, :kind), {},
-                    class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white shadow border border-gray-400 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+      <% Activity.kinds.keys.each do |k| %>
+      <li class="w-full border-b border-gray-400 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class="flex items-center ps-3">
+            <%= form.radio_button :kind, k, class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" %>
+            <%= form.label Activity.human_attribute_name("kind.#{k}"), for: "activity_kind_#{k}",
+                class: "w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
+        </div>
+      </li>
+    <% end %>
+    </ul>
   </div>
 
 
-  <div class="inline">
+  <div class="block">
     <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
