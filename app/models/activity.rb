@@ -10,7 +10,6 @@ class Activity < ApplicationRecord
 
   has_one_attached :gpx_file # , strict_loading: true
   validates :gpx_file, attached: true, content_type: "application/gpx+xml"
-  delegate :analyzed?, to: :gpx_file
   after_create_commit :analyze_gpx_file_later
 
   broadcasts_refreshes
@@ -19,6 +18,9 @@ class Activity < ApplicationRecord
 
   scope :with_analysis, -> { includes(:analysis) }
 
+  def analyzed?
+    analysis.present?
+  end
 
   def analyze_gpx_file_later
     ActivityAnalyzerJob.perform_later(self)

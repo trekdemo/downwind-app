@@ -2,7 +2,7 @@
 
 <%= turbo_stream_from activity %>
 <div id="<%= dom_id activity %>" class="mb-5 p-4 rounded-lg bg-gradient-to-br from-slate-200 to-slate-100 shadow-md shadow-slate-300">
-  <% if activity.title %>
+  <% if activity.analyzed? %>
     <div class="flex justify-between items-baseline">
       <h2 class="text-lg font-bold text-slate-700"><%= activity.title %></h2>
       <time class="text-xs basis-1/3 text-right text-slate-600" datetime="<%= activity.started_at.iso8601 %>"><%= l(activity.started_at, format: :short) %></time>
