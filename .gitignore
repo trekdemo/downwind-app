@@ -8,7 +8,7 @@
 /.bundle
 
 tmp/
-/activities/*.gpx
+/activities/*
 vendor/bundle
 storage/
 log/*
