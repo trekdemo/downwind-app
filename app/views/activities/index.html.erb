@@ -10,7 +10,7 @@
   <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
     <ul class="flex flex-wrap mx-1">
       <li class="">
-        <%= link_to '#', class: 'inline-flex items-center inline-block p-2 border-b-2 border-transparent rounded-t-lg bg-gray-100 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300' do %>
+        <%= link_to activities_path, class: 'inline-flex items-center inline-block p-2 border-b-2 border-transparent rounded-t-lg bg-gray-100 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300' do %>
           All
           <span class="justify-center rounded-full ml-1 w-4 h-4 text-xs font-semibold text-blue-800 bg-blue-100">
             <%= @activity_kind_counts.values.sum %>
@@ -19,7 +19,7 @@
       </li>
       <% @activity_kind_counts.each do |kind, count| %>
         <li class="">
-          <%= link_to '#', class: 'inline-flex items-center inline-block p-2 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300' do %>
+          <%= link_to activities_path(kind:), class: 'inline-flex items-center inline-block p-2 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300' do %>
             <%= Activity.human_attribute_name("kind.#{kind}") %>
             <span class="justify-center rounded-full ml-1 w-4 h-4 text-xs font-semibold text-blue-800 bg-blue-100">
               <%= count %>
@@ -32,7 +32,11 @@
 
   <div>
     <h2 class="font-bold text-lg">On foil % by distance</h2>
-    <%= on_foil_percentage_chart(@activities) %>
+    <canvas
+      data-controller="chart"
+      data-chart-data-value="<%= @chart_data.to_json %>"
+      data-chart-options-value="<%= @chart_options.to_json %>"
+    ></canvas>
   </div>
 
   <div id="activities" class="min-w-full mt-4">
