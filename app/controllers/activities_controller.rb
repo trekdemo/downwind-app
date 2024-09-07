@@ -5,6 +5,34 @@ class ActivitiesController < ApplicationController
   def index
     @activities = current_user.activities.with_analysis.order(started_at: :desc)
     @activity_kind_counts = Activity.group(:kind).count
+    on_foil = @activities.map do |activity|
+       activity.analysis.distance_on_foil_percentage
+    end
+    starts = @activities.map do |activity|
+      activity.analysis.starts
+    end
+    @chart_data = {
+      labels: @activities.count.times.to_a,
+      datasets: [
+        {
+          label: "% on foil",
+          data: on_foil,
+          borderWidth: 8,
+          pointStyle: false,
+          type: "line",
+          tension: 0.1,
+          suffix: "%"
+        },
+        {
+          label: "# of starts",
+          data: starts,
+          borderWidth: 1,
+          barPercentage: 0.3,
+          type: "bar",
+          yAxisID: "y2"
+        }
+      ]
+    }
   end
 
   def show; end
