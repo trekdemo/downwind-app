@@ -32,11 +32,7 @@
 
   <div>
     <h2 class="font-bold text-lg">On foil % by distance</h2>
-    <canvas
-      data-controller="chart"
-      data-chart-data-value="<%= @chart_data.to_json %>"
-      data-chart-options-value="<%= @chart_options.to_json %>"
-    ></canvas>
+-    <%= on_foil_percentage_chart(@activities) %>
   </div>
 
   <div id="activities" class="min-w-full mt-4">
