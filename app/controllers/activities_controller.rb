@@ -3,7 +3,7 @@ class ActivitiesController < ApplicationController
   before_action :set_activity, only: %i[show edit update destroy]
 
   def index
-    @activities = current_user.activities.with_analysis.order(started_at: :desc)
+    @activities = current_user.activities.with_analysis.sup_dw.order(started_at: :desc)
     @activity_kind_counts = Activity.group(:kind).count
     on_foil = @activities.map do |activity|
        activity.analysis.distance_on_foil_percentage
@@ -16,7 +16,7 @@ class ActivitiesController < ApplicationController
       datasets: [
         {
           label: "% on foil",
-          data: on_foil,
+          data: on_foil.reverse,
           borderWidth: 8,
           pointStyle: false,
           type: "line",
@@ -25,7 +25,7 @@ class ActivitiesController < ApplicationController
         },
         {
           label: "# of starts",
-          data: starts,
+          data: starts.reverse,
           borderWidth: 1,
           barPercentage: 0.3,
           type: "bar",

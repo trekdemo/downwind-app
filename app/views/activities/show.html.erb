@@ -3,6 +3,44 @@
   <%= link_to "Edit", edit_activity_path(@activity), class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
 
   <%#= image_tag activity_static_map_path(@activity, size: '500x300'), size: '500x300' %>
+  <div>
+    <div class="h-56"> <canvas id="<%= dom_id @activity %>"></canvas> </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" integrity="sha512-ZwR1/gSZM3ai6vCdI+LVF1zSq/5HznD3ZSTk7kajkaj4D292NLuduDCO1c/NT8Id+jE58KYLKT7hXnbtryGmMg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+      document.addEventListener('turbo:load', function() {
+        const ctx = document.getElementById('<%= dom_id @activity %>');
+        new Chart(ctx, {
+            title: "<%= number_to_percentage(@activity.analysis.distance_on_foil_percentage, precision: 0) %>",
+            type: 'doughnut',
+            data: {
+              labels: ['On foil', 'Off foil'],
+              datasets: [
+                {
+                  label: 'Distance',
+                  data: [
+                    <%= @activity.analysis.distance_on_foil_percentage %>,
+                    <%= 100 - @activity.analysis.distance_on_foil_percentage %>
+                  ],
+                },
+                {
+                  label: 'Time',
+                  data: [
+                    <%= @activity.analysis.time_on_foil_percentage %>,
+                    <%= 100 - @activity.analysis.time_on_foil_percentage %>
+                  ],
+                },
+              ],
+            },
+            options: {
+              interaction: {
+                intersect: false,
+                mode: 'index',
+              },
+            }
+          });
+      })
+    </script>
+  </div>
 
   <%= render @activity, details: true %>
 </div>
