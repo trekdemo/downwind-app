@@ -152,7 +152,7 @@ GEM
     gpx (1.2.0)
       nokogiri (~> 1.7)
       rake
-    hotwire-livereload (1.4.0)
+    hotwire-livereload (1.4.1)
       actioncable (>= 6.0.0)
       listen (>= 3.0.0)
       railties (>= 6.0.0)
@@ -285,7 +285,7 @@ GEM
     rdoc (6.7.0)
       psych (>= 4.0.0)
     regexp_parser (2.9.2)
-    reline (0.5.9)
+    reline (0.5.10)
       io-console (~> 0.5)
     request_store (1.7.0)
       rack (>= 1.4)
