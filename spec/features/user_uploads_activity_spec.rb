@@ -12,7 +12,7 @@ RSpec.feature "User uploads an activity", type: :feature do
         within("#new_activity") do
           attach_file 'GPX file', fixture('wing-activity.gpx')
           fill_in 'Lift speed (km/h)', with: '5'
-          select 'Downwind SUP', from: "Kind"
+          choose 'Downwind SUP' # radio button
           click_on 'Create Activity'
         end
       end
