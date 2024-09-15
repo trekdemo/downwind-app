@@ -32,27 +32,11 @@
 
   <div>
     <h2 class="font-bold text-lg">On foil % by distance</h2>
-    <div> <canvas id="activities_index"></canvas> </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" integrity="sha512-ZwR1/gSZM3ai6vCdI+LVF1zSq/5HznD3ZSTk7kajkaj4D292NLuduDCO1c/NT8Id+jE58KYLKT7hXnbtryGmMg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-      document.addEventListener('turbo:load', function() {
-        const ctx = document.getElementById('activities_index');
-        new Chart(ctx, {
-            type: 'bar',
-            data: <%= raw @chart_data.to_json %>,
-            options: {
-              interaction: {
-                intersect: false,
-                mode: 'index',
-              },
-              scales: {
-                y: { beginAtZero: true, min: 0, max: 100 },
-                y2: { beginAtZero: true, position: 'right' }
-              }
-            }
-          });
-      })
-    </script>
+    <canvas
+      data-controller="chart"
+      data-chart-data-value="<%= @chart_data.to_json %>"
+      data-chart-options-value="<%= { interaction: { intersect: false, mode: 'index', }, scales: { y: { beginAtZero: true, min: 0, max: 100 }, y2: { beginAtZero: true, position: 'right' } } }.to_json %>"
+    ></canvas>
   </div>
 
   <div id="activities" class="min-w-full mt-4">

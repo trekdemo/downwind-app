@@ -1,6 +1,7 @@
 # Pin npm packages by running ./bin/importmap
 
-pin "application"
+pin "application", preload: true
+
 pin "@hotwired/turbo-rails", to: "turbo.min.js"
 pin "@hotwired/stimulus", to: "stimulus.min.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
@@ -8,3 +9,8 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 
 pin "mapkick/bundle", to: "mapkick.bundle.js"
 pin "mapkick" # @0.2.6
+
+pin "chart.js", to: "https://ga.jspm.io/npm:chart.js@4.4.4/dist/chart.js"
+pin "@kurkle/color", to: "https://ga.jspm.io/npm:@kurkle/color@0.3.2/dist/color.esm.js"
+pin "chartjs-plugin-annotation", to: "https://ga.jspm.io/npm:chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.esm.js"
+pin "chart.js/helpers", to: "https://ga.jspm.io/npm:chart.js@4.4.4/helpers/helpers.js"
