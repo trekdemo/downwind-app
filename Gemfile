@@ -63,6 +63,7 @@ group :development, :test do
   gem "hotwire-livereload", "~> 1.4"
   gem "rspec", "~> 3.13"
   gem "rspec-rails", "~> 7.0"
+  gem "launchy"
 end
 
 group :development do
