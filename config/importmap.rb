@@ -10,6 +10,7 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 pin "mapkick/bundle", to: "mapkick.bundle.js"
 pin "mapkick" # @0.2.6
 
+# Plugins and additional chart types:  https://github.com/chartjs/awesome
 pin "chart.js", to: "https://ga.jspm.io/npm:chart.js@4.4.4/dist/chart.js"
 pin "@kurkle/color", to: "https://ga.jspm.io/npm:@kurkle/color@0.3.2/dist/color.esm.js"
 pin "chartjs-plugin-annotation", to: "https://ga.jspm.io/npm:chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.esm.js"
