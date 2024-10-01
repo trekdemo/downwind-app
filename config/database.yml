@@ -24,3 +24,7 @@ production:
   primary:
     <<: *default
     database: db/production/data.sqlite3
+  cache:
+    <<: *default
+    database: db/production/cache.sqlite3
+    migrations_paths: db/cache_migrate
