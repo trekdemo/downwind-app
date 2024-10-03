@@ -10,7 +10,8 @@ gem "sprockets-rails"
 
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", "~> 2.1"
-gem "solid_cache", "~> 1.0"
+# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
+gem "solid_cache"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
