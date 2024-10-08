@@ -3,6 +3,7 @@
   <head>
     <title>DownwindApp</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
@@ -11,13 +12,16 @@
     <%= javascript_importmap_tags %>
     <%= turbo_refreshes_with(method: :morph, scroll: :preserve) %>
     <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
     <%= hotwire_livereload_tags if Rails.env.development? %>
   </head>
 
-  <body class="">
-    <%= render "application/header" %>
-
+  <body class="bg-slate-900">
     <main class="container mx-auto">
+      <%= render "application/header" %>
       <%= render "application/flash" %>
 
       <%= yield %>

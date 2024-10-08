@@ -20,7 +20,7 @@ class ActivitiesController < ApplicationController
           borderWidth: 8,
           pointStyle: false,
           type: "line",
-          tension: 0.1,
+          tension: 0.3,
           suffix: "%"
         },
         {

@@ -14,6 +14,8 @@ Chart.register(...registerables, annotationPlugin);
 //    ></canvas>
 //
 // More: https://www.stimulus-components.com/docs/stimulus-chartjs
+// INFO: How to add shadow?
+// https://codepen.io/kurkle/pen/zYYPagB#
 export default class extends Controller {
   // canvasTarget: HTMLCanvasElement
   //
