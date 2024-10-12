@@ -4,6 +4,7 @@ default: &default
   # idle_timeout should be set to zero, to avoid recycling sqlite connections
   # and losing the page cache
   idle_timeout: 0
+  timeout: 5000
 
 development:
   primary:
@@ -28,3 +29,7 @@ production:
     <<: *default
     database: db/production/cache.sqlite3
     migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    database: db/production/queue.sqlite3
+    migrations_paths: db/queue_migrate
