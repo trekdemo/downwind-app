@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-kamal deploy
+bundle exec kamal env push
+bundle exec kamal deploy

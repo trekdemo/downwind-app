@@ -5,9 +5,6 @@ service: downwind-journal
 # Name of the container image.
 image: trekdemo/downwind-journal
 
-env:
-  SOLID_QUEUE_IN_PUMA: 'yes'
-
 # Deploy to these servers.
 servers:
   web:
@@ -21,6 +18,8 @@ servers:
       secret:
         - RAILS_MASTER_KEY
         - MAPBOX_ACCESS_TOKEN
+      clear:
+        SOLID_QUEUE_IN_PUMA: 'yes'
 
 # Credentials for your image host.
 registry:

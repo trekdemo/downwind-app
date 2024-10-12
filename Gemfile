@@ -54,10 +54,6 @@ gem "tzinfo-data", platforms: %i[windows jruby]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-# TODO: Upgrade to kamal 2
-# # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
-gem "kamal", "~> 1.9", require: false
-
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
 
@@ -90,6 +86,10 @@ group :development do
 
   gem "rubocop-rails-omakase", require: false
   gem "strong_migrations", "~> 2.0"
+
+  # TODO: Upgrade to kamal 2
+  # # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
+  gem "kamal", "~> 1.9", require: false
 end
 
 group :test do
