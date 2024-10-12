@@ -5,6 +5,9 @@ service: downwind-journal
 # Name of the container image.
 image: trekdemo/downwind-journal
 
+env:
+  SOLID_QUEUE_IN_PUMA: 'yes'
+
 # Deploy to these servers.
 servers:
   web:
