@@ -5,6 +5,9 @@ ruby "3.3.1"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.0.beta1"
 
+# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+# TODO: Switch to propshaft
+# gem "propshaft"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
@@ -50,6 +53,10 @@ gem "tzinfo-data", platforms: %i[windows jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
+
+# TODO: Upgrade to kamal 2
+# # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
+gem "kamal", "~> 1.9", require: false
 
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
