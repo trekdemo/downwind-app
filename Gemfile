@@ -89,7 +89,7 @@ group :development do
 
   # TODO: Upgrade to kamal 2
   # # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
-  gem "kamal", "~> 1.9", require: false
+  gem "kamal", "~> 2.2", require: false
 end
 
 group :test do
