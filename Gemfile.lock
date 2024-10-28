@@ -210,7 +210,7 @@ GEM
       net-imap
       net-pop
       net-smtp
-    mapkick-rb (0.1.5)
+    mapkick-rb (0.2.0)
     marcel (1.0.4)
     material_icons (4.0.0)
       railties (>= 3.2)
@@ -468,7 +468,7 @@ DEPENDENCIES
   kamal (~> 1.9)
   launchy
   lograge
-  mapkick-rb (~> 0.1.5)
+  mapkick-rb (~> 0.2.0)
   material_icons
   matrix (~> 0.4.2)
   puma (>= 5.0)
