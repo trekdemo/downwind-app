@@ -12,7 +12,7 @@ gem "rails", "~> 8.0.0.beta1"
 gem "sprockets-rails"
 
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 2.1"
+gem "sqlite3", "~> 2.2"
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
 gem "solid_queue"
