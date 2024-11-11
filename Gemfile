@@ -85,7 +85,7 @@ group :development do
   # gem "spring"
 
   gem "rubocop-rails-omakase", require: false
-  gem "strong_migrations", "~> 2.0"
+  gem "strong_migrations", "~> 2.1"
 
   # TODO: Upgrade to kamal 2
   # # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
