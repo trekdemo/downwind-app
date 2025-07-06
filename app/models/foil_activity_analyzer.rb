@@ -16,6 +16,9 @@ require "geocoder"
 class FoilActivityAnalyzer
   attr_reader :gpx_file, :lift_speed, :data_frame
 
+  # Creates an analyzer to analyze the GPX file
+  # @param gpx_file [IO] file in GPX format
+  # @param lift_speed [Numeric] The speed which marks take off
   def initialize(gpx_file, lift_speed)
     @gpx_file = gpx_file
     @lift_speed = lift_speed
@@ -85,6 +88,21 @@ class FoilActivityAnalyzer
       one_km = on_foil.where(dist.gt(start[:distance_cumsum_m] + 1_000)).first
       one_km[:timestamp] - start[:timestamp]
     end
+  end
+
+  def fastest_full_km
+    dist = data_frame[:distance_cumsum_m]
+    min_time = Float::INFINITY
+
+    data_frame.each_row do |start|
+      one_km = data_frame.where(dist.gt(start[:distance_cumsum_m] + 1_000)).first
+      if one_km
+        time_for_km = one_km[:timestamp] - start[:timestamp]
+        min_time = [ min_time, time_for_km ].min
+      end
+    end
+
+    min_time
   end
 
   # Returns a list of coordinates
