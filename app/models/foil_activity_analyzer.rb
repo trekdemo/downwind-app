@@ -50,7 +50,8 @@ class FoilActivityAnalyzer
       speed_max:,
       speed_avg_on_foil:,
       hr_avg:,
-      hr_max:
+      hr_max:,
+      fastest_full_km:
     }
   end
 
@@ -94,15 +95,15 @@ class FoilActivityAnalyzer
     dist = data_frame[:distance_cumsum_m]
     min_time = Float::INFINITY
 
-    data_frame.each_row do |start|
-      one_km = data_frame.where(dist.gt(start[:distance_cumsum_m] + 1_000)).first
-      if one_km
-        time_for_km = one_km[:timestamp] - start[:timestamp]
-        min_time = [ min_time, time_for_km ].min
-      end
+    data_frame.each_row_with_index do |start, i|
+      one_km = data_frame.where(dist.gt(dist[i] + 1_000))
+      next if one_km.size.zero?
+
+      time_for_km = one_km.row[0][:timestamp] - start[:timestamp]
+      min_time = [ min_time, time_for_km ].min
     end
 
-    min_time
+    min_time == Float::INFINITY ? nil : min_time
   end
 
   # Returns a list of coordinates

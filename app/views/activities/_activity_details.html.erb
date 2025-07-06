@@ -33,6 +33,18 @@
   <% end %>
 </div>
 
+<h2 class="mt-4">Pace</h2>
+<div id="<%= dom_id activity, :pace %>" class="grid grid-cols-4 text-center items-stretch text-s divide-x divide-slate-300 divide-dotted">
+  <% {
+    'Fastest 1km' => number_to_duration(analysis.fastest_full_km),
+  }.each_pair do |label, value| %>
+    <div class="px-1 my-2 text-slate-700 font-semibold flex flex-col justify-between">
+      <div class="text-xs font-light"><%= label %></div>
+      <%= value %>
+    </div>
+  <% end %>
+</div>
+
 <div id="<%= dom_id activity, :speed_chart %>" class="text-center items-stretch">
   <%#= speed_chart(activity) %>
 </div>
