@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_06_105728) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_06_114112) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -55,18 +55,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_06_105728) do
     t.integer "activity_id"
     t.datetime "started_at"
     t.datetime "ended_at"
-    t.float "duration"
-    t.integer "starts"
-    t.float "time_on_foil"
+    t.float "duration", default: 0.0
+    t.integer "starts", default: 0
+    t.float "time_on_foil", default: 0.0
     t.virtual "time_on_foil_percentage", type: :float, as: "time_on_foil / duration * 100", stored: true
-    t.integer "distance_total"
-    t.integer "distance_on_foil"
+    t.integer "distance_total", default: 0
+    t.integer "distance_on_foil", default: 0
     t.virtual "distance_on_foil_percentage", type: :float, as: "1.0 * distance_on_foil / distance_total * 100", stored: true
-    t.float "speed_avg"
-    t.float "speed_max"
-    t.float "speed_avg_on_foil"
-    t.float "hr_avg"
-    t.float "hr_max"
+    t.float "speed_avg", default: 0.0
+    t.float "speed_max", default: 0.0
+    t.float "speed_avg_on_foil", default: 0.0
+    t.float "hr_avg", default: 0.0
+    t.float "hr_max", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "fastest_full_km", default: 0
