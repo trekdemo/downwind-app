@@ -32,3 +32,4 @@ docs/jupyter/.ipynb_checkpoints
 
 /.env
 /.env.*.local
+docs/*.pdf
