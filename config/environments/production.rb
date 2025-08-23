@@ -40,11 +40,6 @@ Rails.application.configure do
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
-  # Prepend all log lines with the following tags.
-  config.lograge.formatter = Lograge::Formatters::KeyValue.new # default lograge format
-  # config.lograge.formatter = Lograge::Formatters::Json.new
-  config.lograge.enabled = true
-
   # Prevent health checks from clogging up the logs.
   config.silence_healthcheck_path = "/up"
 
