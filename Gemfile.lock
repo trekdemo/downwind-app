@@ -91,7 +91,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
-    brakeman (6.2.1)
+    brakeman (7.1.0)
       racc
     builder (3.3.0)
     capybara (3.40.0)
@@ -445,7 +445,7 @@ PLATFORMS
 DEPENDENCIES
   active_storage_validations
   bootsnap
-  brakeman (~> 6.1)
+  brakeman (~> 7.0)
   capybara
   clearance (~> 2.8)
   daru (~> 0.3)
