@@ -86,8 +86,6 @@ GEM
     base64 (0.3.0)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
-    bcrypt_pbkdf (1.1.1-arm64-darwin)
-    bcrypt_pbkdf (1.1.1-x86_64-darwin)
     benchmark (0.4.1)
     bigdecimal (3.2.2)
     bindex (0.8.1)
@@ -144,12 +142,7 @@ GEM
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
     fast-polylines (2.2.2)
-    ffi (1.17.0-aarch64-linux-gnu)
-    ffi (1.17.0-arm-linux-gnu)
-    ffi (1.17.0-arm64-darwin)
-    ffi (1.17.0-x86-linux-gnu)
-    ffi (1.17.0-x86_64-darwin)
-    ffi (1.17.0-x86_64-linux-gnu)
+    ffi (1.17.0)
     ffi-compiler (1.3.2)
       ffi (>= 1.15.5)
       rake
@@ -199,11 +192,6 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.7.0)
-    lograge (0.14.0)
-      actionpack (>= 4)
-      activesupport (>= 4)
-      railties (>= 4)
-      request_store (~> 1.0)
     loofah (2.24.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -314,8 +302,6 @@ GEM
     regexp_parser (2.9.2)
     reline (0.6.1)
       io-console (~> 0.5)
-    request_store (1.7.0)
-      rack (>= 1.4)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
@@ -394,12 +380,8 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    sqlite3 (2.1.0-aarch64-linux-gnu)
-    sqlite3 (2.1.0-arm-linux-gnu)
-    sqlite3 (2.1.0-arm64-darwin)
-    sqlite3 (2.1.0-x86-linux-gnu)
-    sqlite3 (2.1.0-x86_64-darwin)
-    sqlite3 (2.1.0-x86_64-linux-gnu)
+    sqlite3 (2.1.0)
+      mini_portile2 (~> 2.8.0)
     sshkit (1.23.1)
       base64
       net-scp (>= 1.1.2)
@@ -455,6 +437,7 @@ PLATFORMS
   aarch64-linux
   arm-linux
   arm64-darwin-23
+  arm64-darwin-24
   x86-linux
   x86_64-darwin
   x86_64-linux
@@ -476,7 +459,6 @@ DEPENDENCIES
   importmap-rails
   kamal (~> 1.9)
   launchy
-  lograge
   mapkick-rb (~> 0.1.5)
   material_icons
   matrix (~> 0.4.2)
