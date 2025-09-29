@@ -71,12 +71,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_06_120000) do
     t.datetime "updated_at", null: false
     t.integer "fastest_full_km", default: 0
     t.json "route_bounds"
-    t.decimal "route_center_lat", precision: 10, scale: 6
-    t.decimal "route_center_lng", precision: 10, scale: 6
-    t.decimal "max_speed_kmh", precision: 5, scale: 2
-    t.decimal "min_speed_kmh", precision: 5, scale: 2
     t.index ["activity_id"], name: "index_analyses_on_activity_id"
-    t.index ["route_center_lat", "route_center_lng"], name: "index_analyses_on_route_center_lat_and_route_center_lng"
   end
 
   create_table "users", force: :cascade do |t|
