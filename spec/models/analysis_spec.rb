@@ -1,67 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe Analysis, type: :model do
-  describe '#route_bounds_calculated?' do
-    let(:analysis) { create(:analysis) }
+  describe '#route_center' do
+    subject(:analysis) { described_class.new(route_bounds: { north: 0, south: 10, west: -5, east: 5 }) }
 
-    context 'when route_bounds is present' do
-      before do
-        analysis.update!(route_bounds: {
-          north: 40.7128,
-          south: 40.7089,
-          east: -74.0060,
-          west: -74.0118
-        })
-      end
+    it 'calculates center coordinates from route bounds' do
+      center = analysis.route_center
 
-      it 'returns true' do
-        expect(analysis.route_bounds_calculated?).to be true
-      end
-    end
+      expect(center).to be_a(Hash)
+      expect(center['lat']).to be_a(Float)
+      expect(center['lng']).to be_a(Float)
 
-    context 'when route_bounds is nil' do
-      before do
-        analysis.update!(route_bounds: nil)
-      end
-
-      it 'returns false' do
-        expect(analysis.route_bounds_calculated?).to be false
-      end
-    end
-
-    context 'when route_bounds is empty hash' do
-      before do
-        analysis.update!(route_bounds: {})
-      end
-
-      it 'returns false' do
-        expect(analysis.route_bounds_calculated?).to be false
-      end
-    end
-
-    context 'when route_bounds has only some keys' do
-      before do
-        analysis.update!(route_bounds: { north: 40.7128 })
-      end
-
-      it 'returns false' do
-        expect(analysis.route_bounds_calculated?).to be false
-      end
-    end
-
-    context 'when route_bounds has all required keys' do
-      before do
-        analysis.update!(route_bounds: {
-          north: 40.7128,
-          south: 40.7089,
-          east: -74.0060,
-          west: -74.0118
-        })
-      end
-
-      it 'returns true' do
-        expect(analysis.route_bounds_calculated?).to be true
-      end
+      expect(center['lat']).to eq(5)
+      expect(center['lng']).to eq(0)
     end
   end
 end

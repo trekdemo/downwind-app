@@ -51,7 +51,8 @@ class FoilActivityAnalyzer
       speed_avg_on_foil:,
       hr_avg:,
       hr_max:,
-      fastest_full_km:
+      fastest_full_km:,
+      route_bounds:
     }
   end
 
@@ -104,6 +105,18 @@ class FoilActivityAnalyzer
     end
 
     min_time == Float::INFINITY ? nil : min_time
+  end
+
+  def route_bounds
+    latitudes = trackpoints.map { |pt| pt[:lat] }
+    longitudes = trackpoints.map { |pt| pt[:lon] }
+
+    {
+      "north" => latitudes.max,
+      "south" => latitudes.min,
+      "east" => longitudes.max,
+      "west" => longitudes.min
+    }
   end
 
   # Returns a list of coordinates

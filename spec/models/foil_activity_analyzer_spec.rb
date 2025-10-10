@@ -20,4 +20,18 @@ RSpec.describe FoilActivityAnalyzer do
       expect(analyzer.duration).to eq(3599.0)
     end
   end
+
+  describe '#route_bounds' do
+    it 'calculates geographical bounds from trackpoints' do
+      bounds = analyzer.route_bounds
+
+      expect(bounds).to be_a(Hash)
+      expect(bounds['north']).to be_a(Float)
+      expect(bounds['south']).to be_a(Float)
+      expect(bounds['east']).to be_a(Float)
+      expect(bounds['west']).to be_a(Float)
+      expect(bounds['north']).to be > bounds['south']
+      expect(bounds['east']).to be > bounds['west']
+    end
+  end
 end

@@ -3,10 +3,13 @@ class Analysis < ApplicationRecord
 
   broadcasts_refreshes_to :activity
 
-  def route_bounds_calculated?
-    return false unless route_bounds.present? && route_bounds.is_a?(Hash)
+  # @!attribute route_bounds
+  #   @return [Hash] The name of the task.
 
-    required_keys = %w[north south east west]
-    required_keys.all? { |key| route_bounds.key?(key) || route_bounds.key?(key.to_sym) }
+  def route_center
+    {
+      "lat" => (route_bounds["north"] + route_bounds["south"]) / 2.0,
+      "lng" => (route_bounds["east"] + route_bounds["west"]) / 2.0
+    }
   end
 end
