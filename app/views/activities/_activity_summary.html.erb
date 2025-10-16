@@ -1,4 +1,10 @@
-<div id="<%= dom_id activity, :summary %>" class="grid grid-cols-4 text-center items-stretch text-s divide-x divide-slate-300 divide-dotted">
+<div
+  id="<%= dom_id activity, :summary %>"
+  class="
+    grid grid-cols-4 text-center items-stretch text-s divide-x
+    divide-slate-300 divide-dotted
+  "
+>
   <% analysis = activity.analysis %>
   <% {
     'Distance' => number_to_distance(analysis.distance_total),
