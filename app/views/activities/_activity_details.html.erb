@@ -1,5 +1,60 @@
 <h2 class="border-b mt-3">General</h2>
 
+<% if @activity.analyzed? %>
+  <div
+    data-controller="map"
+    data-map-gpx-url-value="<%= rails_blob_path(@activity.gpx_file) %>"
+    data-map-bounds-value="<%= @activity.analysis.route_bounds.to_json %>"
+    class="bg-slate-500"
+  >
+    <!-- Loading indicator -->
+    <div
+      data-map-target="loading"
+      class="flex items-center justify-center h-64 bg-gray-50 rounded-lg"
+    >
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <span class="ml-2 text-gray-600">Loading route...</span>
+    </div>
+
+    <!-- Map container -->
+    <div
+      data-map-target="map"
+      class="route-map h-64 sm:h-96 w-full rounded-lg border border-gray-200"
+      style="min-height: 50vh;"
+    ></div>
+  </div>
+  <div>
+    <div class="h-56">
+      <canvas
+        data-controller="chart"
+        data-chart-type-value="doughnut"
+        data-chart-data-value="<%= {
+            labels: ['On foil', 'Off foil'],
+            datasets: [
+              {
+                label: 'Distance',
+                suffix: "%",
+                data: [
+                  @activity.analysis.distance_on_foil_percentage,
+                  100 - @activity.analysis.distance_on_foil_percentage
+                ],
+              },
+              {
+                label: 'Time',
+                suffix: "%",
+                data: [
+                  @activity.analysis.time_on_foil_percentage,
+                  100 - @activity.analysis.time_on_foil_percentage
+                ],
+              },
+            ],
+          }.to_json %>"
+        data-chart-options-value="<%= { interaction: { intersect: false, mode: 'index', } }.to_json %>"
+      ></canvas>
+    </div>
+  </div>
+<% end %>
+
 <%= render 'activity_summary', activity: activity %>
 
 <% analysis = activity.analysis %>

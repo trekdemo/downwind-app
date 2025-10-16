@@ -10,6 +10,10 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 pin "mapkick/bundle", to: "mapkick.bundle.js"
 pin "mapkick" # @0.2.6
 
+# Used for the activity map and the colored route lines
+pin "leaflet" # @1.9.4
+pin "leaflet-hotline" # @0.4.0
+
 # Plugins and additional chart types:  https://github.com/chartjs/awesome
 pin "chart.js", to: "https://ga.jspm.io/npm:chart.js@4.4.4/dist/chart.js"
 pin "@kurkle/color", to: "https://ga.jspm.io/npm:@kurkle/color@0.3.2/dist/color.esm.js"

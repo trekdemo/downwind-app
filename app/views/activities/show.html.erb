@@ -2,39 +2,5 @@
   <%= link_to "Back", activities_path, class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
   <%= link_to "Edit", edit_activity_path(@activity), class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
 
-  <%#= image_tag activity_static_map_path(@activity, size: '500x300'), size: '500x300' %>
-  <% if @activity.analyzed? %>
-  <div>
-    <div class="h-56">
-      <canvas
-        data-controller="chart"
-        data-chart-type-value="doughnut"
-        data-chart-data-value="<%= {
-            labels: ['On foil', 'Off foil'],
-            datasets: [
-              {
-                label: 'Distance',
-                suffix: "%",
-                data: [
-                  @activity.analysis.distance_on_foil_percentage,
-                  100 - @activity.analysis.distance_on_foil_percentage
-                ],
-              },
-              {
-                label: 'Time',
-                suffix: "%",
-                data: [
-                  @activity.analysis.time_on_foil_percentage,
-                  100 - @activity.analysis.time_on_foil_percentage
-                ],
-              },
-            ],
-          }.to_json %>"
-        data-chart-options-value="<%= { interaction: { intersect: false, mode: 'index', } }.to_json %>"
-      ></canvas>
-    </div>
-  </div>
-  <% end %>
-
   <%= render @activity, details: true %>
 </div>
