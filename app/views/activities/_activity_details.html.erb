@@ -5,7 +5,6 @@
     data-controller="map"
     data-map-gpx-url-value="<%= rails_blob_path(@activity.gpx_file) %>"
     data-map-bounds-value="<%= @activity.analysis.route_bounds.to_json %>"
-    class="bg-slate-500"
   >
     <!-- Loading indicator -->
     <div

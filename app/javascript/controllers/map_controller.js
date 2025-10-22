@@ -1,16 +1,18 @@
 import { Controller } from "@hotwired/stimulus"
 import L from "leaflet"
-import { default as lh } from "leaflet-hotline"
+import { default as hotline } from "leaflet-hotline"
 
-lh(L)
+hotline(L) // Register the hotline plugin
 
 // Connects to data-controller="activity--map"
 export default class extends Controller {
-  static targets = ["map", "loading"]
+  static targets = [
+    "loading", // loadingTarget:HTMLElement loader that will be shown/hidden
+    "map",     // mapTarget:DivElement containing the leaflet.js map
+  ]
   static values = {
-    gpxUrl: String,
-    compareUrls: Array,
-    bounds: Object
+    bounds: Object, // boundsValue
+    gpxUrl: String, // gpxUrlValue
   }
   connect() {
     this.initializeMap()
@@ -18,9 +20,15 @@ export default class extends Controller {
   }
 
   disconnect() {
-    if (this.map) {
-      this.map.remove()
-    }
+    this.map?.remove()
+  }
+
+  showLoading() {
+    this.loadingTarget.classList.remove('hidden')
+  }
+
+  hideLoading() {
+    this.loadingTarget.classList.add('hidden')
   }
 
   initializeMap() {
@@ -36,7 +44,7 @@ export default class extends Controller {
       maxZoom: 19
     }).addTo(this.map)
 
-    // Set initial view based on cached bounds or default
+    // Set initial view based on the route bounds
     if (this.boundsValue && Object.keys(this.boundsValue).length > 0) {
       this.map.fitBounds([
         [this.boundsValue.south, this.boundsValue.west],
@@ -52,13 +60,8 @@ export default class extends Controller {
       const gpxData = await this.fetchGPX(this.gpxUrlValue)
       const routeData = this.parseGPX(gpxData)
       this.renderRoute(routeData, { primary: true })
-
-      // Load comparison routes if specified
-      if (this.compareUrlsValue.length > 0) {
-        await this.loadComparisonRoutes()
-      }
     } catch (error) {
-      this.showError('Failed to load route data')
+      this.mapTarget.innerText = 'Error loading route: ' + error
       console.error('Route loading error:', error)
     } finally {
       this.hideLoading()
@@ -103,11 +106,10 @@ export default class extends Controller {
 
         const timeDiff = (currentPoint.time - prevPoint.time) / 1000 // seconds
         const speedMPS = timeDiff > 0 ? (distance * 1000) / timeDiff : 0
-        const speedKMH = speedMPS * 3.6
 
-        currentPoint.speed = speedKMH
-        minSpeed = Math.min(minSpeed, speedKMH)
-        maxSpeed = Math.max(maxSpeed, speedKMH)
+        currentPoint.speed = speedMPS
+        minSpeed = Math.min(minSpeed, speedMPS)
+        maxSpeed = Math.max(maxSpeed, speedMPS)
       }
 
       routePoints.push(currentPoint)
@@ -122,52 +124,7 @@ export default class extends Controller {
     }
   }
 
-  renderRoute(routeData, options = {}) {
-    const hotlinePoints = routeData.points.map(point => [
-      point.lat,
-      point.lng,
-      point.speed
-    ])
-
-    const hotlineConfig = {
-      min: routeData.minSpeed,
-      max: routeData.maxSpeed,
-      palette: {
-        0.0: '#1974D2',   // Blue - slow
-        0.5: '#FFFF00',   // Yellow - medium
-        0.75: '#FF0000',  // Red - fast
-        1.0: '#822EFF'    // Purple - very fast
-      },
-      weight: options.primary ? 4 : 3,
-      outlineWidth: 0.5,
-      opacity: options.primary ? 1.0 : 0.8
-    }
-
-    const hotlineLayer = L.hotline(hotlinePoints, hotlineConfig)
-    hotlineLayer.addTo(this.map)
-
-    // Add hover tooltip for pace display
-    hotlineLayer.on('mouseover', (e) => {
-      const speed = e.latlng.speed || 0
-      const pace = this.speedToPace(speed) // Convert to min/km
-
-      L.popup()
-        .setLatLng(e.latlng)
-        .setContent(`<strong>Pace:</strong> ${pace} min/km`)
-        .openOn(this.map)
-    })
-
-    // Fit map to route bounds if primary route
-    if (options.primary && routeData.bounds) {
-      this.map.fitBounds([
-        [routeData.bounds.south, routeData.bounds.west],
-        [routeData.bounds.north, routeData.bounds.east]
-      ])
-    }
-
-    return hotlineLayer
-  }
-
+  // Calculates distance between two coordinates on Earth in kilometers
   calculateDistance(point1, point2) {
     // Haversine distance formula
     const R = 6371 // Earth's radius in km
@@ -183,43 +140,28 @@ export default class extends Controller {
     return R * c
   }
 
-  speedToPace(speedKMH) {
-    if (speedKMH <= 0) return "0:00"
-
-    const minutesPerKM = 60 / speedKMH
-    const minutes = Math.floor(minutesPerKM)
-    const seconds = Math.floor((minutesPerKM - minutes) * 60)
-
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`
-  }
-
   toRadians(degrees) {
     return degrees * (Math.PI / 180)
   }
 
-  showLoading() {
-    this.loadingTarget.classList.remove('hidden')
-  }
+  renderRoute(routeData, options = {}) {
+    const hotlinePoints = routeData.points.map(p => [p.lat, p.lng, p.speed])
 
-  hideLoading() {
-    this.loadingTarget.classList.add('hidden')
-  }
-
-  showError(message) {
-    // Could integrate with existing Rails flash message system
-    console.error(message)
-  }
-
-  // Comparison routes functionality
-  async loadComparisonRoutes() {
-    for (const compareUrl of this.compareUrlsValue) {
-      try {
-        const gpxData = await this.fetchGPX(compareUrl)
-        const routeData = this.parseGPX(gpxData)
-        this.renderRoute(routeData, { primary: false })
-      } catch (error) {
-        console.warn('Failed to load comparison route:', compareUrl, error)
-      }
+    const hotlineConfig = {
+      min: routeData.minSpeed,
+      max: routeData.maxSpeed,
+      palette: {
+        0.0: '#1974D2',   // Blue - slow
+        0.5: '#FFFF00',   // Yellow - medium
+        0.75: '#FF0000',  // Red - fast
+        1.0: '#822EFF'    // Purple - very fast
+      },
+      outlineWidth: 0.5,
+      weight: options.primary ? 4 : 3,
+      opacity: options.primary ? 1.0 : 0.8
     }
+
+    const hotlineLayer = L.hotline(hotlinePoints, hotlineConfig)
+    hotlineLayer.addTo(this.map)
   }
 }
