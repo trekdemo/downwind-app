@@ -28,7 +28,7 @@ class Activity < ApplicationRecord
   end
 
   def analyze_gpx_file_later
-    analysis.destroy if analysis
+    # Call #analyze_gpx_file! asynchronously
     ActivityAnalyzerJob.perform_later(self)
   end
 
