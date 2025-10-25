@@ -33,9 +33,10 @@ export default class extends Controller {
 
   initializeMap() {
     // Map initialization with mobile-first responsive design
+    // https://leafletjs.com/reference.html#map-factory
     this.map = L.map(this.mapTarget, {
-      zoomControl: window.innerWidth > 768, // Hide zoom on mobile
-      attributionControl: true
+      zoomControl: true,
+      attributionControl: true,
     })
 
     // OpenStreetMap tiles
