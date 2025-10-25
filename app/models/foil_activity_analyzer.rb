@@ -108,15 +108,10 @@ class FoilActivityAnalyzer
   end
 
   def route_bounds
-    latitudes = trackpoints.map { |pt| pt[:lat] }
-    longitudes = trackpoints.map { |pt| pt[:lon] }
+    south, north = *data_frame[:lat].minmax
+    west, east = *data_frame[:lon].minmax
 
-    {
-      "north" => latitudes.max,
-      "south" => latitudes.min,
-      "east" => longitudes.max,
-      "west" => longitudes.min
-    }
+    { "north" => north, "south" => south, "east" => east, "west" => west }
   end
 
   # Returns a list of coordinates
