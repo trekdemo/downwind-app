@@ -122,6 +122,7 @@ class FoilActivityAnalyzer
   # Returns a list of coordinates
   # @param n [Integer] maximum amount of coordinates to return
   # @return [Array<Array<Float>>] list of coordinates and speed
+  # TODO: Remove this with the map helper
   def reduced_path(n = 10)
     nth = trackpoints.length / n
     trackpoints
