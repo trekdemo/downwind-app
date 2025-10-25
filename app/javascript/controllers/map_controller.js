@@ -70,10 +70,11 @@ export default class extends Controller {
 
   async fetchGPX(url) {
     const response = await fetch(url)
-    if (!response.ok) {
+    if (response.ok) {
+      return await response.text()
+    } else {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`)
     }
-    return await response.text()
   }
 
   parseGPX(xmlString) {
