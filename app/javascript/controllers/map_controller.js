@@ -58,6 +58,11 @@ export default class extends Controller {
     this.showLoading()
 
     try {
+      // TODO: Implement local storage caching to save bandwidth
+      // Each file could be around 200-500kb - like a bigger image
+      // NOTE: In Safari I saw some issues with Not-modified 304 status.
+      // The map just does not render and it an error stating the status code
+      // const gpxData = await this.fetchGPX(this.gpxUrlValue, { cache: 'no-store' })
       const gpxData = await this.fetchGPX(this.gpxUrlValue)
       const routeData = this.parseGPX(gpxData)
       this.renderRoute(routeData, { primary: true })
