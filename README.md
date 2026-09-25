@@ -24,7 +24,7 @@ activity:
 | Heart rate (avg / max)      | Read from Garmin's `TrackPointExtension`, if the file has it           |
 | Route bounds                | Bounding box of the track, used to frame the map                       |
 
-The activity page shows the route on a Mapbox map and on-foil vs. off-foil
+The activity page shows the route on a Leaflet map and on-foil vs. off-foil
 charts for both time and distance.
 
 ### How "on foil" is detected
@@ -59,15 +59,13 @@ notebook for experimenting with the model in [`docs/jupyter`](docs/jupyter)
 - Active Storage on local disk for the uploaded GPX files
 - Hotwire (Turbo + Stimulus), importmap, Tailwind CSS, Propshaft
 - Clearance for authentication
-- Mapbox for interactive and static maps
+- Leaflet for the interactive map
 
 ## Getting started
 
-Prerequisites: Ruby 4.0.7 (`mise install`), SQLite and a
-[Mapbox access token](https://account.mapbox.com/access-tokens/).
+Prerequisites: Ruby 4.0.7 (`mise install`) and SQLite.
 
 ```sh
-echo "MAPBOX_ACCESS_TOKEN=pk.your-token" > .env
 bin/setup
 ```
 
@@ -111,6 +109,6 @@ SQLite databases and uploaded files live on host volumes.
 bin/deploy   # kamal env push && kamal deploy
 ```
 
-The deploy needs `RAILS_MASTER_KEY`, `MAPBOX_ACCESS_TOKEN` and
+The deploy needs `RAILS_MASTER_KEY` and
 `KAMAL_REGISTRY_PASSWORD` in the environment. `bin/logs-production`,
 `bin/ssh-server` and `bin/ssh-container` help with poking at production.

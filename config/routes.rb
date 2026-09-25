@@ -1,10 +1,6 @@
 Rails.application.routes.draw do
   root "activities#index"
-  resources :activities do
-    resources :static_maps, only: :show, param: :size,
-                            constraints: { size: /\d+x\d+/ },
-                            defaults: { size: "100x100", format: "png" }
-  end
+  resources :activities
 
   namespace :admin do
     resources :users, except: [ :create ]

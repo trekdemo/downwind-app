@@ -7,9 +7,6 @@ pin "@hotwired/stimulus", to: "stimulus.min.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 
-pin "mapkick/bundle", to: "mapkick.bundle.js"
-pin "mapkick" # @0.2.6
-
 # Used for the activity map and the colored route lines
 pin "leaflet" # @1.9.4
 pin "leaflet-hotline" # @0.4.0

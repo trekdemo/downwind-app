@@ -17,7 +17,6 @@ servers:
     env:
       secret:
         - RAILS_MASTER_KEY
-        - MAPBOX_ACCESS_TOKEN
       clear:
         SOLID_QUEUE_IN_PUMA: 'yes'
 
