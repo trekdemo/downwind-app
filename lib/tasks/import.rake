@@ -3,6 +3,10 @@ namespace :import do
   task load: :environment do
     exit unless Rails.env.development?
 
+    # Run analysis jobs inline: the default async adapter writes from
+    # background threads, which locks the SQLite database.
+    ActiveJob::Base.queue_adapter = :inline
+
     user = User.first
     user.activities.destroy_all
 
