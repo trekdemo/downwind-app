@@ -45,7 +45,7 @@ class ActivitiesController < ApplicationController
   def edit; end
 
   def create
-    @activity = current_user.activities.create(activity_params)
+    @activity = current_user.activities.build(activity_params)
 
     if @activity.save
       redirect_to @activity, notice: "Activity was successfully created."
