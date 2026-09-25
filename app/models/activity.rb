@@ -11,7 +11,7 @@ class Activity < ApplicationRecord
   has_one_attached :gpx_file # , strict_loading: true
   validates :gpx_file, attached: true, content_type: "application/gpx+xml"
   after_create_commit :analyze_gpx_file_later
-  after_update :analyze_gpx_file_later, if: :saved_change_to_lift_speed_kmh?
+  after_update_commit :reanalyze_gpx_file_later, if: :saved_change_to_lift_speed_kmh?
 
   broadcasts_refreshes
 
@@ -27,6 +27,7 @@ class Activity < ApplicationRecord
     # Call #analyze_gpx_file! asynchronously
     ActivityAnalyzerJob.perform_later(self)
   end
+  alias_method :reanalyze_gpx_file_later, :analyze_gpx_file_later
 
   def analyze_gpx_file!
     gpx_file.analyze unless gpx_file.analyzed?
