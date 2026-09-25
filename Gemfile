@@ -6,10 +6,7 @@ ruby file: "mise.toml"
 gem "rails", "~> 8.1.4"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
-# TODO: Switch to propshaft
-# gem "propshaft"
-# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-gem "sprockets-rails"
+gem "propshaft"
 
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", "~> 2.1"
@@ -32,7 +29,6 @@ gem "stimulus-rails"
 
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
 gem "tailwindcss-rails"
-gem "material_icons"
 
 gem "clearance", "~> 2.8"
 
