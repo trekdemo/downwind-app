@@ -9,6 +9,7 @@
 #   end
 return unless Rails.env.development?
 
-User.find_or_create_by(email: 'gergo.sulymosi@gmail.com') do |u|
+puts 'Creating admin user '
+User.find_or_create_by(email: 'admin@downwind.gergo.dev') do |u|
   u.password = 'asdf'
 end
