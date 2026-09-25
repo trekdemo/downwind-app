@@ -114,22 +114,6 @@ class FoilActivityAnalyzer
     { "north" => north, "south" => south, "east" => east, "west" => west }
   end
 
-  # Returns a list of coordinates
-  # @param n [Integer] maximum amount of coordinates to return
-  # @return [Array<Array<Float>>] list of coordinates and speed
-  # TODO: Remove this with the map helper
-  def reduced_path(n = 10)
-    nth = trackpoints.length / n
-    trackpoints
-      .each_slice(nth)
-      .map do |points|
-        lats = points.map { _1[:lat] }
-        lons = points.map { _1[:lon] }
-        speeds = points.map { _1[:speed_m_s] }
-        [ lats.sum / lats.size, lons.sum / lons.size, speeds.sum / speeds.size ]
-      end
-  end
-
   private
 
   def on_foil = data_frame.where(data_frame[:on_foil].eq(1))
