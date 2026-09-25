@@ -1,4 +1,4 @@
-# Downwind Journal
+# Downwind Logbook
 
 A training log for downwind hydrofoiling. Upload a GPX file from your watch
 (built with Garmin exports in mind) and the app works out the stats that
