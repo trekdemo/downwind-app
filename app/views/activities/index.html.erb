@@ -7,6 +7,16 @@
         class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 
+  <%= form_with url: activities_path, method: :get, data: { controller: "auto-submit" }, class: "px-2 pb-4 lg:px-0" do |form| %>
+    <%= form.select :kind,
+        options_for_select(Activity.kinds.keys.map { |k| [Activity.human_attribute_name("kind.#{k}"), k] }, @kind),
+        { include_blank: "All types" },
+        aria: { label: "Filter by type" },
+        data: { action: "change->auto-submit#submit" },
+        class: "rounded-lg border border-gray-400 bg-white py-2 px-3 text-sm text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white" %>
+    <noscript><%= form.submit "Filter", class: "ms-2 rounded-lg py-2 px-3 bg-blue-600 text-white" %></noscript>
+  <% end %>
+
   <div class="grid grid-cols-2 gap-2 md:grid-cols-4 px-2 py-4 lg:px-0">
     <% t_dst = number_to_distance(@activities.sum { |a| a.analysis.distance_total }) %>
     <%= render 'info_box', label: 'Total Distance', value: t_dst %>

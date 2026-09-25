@@ -3,8 +3,9 @@ class ActivitiesController < ApplicationController
   before_action :set_activity, only: %i[show edit update destroy]
 
   def index
-    @activities = current_user.activities.with_analysis.sup_dw.order(started_at: :desc)
-    @activity_kind_counts = Activity.group(:kind).count
+    @kind = params[:kind].presence_in(Activity.kinds.keys)
+    @activities = current_user.activities.with_analysis.order(started_at: :desc)
+    @activities = @activities.where(kind: @kind) if @kind
     on_foil = @activities.map do |activity|
        activity.analysis.distance_on_foil_percentage
     end
