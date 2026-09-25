@@ -9,7 +9,7 @@ gem "rails", "~> 8.1.4"
 gem "propshaft"
 
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 2.1"
+gem "sqlite3", ">= 2.1"
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
 gem "solid_queue"
