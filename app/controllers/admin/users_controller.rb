@@ -25,7 +25,7 @@ class Admin::UsersController < Admin::ApplicationController
     if @user.update(user_params)
       redirect_to [ :admin, @user ], notice: "User was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

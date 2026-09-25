@@ -49,7 +49,7 @@ class ActivitiesController < ApplicationController
     if @activity.save
       redirect_to @activity, notice: "Activity was successfully created."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -57,7 +57,7 @@ class ActivitiesController < ApplicationController
     if @activity.update(activity_params)
       redirect_to @activity, notice: "Activity was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

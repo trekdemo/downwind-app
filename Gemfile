@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby file: "mise.toml"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.2"
+gem "rails", "~> 8.1.4"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 # TODO: Switch to propshaft
@@ -90,7 +90,7 @@ group :development do
 end
 
 group :test do
-  gem "brakeman", "~> 7.0", require: false
+  gem "brakeman", "~> 8.0", require: false
   gem "rspec-github", require: false
   gem "capybara"
   gem "factory_bot_rails"
