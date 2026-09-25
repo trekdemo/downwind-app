@@ -32,10 +32,12 @@ class Activity < ApplicationRecord
   def analyze_gpx_file!
     gpx_file.analyze unless gpx_file.analyzed?
 
-    analysis.destroy if analysis
     foil = gpx_file.open { |file| FoilActivityAnalyzer.new(file, lift_speed_kmh) }
 
-    create_analysis foil.metadata
-    update! gpx_file.metadata.slice(:title, :started_at)
+    transaction do
+      analysis&.destroy!
+      create_analysis! foil.metadata
+      update! gpx_file.metadata.slice(:title, :started_at)
+    end
   end
 end
