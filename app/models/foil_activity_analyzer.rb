@@ -28,7 +28,7 @@ class FoilActivityAnalyzer
 
       # On foil when the average speed is above the lift speed for T seconds
       # TODO: Is there a way to specify time instead of N number of points?
-      loopback = ([ 20, df.size ].min / df[:ellapsed_sec].mean).to_i
+      loopback = ([ 20, df.size ].min / df[:elapsed_sec].mean).to_i
       df[:on_foil] = df[:speed_m_s].rolling_mean(loopback).replace_nils(0).dichotomize(lift_speed / 3.6)
     end
   end
@@ -77,7 +77,7 @@ class FoilActivityAnalyzer
   def hr_max = data_frame[:hr].max
 
   # On foil stats
-  def time_on_foil                = on_foil[:ellapsed_sec].sum || 0
+  def time_on_foil                = on_foil[:elapsed_sec].sum || 0
   def time_on_foil_percentage     = time_on_foil / duration * 100
   def distance_on_foil            = on_foil[:distance_m].sum || 0
   def distance_on_foil_percentage = distance_on_foil / total_distance * 100
@@ -128,7 +128,7 @@ class FoilActivityAnalyzer
 
         track.points.map do |p|
           distance_m = distance_between(prev_point.lat, prev_point.lon, p.lat, p.lon)
-          ellapsed_sec = p.time - prev_point.time
+          elapsed_sec = p.time - prev_point.time
           prev_point = p
 
           {
@@ -136,9 +136,9 @@ class FoilActivityAnalyzer
             lat: p.lat,
             lon: p.lon,
             hr: p.extensions.xpath("ns3:TrackPointExtension/ns3:hr")&.inner_text&.to_i,
-            ellapsed_sec:,
+            elapsed_sec:,
             distance_m:,
-            speed_m_s: ellapsed_sec.positive? ? (distance_m / ellapsed_sec.to_f).round(2) : 0.0
+            speed_m_s: elapsed_sec.positive? ? (distance_m / elapsed_sec.to_f).round(2) : 0.0
           }
         end
       end

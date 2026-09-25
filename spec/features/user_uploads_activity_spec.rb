@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.feature "User uploads an activity", type: :feature do
   include ActiveJob::TestHelper
 
-  scenario "when prodivded information is valid" do
+  scenario "when provided information is valid" do
     sign_in
     visit new_activity_path
 
