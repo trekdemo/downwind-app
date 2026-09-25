@@ -19,12 +19,8 @@ class Activity < ApplicationRecord
 
   scope :with_analysis, -> { includes(:analysis) }
 
-  def analysis
-    super || Analysis.new
-  end
-
   def analyzed?
-    analysis.present?
+    !!analysis&.persisted?
   end
 
   def analyze_gpx_file_later
