@@ -7,10 +7,10 @@ class ActivitiesController < ApplicationController
     @activities = current_user.activities.with_analysis.order(started_at: :desc)
     @activities = @activities.where(kind: @kind) if @kind
     on_foil = @activities.map do |activity|
-       activity.analysis.distance_on_foil_percentage
+       activity.analysis&.distance_on_foil_percentage || 0
     end
     starts = @activities.map do |activity|
-      activity.analysis.starts
+      activity.analysis&.starts || 0
     end
     @chart_data = {
       labels: @activities.count.times.to_a,

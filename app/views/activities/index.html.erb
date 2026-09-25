@@ -18,14 +18,15 @@
   <% end %>
 
   <div class="grid grid-cols-2 gap-2 md:grid-cols-4 px-2 py-4 lg:px-0">
-    <% t_dst = number_to_distance(@activities.sum { |a| a.analysis.distance_total }) %>
-    <%= render 'info_box', label: 'Total Distance', value: t_dst %>
-    <% t_foil = number_to_distance(@activities.sum { |a| a.analysis.distance_on_foil }) %>
-    <%= render 'info_box', label: 'Distance on Foil', value: t_foil %>
-    <% t_dur = number_to_duration(@activities.sum { |a| a.analysis.duration }) %>
-    <%= render 'info_box', label: 'Total Duration', value: t_dur, color: 'fuchsia' %>
-    <% t_dur_foil = number_to_duration(@activities.sum { |a| a.analysis.time_on_foil }) %>
-    <%= render 'info_box', label: 'Duration on Foil', value: t_dur_foil, color: 'fuchsia' %>
+    <% analyzed = @activities.select(&:analyzed?) %>
+    <%= render 'info_box', label: 'Total Distance',
+        value: number_to_distance(analyzed.sum { |a| a.analysis.distance_total }) %>
+    <%= render 'info_box', label: 'Distance on Foil',
+        value: number_to_distance(analyzed.sum { |a| a.analysis.distance_on_foil }) %>
+    <%= render 'info_box', label: 'Total Duration', color: 'fuchsia',
+        value: number_to_duration(analyzed.sum { |a| a.analysis.duration }) %>
+    <%= render 'info_box', label: 'Duration on Foil', color: 'fuchsia',
+        value: number_to_duration(analyzed.sum { |a| a.analysis.time_on_foil }) %>
   </div>
 
   <div>
