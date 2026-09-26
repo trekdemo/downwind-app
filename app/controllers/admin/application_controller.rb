@@ -1,7 +1,4 @@
-class Admin::ApplicationController < ActionController::Base
-  include Clearance::Controller
-
-  before_action :require_login
+class Admin::ApplicationController < ApplicationController
   before_action :only_me
   layout "application"
 
