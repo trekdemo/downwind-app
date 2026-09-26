@@ -21,6 +21,19 @@ RSpec.describe FoilActivityAnalyzer do
     end
   end
 
+  describe '#fastest_full_km' do
+    it 'matches the brute-force minimum over every 1 km window' do
+      dist = analyzer.data_frame[:distance_cumsum_m].to_a
+      times = analyzer.data_frame[:timestamp].to_a
+      expected = dist.each_index.filter_map do |i|
+        j = dist.index { |d| d > dist[i] + 1_000 }
+        times[j] - times[i] if j
+      end.min
+
+      expect(analyzer.fastest_full_km).to eq(expected)
+    end
+  end
+
   describe '#route_bounds' do
     it 'calculates geographical bounds from trackpoints' do
       bounds = analyzer.route_bounds

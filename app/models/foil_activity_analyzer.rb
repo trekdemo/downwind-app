@@ -93,18 +93,27 @@ class FoilActivityAnalyzer
   end
 
   def fastest_full_km
-    dist = data_frame[:distance_cumsum_m]
-    min_time = Float::INFINITY
+    dist = data_frame[:distance_cumsum_m].to_a
+    times = data_frame[:timestamp].to_a
+    min_time = nil
+    finish = 0
 
-    data_frame.each_row_with_index do |start, i|
-      one_km = data_frame.where(dist.gt(dist[i] + 1_000))
-      next if one_km.size.zero?
+    # As `start` advances, `finish` only ever moves forward with it, so a
+    # single pass with two pointers is enough:
+    #
+    #   dist  0 ------- 1km ------- 2km ------------->
+    #         |start-----------finish|
+    #             |start-----------finish|
+    #                 |start--------finish|
+    dist.each_index do |start|
+      finish += 1 while finish < dist.size && dist[finish] <= dist[start] + 1_000
+      break if finish == dist.size
 
-      time_for_km = one_km.row[0][:timestamp] - start[:timestamp]
-      min_time = [ min_time, time_for_km ].min
+      time_for_km = times[finish] - times[start]
+      min_time = time_for_km if min_time.nil? || time_for_km < min_time
     end
 
-    min_time == Float::INFINITY ? nil : min_time
+    min_time
   end
 
   def route_bounds
