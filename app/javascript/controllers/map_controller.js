@@ -7,8 +7,10 @@ hotline(L) // Register the hotline plugin
 // Connects to data-controller="activity--map"
 export default class extends Controller {
   static targets = [
-    "loading", // loadingTarget:HTMLElement loader that will be shown/hidden
-    "map",     // mapTarget:DivElement containing the leaflet.js map
+    "loading",   // loadingTarget:HTMLElement loader that will be shown/hidden
+    "map",       // mapTarget:DivElement containing the leaflet.js map
+    "legendMin", // legendMinTarget:HTMLElement optional, filled with min speed (km/h)
+    "legendMax", // legendMaxTarget:HTMLElement optional, filled with max speed (km/h)
   ]
   static values = {
     bounds: Object, // boundsValue
@@ -170,5 +172,23 @@ export default class extends Controller {
 
     const hotlineLayer = L.hotline(hotlinePoints, hotlineConfig)
     hotlineLayer.addTo(this.map)
+
+    this.updateSpeedLegend(routeData.minSpeed, routeData.maxSpeed)
+  }
+
+  // Fills the optional speed legend targets with km/h values (speed is
+  // tracked in m/s internally).
+  updateSpeedLegend(minSpeedMps, maxSpeedMps) {
+    if (this.hasLegendMinTarget) {
+      this.legendMinTarget.textContent = this.formatKmh(minSpeedMps)
+    }
+
+    if (this.hasLegendMaxTarget) {
+      this.legendMaxTarget.textContent = this.formatKmh(maxSpeedMps)
+    }
+  }
+
+  formatKmh(speedMps) {
+    return Math.round(speedMps * 3.6).toString()
   }
 }

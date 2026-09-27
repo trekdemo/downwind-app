@@ -1,48 +1,89 @@
-<div class="">
-  <% content_for :title, "Activities" %>
+<% content_for :title, "Training log" %>
 
-  <div class="flex justify-between items-center pt-4 pb-6">
-    <h1 class="font-bold text-4xl text-slate-200">Activities</h1>
-    <%= link_to "Upload activity", new_activity_path,
-        class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
-  </div>
+<% filter_pill_base = "inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium ring-1 ring-inset transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" %>
+<% filter_pill_active = "#{filter_pill_base} bg-cyan-500/10 text-cyan-300 ring-cyan-500/30" %>
+<% filter_pill_inactive = "#{filter_pill_base} bg-slate-900 text-slate-400 ring-slate-800 hover:bg-slate-800 hover:text-slate-200" %>
 
-  <%= form_with url: activities_path, method: :get, data: { controller: "auto-submit" }, class: "px-2 pb-4 lg:px-0" do |form| %>
-    <%= form.select :kind,
-        options_for_select(Activity.kinds.keys.map { |k| [Activity.human_attribute_name("kind.#{k}"), k] }, @kind),
-        { include_blank: "All types" },
-        aria: { label: "Filter by type" },
-        data: { action: "change->auto-submit#submit" },
-        class: "rounded-lg border border-gray-400 bg-white py-2 px-3 text-sm text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white" %>
-    <noscript><%= form.submit "Filter", class: "ms-2 rounded-lg py-2 px-3 bg-blue-600 text-white" %></noscript>
-  <% end %>
-
-  <div class="grid grid-cols-2 gap-2 md:grid-cols-4 px-2 py-4 lg:px-0">
-    <% analyzed = @activities.select(&:analyzed?) %>
-    <%= render 'info_box', label: 'Total Distance',
-        value: number_to_distance(analyzed.sum { |a| a.analysis.distance_total }) %>
-    <%= render 'info_box', label: 'Distance on Foil',
-        value: number_to_distance(analyzed.sum { |a| a.analysis.distance_on_foil }) %>
-    <%= render 'info_box', label: 'Total Duration', color: 'fuchsia',
-        value: number_to_duration(analyzed.sum { |a| a.analysis.duration }) %>
-    <%= render 'info_box', label: 'Duration on Foil', color: 'fuchsia',
-        value: number_to_duration(analyzed.sum { |a| a.analysis.time_on_foil }) %>
-  </div>
-
+<div class="flex flex-col gap-4 pb-6 sm:flex-row sm:items-center sm:justify-between">
   <div>
-    <h2 class="font-bold text-lg text-slate-200">On foil % by distance</h2>
-    <canvas
-      data-controller="chart"
-      data-chart-data-value="<%= @chart_data.to_json %>"
-      data-chart-options-value="<%= { interaction: { intersect: false, mode: 'index', }, scales: { y: { beginAtZero: true, min: 0, max: 100 }, y2: { beginAtZero: true, position: 'right' } } }.to_json %>"
-    ></canvas>
+    <h1 class="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">Training log</h1>
+    <p class="mt-1 text-sm text-slate-400"><%= pluralize(@activities.size, "session") %></p>
   </div>
 
-  <div id="activities" class="min-w-full mt-4">
+  <nav aria-label="Filter by type" class="flex flex-wrap gap-2">
+    <%= link_to "All", activities_path,
+        class: @kind.nil? ? filter_pill_active : filter_pill_inactive,
+        aria: { current: @kind.nil? ? "page" : nil } %>
+    <% Activity.kinds.each_key do |kind| %>
+      <%= link_to Activity.human_attribute_name("kind.#{kind}"), activities_path(kind: kind),
+          class: @kind == kind ? filter_pill_active : filter_pill_inactive,
+          aria: { current: @kind == kind ? "page" : nil } %>
+    <% end %>
+  </nav>
+</div>
+
+<% if @activities.empty? %>
+  <div class="card card-body flex flex-col items-center gap-3 py-16 text-center">
+    <%= icon :wave, class: "size-10 text-slate-600" %>
+    <h2 class="text-lg font-semibold text-slate-200">No activities yet</h2>
+    <p class="max-w-sm text-sm text-slate-400">Upload a GPX file from your GPS watch or SUP tracker to see your stats and progress here.</p>
+    <%= link_to new_activity_path, class: "btn-primary mt-2" do %>
+      <%= icon :upload, class: "size-4" %>
+      Upload your first GPX
+    <% end %>
+  </div>
+<% else %>
+  <% analyzed = @activities.select(&:analyzed?) %>
+
+  <div class="grid grid-cols-2 gap-3 pb-6 lg:grid-cols-4">
+    <% total_distance_value, total_distance_unit = distance_parts(analyzed.sum { |a| a.analysis.distance_total }) %>
+    <div class="card card-body">
+      <%= render "application/stat", label: "Total distance", value: total_distance_value, unit: total_distance_unit, icon: :ruler %>
+    </div>
+    <% foil_distance_value, foil_distance_unit = distance_parts(analyzed.sum { |a| a.analysis.distance_on_foil }) %>
+    <div class="card card-body">
+      <%= render "application/stat", label: "Distance on foil", value: foil_distance_value, unit: foil_distance_unit, icon: :ruler %>
+    </div>
+    <% total_duration_value, _total_duration_unit = duration_parts(analyzed.sum { |a| a.analysis.duration }) %>
+    <div class="card card-body">
+      <%= render "application/stat", label: "Total time", value: total_duration_value, icon: :clock %>
+    </div>
+    <% foil_duration_value, _foil_duration_unit = duration_parts(analyzed.sum { |a| a.analysis.time_on_foil }) %>
+    <div class="card card-body">
+      <%= render "application/stat", label: "Time on foil", value: foil_duration_value, icon: :clock %>
+    </div>
+  </div>
+
+  <div class="card mb-6">
+    <div class="card-header">
+      <h2 class="card-title">Progress</h2>
+    </div>
+    <div class="card-body">
+      <% if @chart_data[:labels].any? %>
+        <div class="h-64 sm:h-72">
+          <canvas
+            data-controller="chart"
+            data-chart-data-value="<%= @chart_data.to_json %>"
+            data-chart-options-value="<%= {
+              scales: {
+                y: { beginAtZero: true, min: 0, max: 100, position: "left" },
+                y2: { beginAtZero: true, position: "right", grid: { display: false } }
+              }
+            }.to_json %>"
+          ></canvas>
+        </div>
+      <% else %>
+        <p class="py-10 text-center text-sm text-slate-400">Not enough analyzed sessions yet to show a trend.</p>
+      <% end %>
+    </div>
+  </div>
+
+  <h2 class="mb-3 text-lg font-semibold text-slate-100">Recent activities</h2>
+  <div id="activities" class="flex flex-col gap-3">
     <% @activities.each do |activity| %>
-      <%= link_to activity do %>
+      <%= link_to activity, class: "block" do %>
         <%= render activity %>
       <% end %>
     <% end %>
   </div>
-</div>
+<% end %>

@@ -2,32 +2,35 @@ class ActivitiesController < ApplicationController
   before_action :set_activity, only: %i[show edit update destroy]
 
   def index
-    @kind = params[:kind].presence_in(Activity.kinds.keys)
     @activities = current_user.activities.with_analysis.order(started_at: :desc)
-    @activities = @activities.where(kind: @kind) if @kind
-    on_foil = @activities.map do |activity|
-       activity.analysis&.distance_on_foil_percentage || 0
+    if @kind = params[:kind].presence_in(Activity.kinds.keys)
+      @activities = @activities.where(kind: @kind)
     end
-    starts = @activities.map do |activity|
-      activity.analysis&.starts || 0
-    end
+
+    chart_activities = @activities.select(&:analyzed?).sort_by(&:started_at)
     @chart_data = {
-      labels: @activities.count.times.to_a,
+      labels: chart_activities.map { |activity| l(activity.started_at, format: "%b %-d") },
       datasets: [
         {
           label: "% on foil",
-          data: on_foil.reverse,
-          borderWidth: 8,
+          data: chart_activities.map { |activity| activity.analysis.distance_on_foil_percentage || 0 },
+          borderColor: "#22d3ee",
+          backgroundColor: "rgba(34, 211, 238, 0.15)",
+          borderWidth: 2,
           pointStyle: false,
           type: "line",
+          fill: true,
           tension: 0.3,
-          suffix: "%"
+          suffix: "%",
+          yAxisID: "y"
         },
         {
-          label: "# of starts",
-          data: starts.reverse,
-          borderWidth: 1,
-          barPercentage: 0.3,
+          label: "Paddle-ups",
+          data: chart_activities.map { |activity| activity.analysis.starts || 0 },
+          backgroundColor: "#475569",
+          borderWidth: 0,
+          borderRadius: 4,
+          barPercentage: 0.5,
           type: "bar",
           yAxisID: "y2"
         }

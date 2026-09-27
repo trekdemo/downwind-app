@@ -5,6 +5,86 @@ RSpec.describe "/activities", type: :request do
 
   before { sign_in_as(user, password: 'hunter2') }
 
+  describe "GET /activities" do
+    let!(:downwind) do
+      activity = create(:activity, user: user, kind: 'sup_dw', title: 'Downwind session', started_at: 2.days.ago)
+      create(:analysis, activity: activity)
+      activity
+    end
+    let!(:wingfoil) do
+      activity = create(:activity, user: user, kind: 'wingfoil', title: 'Wingfoil session', started_at: 1.day.ago)
+      create(:analysis, activity: activity)
+      activity
+    end
+
+    it "lists the user's activities and marks the All filter active" do
+      get activities_url
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(downwind.title)
+      expect(response.body).to include(wingfoil.title)
+      expect(response.body).to match(%r{<a[^>]*aria-current="page"[^>]*>All</a>})
+    end
+
+    it "filters activities by kind and marks that pill active" do
+      get activities_url(kind: 'wingfoil')
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(wingfoil.title)
+      expect(response.body).not_to include(downwind.title)
+      expect(response.body).to match(/aria-current="page"[^>]*>#{Activity.human_attribute_name('kind.wingfoil')}</)
+    end
+
+    it "orders chart labels by activity date, oldest to newest" do
+      get activities_url
+
+      oldest_label = I18n.l(downwind.started_at, format: "%b %-d")
+      newest_label = I18n.l(wingfoil.started_at, format: "%b %-d")
+      body = response.body
+      expect(body.index(oldest_label)).to be < body.index(newest_label)
+    end
+
+    context "with no activities" do
+      it "shows the empty state with an upload CTA" do
+        wingfoil.destroy!
+        downwind.destroy!
+
+        get activities_url
+
+        expect(response.body).to include("No activities yet")
+        expect(response.body).to include("Upload your first GPX")
+      end
+    end
+  end
+
+  describe "GET /activities/:id" do
+    context "when the activity has been analyzed" do
+      let(:activity) { create(:activity, user: user, kind: 'sup_dw', title: 'Downwind session') }
+
+      before do
+        create(:analysis, activity: activity, route_bounds: { "north" => 1, "south" => 0, "east" => 1, "west" => 0 })
+      end
+
+      it "renders the activity detail page" do
+        get activity_url(activity)
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include(activity.title)
+      end
+    end
+
+    context "when the activity has not been analyzed yet" do
+      let(:activity) { create(:activity, user: user, kind: 'sup_dw') }
+
+      it "renders the analyzing state without touching analysis data" do
+        get activity_url(activity)
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("Analyzing your session")
+      end
+    end
+  end
+
   describe "POST /activities" do
     context "with a valid GPX file" do
       let(:params) do

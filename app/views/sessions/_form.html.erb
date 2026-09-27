@@ -1,22 +1,21 @@
-<%= form_for :session, url: session_path do |form| %>
-  <div class="grid grid-cols-1 gap-4 text-2xl">
-    <div>
-      <%= form.label :email, class: 'text-sm' %>
-      <%= form.email_field :email, class: 'w-full rounded-md h-16' %>
-    </div>
-
-    <div>
-      <%= form.label :password, class: 'text-sm' %>
-      <%= form.password_field :password, class: 'w-full rounded-md h-16' %>
-    </div>
+<%= form_for :session, url: session_path, html: { class: "space-y-4" } do |form| %>
+  <div>
+    <%= form.label :email, class: "label" %>
+    <%= form.email_field :email, class: "input" %>
   </div>
 
-  <div class="mt-8 grid gap-4 md:gap-2 md:grid-cols-2 text-center">
-    <%= form.submit class: 'block rounded-lg py-4 bg-gradient-to-r from-green-400 to-green-300 text-green-950 font-bold' %>
+  <div>
+    <%= form.label :password, class: "label" %>
+    <%= form.password_field :password, class: "input" %>
+  </div>
 
+  <%= form.submit class: "btn-primary w-full" %>
+
+  <div class="flex items-center justify-between text-sm">
     <% if Clearance.configuration.allow_sign_up? %>
-      <%= link_to t('.sign_up'), sign_up_path, class: 'block rounded-lg py-4 bg-gray-300 text-gray-950' %>
+      <%= link_to t(".sign_up"), sign_up_path, class: "link" %>
     <% end %>
-    <%#= link_to t(".forgot_password"), new_password_path %>
+
+    <%#= link_to t(".forgot_password"), new_password_path, class: "link" %>
   </div>
 <% end %>

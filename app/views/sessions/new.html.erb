@@ -1,5 +1,18 @@
-<div class="p-5">
-  <h2 class="text-3xl mb-4 border-b pb-2"><%= t(".title") %></h2>
+<% content_for :title, t(".title") %>
 
-  <%= render 'sessions/form' %>
+<div class="grid min-h-[calc(100vh-10rem)] place-items-center bg-[radial-gradient(ellipse_at_top,theme(colors.cyan.500/10%),transparent_60%)]">
+  <div class="w-full max-w-sm">
+    <div class="mb-6 flex flex-col items-center gap-2 text-center">
+      <span class="flex size-10 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400">
+        <%= icon :wave, class: "size-6" %>
+      </span>
+      <span class="font-semibold text-slate-100">Downwind Logbook</span>
+    </div>
+
+    <div class="card card-body">
+      <h1 class="mb-4 text-xl font-semibold tracking-tight text-slate-50"><%= t(".title") %></h1>
+
+      <%= render "sessions/form" %>
+    </div>
+  </div>
 </div>

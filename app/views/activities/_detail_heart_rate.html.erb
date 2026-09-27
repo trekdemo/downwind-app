@@ -1,0 +1,15 @@
+<%# locals: (activity:) %>
+<% analysis = activity.analysis %>
+<div id="<%= dom_id activity, :hr %>" class="card">
+  <div class="card-header">
+    <h2 class="card-title flex items-center gap-1.5">
+      <%= icon :heart, class: "size-4 text-rose-400" %>
+      Heart rate
+    </h2>
+  </div>
+
+  <div class="card-body grid grid-cols-2 gap-4">
+    <%= render "application/stat", label: "Avg", value: number_with_precision(analysis.hr_avg, precision: 0), unit: "bpm", size: :sm %>
+    <%= render "application/stat", label: "Max", value: number_with_precision(analysis.hr_max, precision: 0), unit: "bpm", size: :sm %>
+  </div>
+</div>

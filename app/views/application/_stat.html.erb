@@ -1,0 +1,19 @@
+<%# locals: (label:, value:, unit: nil, icon: nil, size: :md) %>
+<%
+  value_size_class = { sm: "text-lg", md: "text-2xl", lg: "text-3xl" }.fetch(size)
+  icon_size_class = { sm: "size-4", md: "size-5", lg: "size-6" }.fetch(size)
+%>
+<div class="flex items-start gap-2">
+  <% if icon.present? %>
+    <%= icon(icon, class: "#{icon_size_class} shrink-0 text-cyan-400") %>
+  <% end %>
+  <div class="min-w-0">
+    <p class="stat-label"><%= label %></p>
+    <p>
+      <span class="stat-value <%= value_size_class %>"><%= value %></span>
+      <% if unit.present? %>
+        <span class="stat-unit"><%= unit %></span>
+      <% end %>
+    </p>
+  </div>
+</div>

@@ -1,143 +1,16 @@
-<h2 class="border-b mt-3">General</h2>
+<%# locals: (activity:) %>
+<div class="space-y-4">
+  <%= render "detail_hero", activity: activity %>
 
-<% if @activity.analyzed? %>
-  <div
-    data-controller="map"
-    data-map-gpx-url-value="<%= rails_blob_path(@activity.gpx_file) %>"
-    data-map-bounds-value="<%= @activity.analysis.route_bounds.to_json %>"
-  >
-    <!-- Loading indicator -->
-    <div
-      data-map-target="loading"
-      class="flex items-center justify-center h-64 bg-gray-50 rounded-lg"
-    >
-      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      <span class="ml-2 text-gray-600">Loading route...</span>
-    </div>
-
-    <!-- Map container -->
-    <div
-      data-map-target="map"
-      class="route-map h-64 sm:h-96 min-h-[50vh] w-full rounded-lg border border-gray-200"
-    ></div>
+  <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+    <%= render "detail_map", activity: activity %>
+    <%= render "detail_foiling_chart", activity: activity %>
   </div>
-  <div>
-    <div class="h-56">
-      <canvas
-        data-controller="chart"
-        data-chart-type-value="doughnut"
-        data-chart-data-value="<%= {
-            labels: ['On foil', 'Off foil'],
-            datasets: [
-              {
-                label: 'Distance',
-                suffix: "%",
-                data: [
-                  @activity.analysis.distance_on_foil_percentage,
-                  100 - @activity.analysis.distance_on_foil_percentage
-                ],
-              },
-              {
-                label: 'Time',
-                suffix: "%",
-                data: [
-                  @activity.analysis.time_on_foil_percentage,
-                  100 - @activity.analysis.time_on_foil_percentage
-                ],
-              },
-            ],
-          }.to_json %>"
-        data-chart-options-value="<%= { interaction: { intersect: false, mode: 'index', } }.to_json %>"
-      ></canvas>
-    </div>
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <%= render "detail_speed", activity: activity %>
+    <%= render "detail_pace", activity: activity %>
+    <%= render "detail_heart_rate", activity: activity %>
+    <%= render "detail_foiling_stats", activity: activity %>
   </div>
-<% end %>
-
-<%= render 'activity_summary', activity: activity %>
-
-<% analysis = activity.analysis %>
-
-<h2 class="mt-4">
-  On foil from <%= number_to_speed(activity.lift_speed_kmh) %>
-</h2>
-
-<div
-  id="<%= dom_id activity, :stats %>"
-  class="
-    grid grid-cols-4 text-center items-stretch text-s divide-x
-    divide-slate-300 divide-dotted
-  "
->
-  <% {
-    'Distance (on foil)' => number_to_distance(analysis.distance_on_foil),
-    'Distance % (on foil)' => number_to_percentage(analysis.distance_on_foil_percentage, precision: 0),
-    'Time' => number_to_duration(analysis.time_on_foil),
-    'Time %' => number_to_percentage(analysis.time_on_foil_percentage, precision: 0),
-  }.each_pair do |label, value| %>
-    <div class="px-1 my-2 text-slate-700 font-semibold flex flex-col justify-between">
-      <div class="text-xs font-light"><%= label %></div>
-      <%= value %>
-    </div>
-  <% end %>
-</div>
-
-<h2 class="mt-4">Speed</h2>
-
-<div
-  id="<%= dom_id activity, :speed %>"
-  class="
-    grid grid-cols-4 text-center items-stretch text-s divide-x
-    divide-slate-300 divide-dotted
-  "
->
-  <% {
-    'Lift Speed' => number_to_speed(activity.lift_speed_kmh),
-    'Speed (avg)' => number_to_speed(analysis.speed_avg * 3.6),
-    'Speed (max)' => number_to_speed(analysis.speed_max * 3.6),
-    'Speed (avg) on foil' => number_to_speed(analysis.speed_avg_on_foil * 3.6),
-  }.each_pair do |label, value| %>
-    <div class="px-1 my-2 text-slate-700 font-semibold flex flex-col justify-between">
-      <div class="text-xs font-light"><%= label %></div>
-      <%= value %>
-    </div>
-  <% end %>
-</div>
-
-<h2 class="mt-4">Pace</h2>
-
-<div
-  id="<%= dom_id activity, :pace %>"
-  class="
-    grid grid-cols-4 text-center items-stretch text-s divide-x
-    divide-slate-300 divide-dotted
-  "
->
-  <% {
-    'Fastest 1km' => number_to_duration(analysis.fastest_full_km),
-  }.each_pair do |label, value| %>
-    <div class="px-1 my-2 text-slate-700 font-semibold flex flex-col justify-between">
-      <div class="text-xs font-light"><%= label %></div>
-      <%= value %>
-    </div>
-  <% end %>
-</div>
-
-<h2 class="mt-4">Heart Rate</h2>
-
-<div
-  id="<%= dom_id activity, :hr %>"
-  class="
-    grid grid-cols-4 text-center items-stretch text-s divide-x
-    divide-slate-300 divide-dotted
-  "
->
-  <% {
-    'HR (avg)' => number_with_precision(analysis.hr_avg, precision: 0),
-    'HR (max)' => number_with_precision(analysis.hr_max, precision: 0),
-  }.each_pair do |label, value| %>
-    <div class="px-1 my-2 text-slate-700 font-semibold flex flex-col justify-between">
-      <div class="text-xs font-light"><%= label %></div>
-      <%= value %>
-    </div>
-  <% end %>
 </div>

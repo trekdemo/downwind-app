@@ -1,0 +1,14 @@
+<%# locals: (activity:) %>
+<% analysis = activity.analysis %>
+<div id="<%= dom_id activity, :pace %>" class="card">
+  <div class="card-header">
+    <h2 class="card-title flex items-center gap-1.5">
+      <%= icon :clock, class: "size-4 text-cyan-400" %>
+      Pace
+    </h2>
+  </div>
+
+  <div class="card-body">
+    <%= render "application/stat", label: "Fastest 1 km", value: duration_parts(analysis.fastest_full_km)[0], size: :sm %>
+  </div>
+</div>

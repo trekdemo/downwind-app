@@ -1,0 +1,43 @@
+<%# locals: (activity:) %>
+<% analysis = activity.analysis %>
+<% distance_pct = analysis.distance_on_foil_percentage || 0 %>
+<% time_pct = analysis.time_on_foil_percentage || 0 %>
+<div class="card">
+  <div class="card-header">
+    <h2 class="card-title flex items-center gap-1.5">
+      <%= icon :wave, class: "size-4 text-cyan-400" %>
+      Foiling
+    </h2>
+  </div>
+
+  <div class="card-body space-y-4">
+    <div class="relative h-44">
+      <canvas
+        class="absolute inset-0"
+        data-controller="chart"
+        data-chart-type-value="doughnut"
+        data-chart-data-value="<%= {
+          labels: [ "On foil", "Off foil" ],
+          datasets: [
+            { label: "Distance", data: [ distance_pct, 100 - distance_pct ], backgroundColor: [ "#06b6d4", "#334155" ], borderWidth: 0 },
+            { label: "Time", data: [ time_pct, 100 - time_pct ], backgroundColor: [ "#06b6d4", "#334155" ], borderWidth: 0 },
+          ],
+        }.to_json %>"
+        data-chart-options-value="<%= {
+          cutout: "70%",
+          plugins: { legend: { display: false } },
+        }.to_json %>"
+      ></canvas>
+
+      <div class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+        <span class="stat-value text-3xl"><%= number_to_percentage(distance_pct, precision: 0) %></span>
+        <span class="stat-label">On foil</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <%= render "application/stat", label: "Distance on foil", value: distance_parts(analysis.distance_on_foil)[0], unit: distance_parts(analysis.distance_on_foil)[1], size: :sm %>
+      <%= render "application/stat", label: "Time on foil", value: duration_parts(analysis.time_on_foil)[0], size: :sm %>
+    </div>
+  </div>
+</div>

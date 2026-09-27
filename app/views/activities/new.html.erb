@@ -1,9 +1,12 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <div class="sticky top-0 flex justify-between items-center pt-4 pb-6">
-    <h1 class="font-bold text-4xl text-slate-800">New activity</h1>
-    <%= link_to "Back to activities", activities_path,
-        class: "rounded-lg py-3 px-5 block font-medium" %>
+<% content_for :title, "Upload activity" %>
+
+<div class="mx-auto w-full max-w-2xl">
+  <div class="mb-6 text-center">
+    <h1 class="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">Upload activity</h1>
+    <p class="mt-1 text-sm text-slate-400">Add a GPX file to analyze your session.</p>
   </div>
 
-  <%= render "form", activity: @activity %>
+  <div class="card card-body">
+    <%= render "form", activity: @activity %>
+  </div>
 </div>

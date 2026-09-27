@@ -2,12 +2,161 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
-
 @layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium
+           transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400
+           focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:opacity-50
+           disabled:pointer-events-none;
+  }
+
   .btn-primary {
-    @apply py-2 px-4 bg-blue-200;
+    @apply btn bg-orange-500 text-white hover:bg-orange-400;
+  }
+
+  .btn-secondary {
+    @apply btn bg-slate-800 text-slate-100 ring-1 ring-inset ring-slate-700 hover:bg-slate-700;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-slate-300 hover:bg-slate-800 hover:text-slate-100;
+  }
+
+  .btn-danger {
+    @apply btn bg-rose-600 text-white hover:bg-rose-500;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  /* Cards */
+  .card {
+    @apply rounded-xl bg-slate-900 ring-1 ring-white/5;
+  }
+
+  .card-header {
+    @apply flex items-center justify-between border-b border-slate-800 px-4 py-3 sm:px-5;
+  }
+
+  .card-title {
+    @apply text-[11px] font-medium uppercase tracking-wider text-slate-400;
+  }
+
+  .card-body {
+    @apply p-4 sm:p-5;
+  }
+
+  /* Forms */
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-slate-300;
+  }
+
+  .input {
+    @apply block w-full rounded-lg border-0 bg-slate-900 px-3 py-2 text-sm text-slate-100
+           ring-1 ring-inset ring-slate-700 placeholder:text-slate-500
+           focus:ring-2 focus:ring-inset focus:ring-cyan-400;
+  }
+
+  .select {
+    @apply input pr-8;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .badge-cyan {
+    @apply badge bg-cyan-500/10 text-cyan-300 ring-1 ring-inset ring-cyan-500/30;
+  }
+
+  .badge-sky {
+    @apply badge bg-sky-500/10 text-sky-300 ring-1 ring-inset ring-sky-500/30;
+  }
+
+  .badge-violet {
+    @apply badge bg-violet-500/10 text-violet-300 ring-1 ring-inset ring-violet-500/30;
+  }
+
+  .badge-teal {
+    @apply badge bg-teal-500/10 text-teal-300 ring-1 ring-inset ring-teal-500/30;
+  }
+
+  .badge-amber {
+    @apply badge bg-amber-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/30;
+  }
+
+  .badge-emerald {
+    @apply badge bg-emerald-500/10 text-emerald-300 ring-1 ring-inset ring-emerald-500/30;
+  }
+
+  .badge-rose {
+    @apply badge bg-rose-500/10 text-rose-300 ring-1 ring-inset ring-rose-500/30;
+  }
+
+  .badge-slate {
+    @apply badge bg-slate-700/40 text-slate-300 ring-1 ring-inset ring-slate-600/40;
+  }
+
+  /* Links */
+  .link {
+    @apply text-cyan-400 hover:text-cyan-300 underline-offset-2 hover:underline;
+  }
+
+  /* Stats */
+  .stat-label {
+    @apply text-[11px] font-medium uppercase tracking-wider text-slate-400;
+  }
+
+  .stat-value {
+    @apply font-semibold tracking-tight text-slate-50 tabular-nums;
+  }
+
+  .stat-unit {
+    @apply text-sm text-slate-400 tabular-nums;
+  }
+
+  /* Tables */
+  .table {
+    @apply min-w-full divide-y divide-slate-800;
+  }
+
+  .table thead {
+    @apply bg-slate-900/50;
+  }
+
+  .table thead th {
+    @apply px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-slate-400;
+  }
+
+  .table tbody {
+    @apply divide-y divide-slate-800;
+  }
+
+  .table tbody tr {
+    @apply hover:bg-slate-800/50;
+  }
+
+  .table tbody td {
+    @apply whitespace-nowrap px-4 py-3 text-sm text-slate-200;
+  }
+
+  /* On-foil progress bar */
+  .progress-foil {
+    @apply h-1.5 w-full appearance-none overflow-hidden rounded-full bg-slate-800;
+  }
+
+  .progress-foil::-webkit-progress-bar {
+    @apply rounded-full bg-slate-800;
+  }
+
+  .progress-foil::-webkit-progress-value {
+    @apply rounded-full bg-cyan-500;
+  }
+
+  .progress-foil::-moz-progress-bar {
+    @apply rounded-full bg-cyan-500;
   }
 }
-
-*/

@@ -1,0 +1,38 @@
+<%# locals: (activity:) %>
+<div class="card lg:col-span-2">
+  <div class="card-header">
+    <h2 class="card-title flex items-center gap-1.5">
+      <%= icon :"map-pin", class: "size-4 text-cyan-400" %>
+      Route
+    </h2>
+  </div>
+
+  <div
+    class="card-body"
+    data-controller="map"
+    data-map-gpx-url-value="<%= rails_blob_path(activity.gpx_file) %>"
+    data-map-bounds-value="<%= activity.analysis.route_bounds.to_json %>"
+  >
+    <div class="relative">
+      <div
+        data-map-target="loading"
+        class="absolute inset-0 z-[1000] flex items-center justify-center rounded-lg bg-slate-900/80"
+      >
+        <div class="size-8 animate-spin rounded-full border-2 border-slate-600 border-t-cyan-400"></div>
+        <span class="ml-2 text-sm text-slate-400">Loading route&hellip;</span>
+      </div>
+
+      <div
+        data-map-target="map"
+        class="route-map h-80 w-full rounded-lg sm:h-96 lg:h-[28rem]"
+      ></div>
+    </div>
+
+    <div class="mt-3 flex items-center gap-3">
+      <span class="stat-unit" data-map-target="legendMin">&ndash;</span>
+      <div class="h-2 flex-1 rounded-full bg-gradient-to-r from-[#1974D2] via-[#FFFF00] to-[#822EFF]"></div>
+      <span class="stat-unit" data-map-target="legendMax">&ndash;</span>
+    </div>
+    <p class="mt-1 text-center text-[11px] uppercase tracking-wider text-slate-500">Speed (km/h)</p>
+  </div>
+</div>

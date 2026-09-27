@@ -1,11 +1,13 @@
 <% if notice.present? %>
-  <div class="container mt-1 text-center">
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <div class="mb-4 flex items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-300 ring-1 ring-inset ring-emerald-500/30" id="notice">
+    <%= icon :check, class: "size-5 shrink-0" %>
+    <span><%= notice %></span>
   </div>
 <% end %>
 
 <% if alert.present? %>
-  <div class="container mt-1 text-center">
-    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
+  <div class="mb-4 flex items-center gap-2 rounded-xl bg-rose-500/10 px-4 py-3 text-sm font-medium text-rose-300 ring-1 ring-inset ring-rose-500/30" id="alert">
+    <%= icon :x, class: "size-5 shrink-0" %>
+    <span><%= alert %></span>
   </div>
 <% end %>

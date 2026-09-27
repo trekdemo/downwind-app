@@ -1,6 +1,60 @@
-<div class="min-w-full mt-5">
-  <%= link_to "Back", activities_path, class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
-  <%= link_to "Edit", edit_activity_path(@activity), class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+<% content_for :title, @activity.title.presence || Activity.human_attribute_name("kind.#{@activity.kind}") %>
 
-  <%= render @activity, details: true %>
+<%= turbo_stream_from @activity %>
+
+<div id="<%= dom_id @activity %>" class="space-y-6">
+  <div>
+    <%= link_to activities_path, class: "inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-cyan-300" do %>
+      <%= icon :"arrow-left", class: "size-4" %>
+      Training log
+    <% end %>
+
+    <div class="mt-2 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div class="min-w-0 space-y-1.5">
+        <div class="flex flex-wrap items-center gap-2">
+          <h1 class="truncate text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
+            <%= @activity.title.presence || "Untitled activity" %>
+          </h1>
+          <%= kind_badge(@activity) %>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-400">
+          <span class="inline-flex items-center gap-1.5">
+            <%= icon :calendar, class: "size-4" %>
+            <% if @activity.started_at %>
+              <time datetime="<%= @activity.started_at.iso8601 %>"><%= l @activity.started_at, format: :long %></time>
+            <% else %>
+              Analyzing&hellip;
+            <% end %>
+          </span>
+
+          <span class="badge-slate">
+            <%= icon :bolt, class: "size-3.5 text-cyan-400" %>
+            Lift speed <%= number_to_speed(@activity.lift_speed_kmh) %>
+          </span>
+        </div>
+      </div>
+
+      <div class="flex shrink-0 items-center gap-2">
+        <%= link_to edit_activity_path(@activity), class: "btn-secondary btn-sm" do %>
+          <%= icon :pencil, class: "size-4" %>
+          Edit
+        <% end %>
+
+        <%= button_to activity_path(@activity),
+              method: :delete,
+              class: "btn-danger btn-sm",
+              data: { turbo_confirm: "Delete this activity? This cannot be undone." } do %>
+          <%= icon :trash, class: "size-4" %>
+          Delete
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% if @activity.analyzed? %>
+    <%= render "activity_details", activity: @activity %>
+  <% else %>
+    <%= render "detail_analyzing" %>
+  <% end %>
 </div>
