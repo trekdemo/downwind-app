@@ -27,7 +27,7 @@
         <span class="text-sm font-semibold text-slate-200">
           Drop your GPX file here or <span class="link">browse</span>
         </span>
-        <span class="text-xs text-slate-500">GPX export from your watch or phone</span>
+        <span class="text-xs text-slate-400">GPX export from your watch or phone</span>
         <span class="text-xs font-medium text-cyan-300" data-file-input-target="filename"></span>
 
         <%= form.file_field :gpx_file,
@@ -41,7 +41,7 @@
     <%= form.label :lift_speed_kmh, class: "label" %>
     <div class="relative">
       <%= form.number_field :lift_speed_kmh, step: 0.5, min: 0, class: "input pr-14" %>
-      <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-slate-500">km/h</span>
+      <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-slate-400">km/h</span>
     </div>
   </div>
 

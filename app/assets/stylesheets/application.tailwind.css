@@ -12,7 +12,7 @@
   }
 
   .btn-primary {
-    @apply btn bg-orange-500 text-white hover:bg-orange-400;
+    @apply btn bg-orange-500 text-slate-950 hover:bg-orange-400;
   }
 
   .btn-secondary {
