@@ -12,7 +12,7 @@
     <div class="mt-2 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
       <div class="min-w-0 space-y-1.5">
         <div class="flex flex-wrap items-center gap-2">
-          <h1 class="truncate text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
+          <h1 class="truncate text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl" title="<%= @activity.title.presence || "Untitled activity" %>">
             <%= @activity.title.presence || "Untitled activity" %>
           </h1>
           <%= kind_badge(@activity) %>
