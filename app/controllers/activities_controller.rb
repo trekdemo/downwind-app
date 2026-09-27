@@ -9,7 +9,7 @@ class ActivitiesController < ApplicationController
 
     chart_activities = @activities.select(&:analyzed?).sort_by(&:started_at)
     @chart_data = {
-      labels: chart_activities.map { |activity| l(activity.started_at, format: "%b %-d") },
+      labels: chart_labels_for(chart_activities),
       datasets: [
         {
           label: "% on foil",
@@ -70,6 +70,24 @@ class ActivitiesController < ApplicationController
   end
 
   private
+
+  # Builds unique, unambiguous chart labels: the year is added when the
+  # activities span more than one year, and the time is added when several
+  # activities fall on the same date (otherwise same-day sessions would share
+  # a label, e.g. two sessions both showing "Sep 20").
+  def chart_labels_for(activities)
+    date_format = activities.map { |activity| activity.started_at.year }.uniq.size > 1 ? "%b %-d, %Y" : "%b %-d"
+    activities_per_date = activities.group_by { |activity| activity.started_at.to_date }
+
+    activities.map do |activity|
+      label = l(activity.started_at, format: date_format)
+      if activities_per_date[activity.started_at.to_date].size > 1
+        "#{label} #{l(activity.started_at, format: '%H:%M')}"
+      else
+        label
+      end
+    end
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_activity

@@ -44,6 +44,31 @@ RSpec.describe "/activities", type: :request do
       expect(body.index(oldest_label)).to be < body.index(newest_label)
     end
 
+    context "with two analyzed sessions on the same day" do
+      # Keep these in the same year as downwind/wingfoil above, so this
+      # example only exercises the same-day disambiguation, not the
+      # cross-year one.
+      let(:same_day) { 3.days.ago.to_date }
+      let!(:morning) do
+        activity = create(:activity, user: user, kind: 'sup_dw', title: 'Morning session', started_at: same_day.in_time_zone.change(hour: 8))
+        create(:analysis, activity: activity)
+        activity
+      end
+      let!(:evening) do
+        activity = create(:activity, user: user, kind: 'sup_dw', title: 'Evening session', started_at: same_day.in_time_zone.change(hour: 18, min: 30))
+        create(:analysis, activity: activity)
+        activity
+      end
+
+      it "disambiguates same-day chart labels with the time" do
+        get activities_url
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include(I18n.l(morning.started_at, format: "%b %-d %H:%M"))
+        expect(response.body).to include(I18n.l(evening.started_at, format: "%b %-d %H:%M"))
+      end
+    end
+
     context "with an un-analyzed activity that has no started_at yet" do
       let!(:pending_activity) do
         create(:activity, user: user, kind: 'sup_dw', title: 'Pending session', started_at: nil)
