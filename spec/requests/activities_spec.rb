@@ -44,6 +44,32 @@ RSpec.describe "/activities", type: :request do
       expect(body.index(oldest_label)).to be < body.index(newest_label)
     end
 
+    context "with an un-analyzed activity that has no started_at yet" do
+      let!(:pending_activity) do
+        create(:activity, user: user, kind: 'sup_dw', title: 'Pending session', started_at: nil)
+      end
+
+      it "returns 200" do
+        get activities_url
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "with an analyzed activity whose GPX had no timestamps" do
+      let!(:timeless_activity) do
+        activity = create(:activity, user: user, kind: 'sup_dw', title: 'Timeless session', started_at: nil)
+        create(:analysis, activity: activity)
+        activity
+      end
+
+      it "returns 200" do
+        get activities_url
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
     context "with no activities" do
       it "shows the empty state with an upload CTA" do
         wingfoil.destroy!
@@ -77,6 +103,17 @@ RSpec.describe "/activities", type: :request do
       let(:activity) { create(:activity, user: user, kind: 'sup_dw') }
 
       it "renders the analyzing state without touching analysis data" do
+        get activity_url(activity)
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("Analyzing your session")
+      end
+    end
+
+    context "when the activity has not been analyzed yet and has no started_at" do
+      let(:activity) { create(:activity, user: user, kind: 'sup_dw', started_at: nil) }
+
+      it "renders successfully, falling back to created_at" do
         get activity_url(activity)
 
         expect(response).to have_http_status(:ok)

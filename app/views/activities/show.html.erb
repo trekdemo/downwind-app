@@ -24,7 +24,7 @@
             <% if @activity.started_at %>
               <time datetime="<%= @activity.started_at.iso8601 %>"><%= l @activity.started_at, format: :long %></time>
             <% else %>
-              Analyzing&hellip;
+              &mdash;
             <% end %>
           </span>
 

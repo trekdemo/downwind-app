@@ -31,6 +31,21 @@ RSpec.describe Activity do
     end
   end
 
+  describe '#started_at' do
+    it 'falls back to created_at when the GPX had no timestamps' do
+      activity = build(:activity, started_at: nil, created_at: Time.zone.parse('2024-03-01 12:00:00'))
+
+      expect(activity.started_at).to eq(activity.created_at)
+    end
+
+    it 'returns the GPX-derived value when present' do
+      time = Time.zone.parse('2024-03-01 12:00:00')
+      activity = build(:activity, started_at: time)
+
+      expect(activity.started_at).to eq(time)
+    end
+  end
+
   describe '#analyzed?' do
     let(:user) { User.create!(email: 'test@example.com', password: 'hunter69') }
     let(:gpx_file) { fixture('garmin_1_1.gpx') }

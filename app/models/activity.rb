@@ -19,6 +19,9 @@ class Activity < ApplicationRecord
 
   scope :with_analysis, -> { includes(:analysis) }
 
+  # Set by the ActivityAnalyzerJob, stays nil if analysis fails
+  def started_at = super || created_at
+
   def analyzed?
     !!analysis&.persisted?
   end
