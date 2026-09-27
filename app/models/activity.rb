@@ -14,6 +14,8 @@ class Activity < ApplicationRecord
   after_update_commit :reanalyze_gpx_file_later, if: :saved_change_to_lift_speed_kmh?
 
   broadcasts_refreshes
+  # For the dashboard, and other list pages
+  broadcasts_refreshes_to ->(activity) { [ activity.user, :activities ] }
 
   has_one :analysis, dependent: :delete
 

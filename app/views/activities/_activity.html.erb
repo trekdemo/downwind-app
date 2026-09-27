@@ -1,6 +1,5 @@
 <%# locals: (activity:) %>
 
-<%= turbo_stream_from activity %>
 <div id="<%= dom_id activity %>" class="card card-body transition hover:ring-1 hover:ring-cyan-500/40">
   <% if activity.analyzed? %>
     <% analysis = activity.analysis %>

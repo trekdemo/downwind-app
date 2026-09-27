@@ -1,5 +1,8 @@
 <% content_for :title, "Training log" %>
 
+<%# TODO: What would it look like with turbo_frame? %>
+<%= turbo_stream_from current_user, :activities %>
+
 <% filter_pill_base = "inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium ring-1 ring-inset transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" %>
 <% filter_pill_active = "#{filter_pill_base} bg-cyan-500/10 text-cyan-300 ring-cyan-500/30" %>
 <% filter_pill_inactive = "#{filter_pill_base} bg-slate-900 text-slate-400 ring-slate-800 hover:bg-slate-800 hover:text-slate-200" %>

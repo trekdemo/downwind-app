@@ -70,6 +70,12 @@ RSpec.describe "/activities", type: :request do
       end
     end
 
+    it "subscribes to a single per-user turbo stream instead of one per card" do
+      get activities_url
+
+      expect(response.body.scan("<turbo-cable-stream-source").size).to eq(1)
+    end
+
     context "with no activities" do
       it "shows the empty state with an upload CTA" do
         wingfoil.destroy!
