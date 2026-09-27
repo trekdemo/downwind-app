@@ -13,7 +13,7 @@ module ActivitiesHelper
   # @return [ActiveSupport::SafeBuffer]
   def kind_badge(activity_or_kind)
     kind = activity_or_kind.respond_to?(:kind) ? activity_or_kind.kind : activity_or_kind.to_s
-    variant = KIND_BADGE_VARIANTS.fetch(kind, "badge-slate")
+    variant = KIND_BADGE_VARIANTS.fetch(kind)
     label = Activity.human_attribute_name("kind.#{kind}")
 
     content_tag(:span, label, class: variant)
