@@ -28,11 +28,11 @@ module ActivitiesHelper
   end
 
   def number_to_duration(duration)
-    ActiveSupport::Duration
-      .build(duration)
-      .parts.values_at(:hours, :minutes, :seconds).compact
-      .map { |n| format("%0.2d", n) }
-      .join(":")
+    total_seconds = duration.round
+    hours, remainder = total_seconds.divmod(3600)
+    minutes, seconds = remainder.divmod(60)
+
+    format("%d:%02d:%02d", hours, minutes, seconds)
   end
 
   # Splits a formatted distance into its numeric value and unit, so the UI

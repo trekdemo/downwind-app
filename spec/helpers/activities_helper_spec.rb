@@ -19,7 +19,37 @@ RSpec.describe ActivitiesHelper, type: :helper do
 
   describe '#duration_parts' do
     it 'returns the formatted duration with a nil unit' do
-      expect(helper.duration_parts(3723)).to eq([ '01:02:03', nil ])
+      expect(helper.duration_parts(3723)).to eq([ '1:02:03', nil ])
+    end
+  end
+
+  describe '#number_to_duration' do
+    it 'formats zero seconds' do
+      expect(helper.number_to_duration(0)).to eq('0:00:00')
+    end
+
+    it 'formats seconds only' do
+      expect(helper.number_to_duration(45)).to eq('0:00:45')
+    end
+
+    it 'formats minutes and seconds' do
+      expect(helper.number_to_duration(120)).to eq('0:02:00')
+    end
+
+    it 'formats hours, minutes and seconds' do
+      expect(helper.number_to_duration(3605)).to eq('1:00:05')
+    end
+
+    it 'formats hours and minutes without leftover seconds' do
+      expect(helper.number_to_duration(3900)).to eq('1:05:00')
+    end
+
+    it 'does not wrap hours past 24' do
+      expect(helper.number_to_duration(108_000)).to eq('30:00:00')
+    end
+
+    it 'rounds fractional seconds' do
+      expect(helper.number_to_duration(45.6)).to eq('0:00:46')
     end
   end
 
