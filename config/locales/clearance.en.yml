@@ -59,6 +59,8 @@ en:
     new:
       title: Sign in
   users:
+    form:
+      sign_in: Sign in
     new:
       sign_in: Sign in
       title: Register
