@@ -22,7 +22,30 @@ export default class extends Controller {
   }
 
   disconnect() {
+    if (this.morphFrame) cancelAnimationFrame(this.morphFrame)
     this.map?.remove()
+  }
+
+  // Turbo's morph refresh (turbo:morph-element) replaces the map/loading/
+  // legend DOM with the server's cold-start markup (empty map div, hidden
+  // overlay revealed, legend reset to "–") but leaves this controller
+  // connected, so Leaflet is never rebuilt. The event fires once per
+  // morphed node and bubbles, so a single refresh can trigger this many
+  // times; coalesce into one rebuild per animation frame.
+  handleMorph() {
+    if (this.morphFrame) return
+    this.morphFrame = requestAnimationFrame(() => {
+      this.morphFrame = null
+      this.reconnect()
+    })
+  }
+
+  reconnect() {
+    // map.remove() clears the container's _leaflet_id, so re-initializing
+    // afterwards doesn't hit Leaflet's "already initialized" error.
+    this.map?.remove()
+    this.initializeMap()
+    this.loadPrimaryRoute()
   }
 
   showLoading() {

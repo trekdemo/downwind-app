@@ -68,18 +68,54 @@ export default class extends Controller {
   }
 
   connect() {
-    const element = this.hasCanvasTarget ? this.canvasTarget : this.element
+    this.canvasElement = this.hasCanvasTarget ? this.canvasTarget : this.element
+    this.buildChart()
 
-    this.chart = new Chart(element.getContext("2d"), {
+    // Chart.js sets width/height/style directly on the canvas; a Turbo
+    // morph refresh strips those (idiomorph doesn't know how to diff a
+    // canvas bitmap), which blanks the chart. Rebuilding from scratch is
+    // simpler and more robust than trying to restore the canvas in place.
+    this.canvasElement.addEventListener("turbo:morph-element", this.redraw)
+  }
+
+  disconnect() {
+    this.canvasElement.removeEventListener("turbo:morph-element", this.redraw)
+    this.chart.destroy()
+    this.chart = undefined
+  }
+
+  buildChart() {
+    this.chart = new Chart(this.canvasElement.getContext("2d"), {
       type: this.typeValue,
       data: this.chartData,
       options: this.chartOptions,
     })
   }
 
-  disconnect() {
+  redraw = () => {
     this.chart.destroy()
-    this.chart = undefined
+    this.buildChart()
+
+    // A morph can also change data-chart-*-value on the same tick, which
+    // would otherwise trigger a redundant *ValueChanged update right after
+    // this rebuild (which already reads the latest values).
+    this.skipNextValueSync = true
+    queueMicrotask(() => { this.skipNextValueSync = false })
+  }
+
+  // data-chart-data-value/-options-value can change without a DOM morph
+  // (e.g. a Turbo Stream update rewriting the attribute in place), so keep
+  // an already-connected chart in sync when that happens.
+  dataValueChanged() {
+    if (!this.chart || this.skipNextValueSync) return
+    this.chart.data = this.chartData
+    this.chart.update()
+  }
+
+  optionsValueChanged() {
+    if (!this.chart || this.skipNextValueSync) return
+    this.chart.options = this.chartOptions
+    this.chart.update()
   }
 
   get chartData() {
