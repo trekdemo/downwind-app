@@ -101,6 +101,14 @@ RSpec.describe "/activities", type: :request do
       expect(response.body.scan("<turbo-cable-stream-source").size).to eq(1)
     end
 
+    it "draws a route preview on cards that have one" do
+      downwind.analysis.update!(route_preview: build(:analysis, :with_route_preview).route_preview)
+
+      get activities_url
+
+      expect(response.body.scan("<polyline").size).to eq(1)
+    end
+
     context "with no activities" do
       it "shows the empty state with an upload CTA" do
         wingfoil.destroy!

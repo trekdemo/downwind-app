@@ -3,45 +3,55 @@
 <div id="<%= dom_id activity %>" class="card card-body transition hover:ring-1 hover:ring-cyan-500/40">
   <% if activity.analyzed? %>
     <% analysis = activity.analysis %>
-    <div class="flex items-start justify-between gap-3">
-      <div class="min-w-0">
-        <div class="mb-1.5"><%= kind_badge(activity) %></div>
-        <h3 class="truncate text-base font-semibold text-slate-100 hover:text-cyan-400" title="<%= activity.title.presence || "Untitled activity" %>"><%= activity.title.presence || "Untitled activity" %></h3>
-      </div>
-      <div class="flex shrink-0 items-center gap-1 text-xs text-slate-400">
-        <%= icon :calendar, class: "size-4" %>
-        <time datetime="<%= activity.started_at.iso8601 %>"><%= l(activity.started_at, format: :short) %></time>
-      </div>
-    </div>
+    <div class="flex gap-4">
+      <% if analysis.route_preview %>
+        <div class="w-2/5 md:w-1/5 shrink-0 h-full rounded-lg bg-slate-950/60 p-2 text-cyan-400/80">
+          <%= route_preview_svg(analysis.route_preview, class: "size-full") %>
+        </div>
+      <% end %>
 
-    <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-      <% distance_value, distance_unit = distance_parts(analysis.distance_total) %>
-      <div>
-        <p class="stat-label">Distance</p>
-        <p><span class="stat-value text-lg"><%= distance_value %></span> <span class="stat-unit"><%= distance_unit %></span></p>
-      </div>
-      <% on_foil_value, on_foil_unit = distance_parts(analysis.distance_on_foil) %>
-      <div>
-        <p class="stat-label">On foil</p>
-        <p><span class="stat-value text-lg"><%= on_foil_value %></span> <span class="stat-unit"><%= on_foil_unit %></span></p>
-      </div>
-      <div>
-        <p class="stat-label">Paddle-ups</p>
-        <p><span class="stat-value text-lg"><%= analysis.starts %></span></p>
-      </div>
-      <% duration_value, _duration_unit = duration_parts(analysis.duration) %>
-      <div>
-        <p class="stat-label">Duration</p>
-        <p><span class="stat-value text-lg"><%= duration_value %></span></p>
-      </div>
-    </div>
+      <div class="min-w-0 flex-1">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="mb-1.5"><%= kind_badge(activity) %></div>
+            <h3 class="truncate text-base font-semibold text-slate-100 hover:text-cyan-400" title="<%= activity.title.presence || "Untitled activity" %>"><%= activity.title.presence || "Untitled activity" %></h3>
+          </div>
+          <div class="flex shrink-0 items-center gap-1 text-xs text-slate-400">
+            <%= icon :calendar, class: "size-4" %>
+            <time datetime="<%= activity.started_at.iso8601 %>"><%= l(activity.started_at, format: :short) %></time>
+          </div>
+        </div>
 
-    <div class="mt-4">
-      <div class="mb-1 flex items-center justify-between text-xs">
-        <span class="text-slate-400">On foil</span>
-        <span class="tabular-nums text-cyan-400"><%= number_with_precision(analysis.distance_on_foil_percentage || 0, precision: 0) %>%</span>
+        <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <% distance_value, distance_unit = distance_parts(analysis.distance_total) %>
+          <div>
+            <p class="stat-label">Distance</p>
+            <p><span class="stat-value text-lg"><%= distance_value %></span> <span class="stat-unit"><%= distance_unit %></span></p>
+          </div>
+          <% on_foil_value, on_foil_unit = distance_parts(analysis.distance_on_foil) %>
+          <div>
+            <p class="stat-label">On foil</p>
+            <p><span class="stat-value text-lg"><%= on_foil_value %></span> <span class="stat-unit"><%= on_foil_unit %></span></p>
+          </div>
+          <div>
+            <p class="stat-label">Paddle-ups</p>
+            <p><span class="stat-value text-lg"><%= analysis.starts %></span></p>
+          </div>
+          <% duration_value, _duration_unit = duration_parts(analysis.duration) %>
+          <div>
+            <p class="stat-label">Duration</p>
+            <p><span class="stat-value text-lg"><%= duration_value %></span></p>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <div class="mb-1 flex items-center justify-between text-xs">
+            <span class="text-slate-400">On foil</span>
+            <span class="tabular-nums text-cyan-400"><%= number_with_precision(analysis.distance_on_foil_percentage || 0, precision: 0) %>%</span>
+          </div>
+          <progress class="progress-foil" max="100" value="<%= analysis.distance_on_foil_percentage || 0 %>"></progress>
+        </div>
       </div>
-      <progress class="progress-foil" max="100" value="<%= analysis.distance_on_foil_percentage || 0 %>"></progress>
     </div>
   <% else %>
     <div class="flex items-center justify-between">
