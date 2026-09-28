@@ -47,4 +47,17 @@ RSpec.describe FoilActivityAnalyzer do
       expect(bounds['east']).to be > bounds['west']
     end
   end
+
+  describe '#route_preview' do
+    it 'simplifies the route to [lat, lon] pairs within the route bounds' do
+      preview = analyzer.route_preview
+      bounds = analyzer.route_bounds
+
+      expect(preview.size).to be_between(2, RouteSimplifier::MAX_POINTS)
+      expect(preview).to all(match([
+        be_between(bounds['south'].round(5), bounds['north'].round(5)),
+        be_between(bounds['west'].round(5), bounds['east'].round(5))
+      ]))
+    end
+  end
 end

@@ -52,7 +52,8 @@ class FoilActivityAnalyzer
       hr_avg:,
       hr_max:,
       fastest_full_km:,
-      route_bounds:
+      route_bounds:,
+      route_preview:
     }
   end
 
@@ -121,6 +122,11 @@ class FoilActivityAnalyzer
     west, east = *data_frame[:lon].minmax
 
     { "north" => north, "south" => south, "east" => east, "west" => west }
+  end
+
+  # @return [Array<Array(Float, Float)>] simplified [lat, lon] pairs of the route
+  def route_preview
+    RouteSimplifier.new(data_frame[:lat].to_a.zip(data_frame[:lon].to_a)).simplify
   end
 
   private
