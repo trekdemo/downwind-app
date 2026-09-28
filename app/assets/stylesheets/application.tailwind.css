@@ -152,3 +152,10 @@
     @apply rounded-full bg-cyan-500;
   }
 }
+
+/* Leaflet paints the map container grey as soon as it initializes; keep it
+   transparent so the route preview behind it shows until the tiles arrive.
+   Outside @layer so Tailwind never purges the Leaflet-only class. */
+.route-map.leaflet-container {
+  background: transparent;
+}

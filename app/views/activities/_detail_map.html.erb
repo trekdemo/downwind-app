@@ -15,9 +15,12 @@
     data-action="turbo:morph-element->map#handleMorph"
   >
     <div class="relative isolate">
+      <%# Shows through the transparent map container until the tiles cover it %>
+      <%= route_preview_svg(activity.analysis.route_preview, class: "absolute inset-0 size-full p-8 text-slate-600") %>
+
       <div
         data-map-target="loading"
-        class="absolute inset-0 z-[1000] flex items-center justify-center rounded-lg bg-slate-900/80"
+        class="absolute inset-0 z-[1000] flex items-center justify-center rounded-lg bg-slate-900/40"
       >
         <div class="size-8 animate-spin rounded-full border-2 border-slate-600 border-t-cyan-400"></div>
         <span class="ml-2 text-sm text-slate-400">Loading route&hellip;</span>
@@ -25,7 +28,7 @@
 
       <div
         data-map-target="map"
-        class="route-map h-80 w-full rounded-lg sm:h-96 lg:h-[28rem]"
+        class="route-map relative h-80 w-full rounded-lg sm:h-96 lg:h-[28rem]"
       ></div>
     </div>
 

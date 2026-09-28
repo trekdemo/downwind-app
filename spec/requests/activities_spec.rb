@@ -136,6 +136,14 @@ RSpec.describe "/activities", type: :request do
         expect(response).to have_http_status(:ok)
         expect(response.body).to include(activity.title)
       end
+
+      it "draws the route preview behind the map" do
+        activity.analysis.update!(route_preview: build(:analysis, :with_route_preview).route_preview)
+
+        get activity_url(activity)
+
+        expect(response.body).to match(%r{<svg[^>]*>\s*<polyline})
+      end
     end
 
     context "when the activity has not been analyzed yet" do
