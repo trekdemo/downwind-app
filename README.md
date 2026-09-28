@@ -7,6 +7,10 @@ get back up, and how fast you went.
 
 Live at [downwind.gergo.dev](https://downwind.gergo.dev).
 
+![Dashboard with totals, a progress chart and recent activities](docs/screenshots/dashboard.png)
+
+![Activity page with the route coloured by speed and the on-foil breakdown](docs/screenshots/activity.png)
+
 ## What it calculates
 
 Every upload is analysed in a background job. The results are stored per
@@ -24,8 +28,8 @@ activity:
 | Heart rate (avg / max)      | Read from Garmin's `TrackPointExtension`, if the file has it           |
 | Route bounds                | Bounding box of the track, used to frame the map                       |
 
-The activity page shows the route on a Leaflet map and on-foil vs. off-foil
-charts for both time and distance.
+The activity page shows the route on a Leaflet map, coloured by speed, and the
+share of the session spent on foil along with the distance and time on foil.
 
 ### How "on foil" is detected
 
