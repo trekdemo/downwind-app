@@ -67,4 +67,33 @@ RSpec.describe ActivitiesHelper, type: :helper do
       expect(helper.kind_badge(activity)).to include('badge-teal')
     end
   end
+
+  describe '#route_preview_svg' do
+    let(:route) { [ [ 47.0, 19.0 ], [ 47.01, 19.0 ], [ 47.01, 19.02 ] ] }
+
+    it 'draws the route as a polyline, north up' do
+      svg = Nokogiri::HTML5.fragment(helper.route_preview_svg(route, class: 'size-24'))
+      points = svg.at_css('polyline')['points'].split.map { |pair| pair.split(',').map(&:to_f) }
+
+      expect(svg.at_css('svg')['class']).to eq('size-24')
+      expect(points.size).to eq(3)
+      expect(points[0][1]).to be > points[1][1] # heading north moves up
+      expect(points[2][0]).to be > points[1][0] # heading east moves right
+    end
+
+    it 'scales the longest side to 100 units' do
+      svg = Nokogiri::HTML5.fragment(helper.route_preview_svg(route))
+      xs, ys = svg.at_css('polyline')['points'].split.map { |pair| pair.split(',').map(&:to_f) }.transpose
+
+      expect([ xs.max - xs.min, ys.max - ys.min ].max).to eq(100)
+    end
+
+    it 'renders nothing without a preview' do
+      expect(helper.route_preview_svg(nil)).to be_nil
+    end
+
+    it 'renders nothing for a route that never moved' do
+      expect(helper.route_preview_svg([ [ 47.0, 19.0 ], [ 47.0, 19.0 ] ])).to be_nil
+    end
+  end
 end

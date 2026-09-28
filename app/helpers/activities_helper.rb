@@ -61,6 +61,48 @@ module ActivitiesHelper
     [ number_to_duration(duration), nil ]
   end
 
+  # Draws a simplified route as a single-colour outline, north up.
+  # The longest side spans 100 units of the viewBox; size it with CSS.
+  #
+  # @param points [Array<Array(Float, Float)>, nil] [lat, lon] pairs, e.g. Analysis#route_preview
+  # @param options [Hash] extra attributes for the <svg> tag, e.g. class
+  # @return [ActiveSupport::SafeBuffer, nil] nil when there is nothing to draw
+  def route_preview_svg(points, **options)
+    return if points.blank?
+
+    # Same equirectangular projection as RouteSimplifier; SVG's y axis points down
+    lats = points.map(&:first)
+    scale = Math.cos((lats.min + lats.max) / 2.0 * Math::PI / 180)
+    projected = points.map { |lat, lon| [ lon * scale, -lat ] }
+
+    (min_x, max_x), (min_y, max_y) = projected.transpose.map(&:minmax)
+    width = max_x - min_x
+    height = max_y - min_y
+    return if [ width, height ].max.zero?
+
+    factor = 100 / [ width, height ].max
+    polyline_points = projected.map do |x, y|
+      "#{((x - min_x) * factor).round(1)},#{((y - min_y) * factor).round(1)}"
+    end
+
+    tag.svg(
+      tag.polyline(
+        points: polyline_points.join(" "),
+        fill: "none",
+        stroke: "currentColor",
+        "stroke-width": 2,
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "vector-effect": "non-scaling-stroke"
+      ),
+      # Padding keeps the rounded line caps inside the box
+      viewBox: "-2 -2 #{(width * factor + 4).round(1)} #{(height * factor + 4).round(1)}",
+      preserveAspectRatio: "xMidYMid meet",
+      aria: { hidden: true },
+      **options
+    )
+  end
+
   private
 
   def split_value_and_unit(formatted)
