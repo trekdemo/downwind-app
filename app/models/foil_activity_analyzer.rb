@@ -26,10 +26,8 @@ class FoilActivityAnalyzer
     @data_frame = Daru::DataFrame.new(trackpoints).tap do |df|
       df[:distance_cumsum_m] = df[:distance_m].cumsum
 
-      # On foil when the average speed is above the lift speed for T seconds
-      # TODO: Is there a way to specify time instead of N number of points?
-      loopback = ([ 20, df.size ].min / df[:elapsed_sec].mean).to_i
-      df[:on_foil] = df[:speed_m_s].rolling_mean(loopback).replace_nils(0).dichotomize(lift_speed / 3.6)
+      # On foil when the average speed is above the lift speed for the window
+      df[:on_foil] = Daru::Vector.new(rolling_speed(df).map { |speed| speed > lift_speed / 3.6 ? 1 : 0 }, index: df.index)
     end
   end
 
@@ -132,6 +130,33 @@ class FoilActivityAnalyzer
   private
 
   def on_foil = data_frame.where(data_frame[:on_foil].eq(1))
+
+  ROLLING_SPEED_WINDOW_SEC = 20
+  private_constant :ROLLING_SPEED_WINDOW_SEC
+
+  def rolling_speed(df)
+    distances = df[:distance_m].to_a
+    elapsed = df[:elapsed_sec].to_a
+    window_start = 0
+    window_m = 0.0
+    window_sec = 0.0
+
+    distances.each_index.map do |window_end|
+      window_m += distances[window_end]
+      window_sec += elapsed[window_end]
+
+      # Drop the oldest segments while the rest still covers the window
+      while window_sec - elapsed[window_start] >= ROLLING_SPEED_WINDOW_SEC
+        window_m -= distances[window_start]
+        window_sec -= elapsed[window_start]
+        window_start += 1
+      end
+
+      # Until a full window is recorded, pretend the rider stood still before
+      # the recording began, so early speeds are only ever underestimated
+      window_m / [ window_sec, ROLLING_SPEED_WINDOW_SEC ].max
+    end
+  end
 
   # @return [Array<Hash>] Coordinates with timestamp and heart rate data
   def trackpoints
