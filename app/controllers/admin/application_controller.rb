@@ -8,7 +8,7 @@ class Admin::ApplicationController < ApplicationController
     # TECH-DEBT: When needed, replace this check with something more robust
     unless current_user.id == 1
       flash[:error] = "You must be admin to access this section"
-      redirect_to root_path
+      redirect_to main_app.root_path
     end
   end
 end

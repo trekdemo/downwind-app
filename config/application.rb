@@ -26,5 +26,9 @@ module DownwindApp
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # Mission Control reuses the admin login and authorization checks instead of HTTP basic auth
+    config.mission_control.jobs.base_controller_class = "Admin::ApplicationController"
+    config.mission_control.jobs.http_basic_auth_enabled = false
   end
 end
