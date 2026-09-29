@@ -50,6 +50,7 @@ class FoilActivityAnalyzer
       hr_avg:,
       hr_max:,
       fastest_full_km:,
+      fastest_full_10km:,
       route_bounds:,
       route_preview:
     }
@@ -91,29 +92,8 @@ class FoilActivityAnalyzer
     end
   end
 
-  def fastest_full_km
-    dist = data_frame[:distance_cumsum_m].to_a
-    times = data_frame[:timestamp].to_a
-    min_time = nil
-    finish = 0
-
-    # As `start` advances, `finish` only ever moves forward with it, so a
-    # single pass with two pointers is enough:
-    #
-    #   dist  0 ------- 1km ------- 2km ------------->
-    #         |start-----------finish|
-    #             |start-----------finish|
-    #                 |start--------finish|
-    dist.each_index do |start|
-      finish += 1 while finish < dist.size && dist[finish] <= dist[start] + 1_000
-      break if finish == dist.size
-
-      time_for_km = times[finish] - times[start]
-      min_time = time_for_km if min_time.nil? || time_for_km < min_time
-    end
-
-    min_time
-  end
+  def fastest_full_km = fastest_full_distance(1_000)
+  def fastest_full_10km = fastest_full_distance(10_000)
 
   def route_bounds
     south, north = *data_frame[:lat].minmax
@@ -130,6 +110,32 @@ class FoilActivityAnalyzer
   private
 
   def on_foil = data_frame.where(data_frame[:on_foil].eq(1))
+
+  # @param meters [Numeric] length of the stretch
+  # @return [Float, nil] seconds of the fastest stretch, nil when the track is shorter
+  def fastest_full_distance(meters)
+    dist = data_frame[:distance_cumsum_m].to_a
+    times = data_frame[:timestamp].to_a
+    min_time = nil
+    finish = 0
+
+    # As `start` advances, `finish` only ever moves forward with it, so a
+    # single pass with two pointers is enough:
+    #
+    #   dist  0 ------- 1km ------- 2km ------------->
+    #         |start-----------finish|
+    #             |start-----------finish|
+    #                 |start--------finish|
+    dist.each_index do |start|
+      finish += 1 while finish < dist.size && dist[finish] <= dist[start] + meters
+      break if finish == dist.size
+
+      time_for_distance = times[finish] - times[start]
+      min_time = time_for_distance if min_time.nil? || time_for_distance < min_time
+    end
+
+    min_time
+  end
 
   ROLLING_SPEED_WINDOW_SEC = 20
   private_constant :ROLLING_SPEED_WINDOW_SEC

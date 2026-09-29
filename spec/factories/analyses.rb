@@ -14,6 +14,7 @@ FactoryBot.define do
     hr_avg { 150.0 }
     hr_max { 180.0 }
     fastest_full_km { 120 }
+    fastest_full_10km { 1500 }
 
     trait :with_route_preview do
       route_preview { [ [ 47.0, 19.0 ], [ 47.01, 19.0 ], [ 47.01, 19.02 ] ] }
