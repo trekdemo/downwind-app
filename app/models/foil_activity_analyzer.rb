@@ -173,7 +173,7 @@ class FoilActivityAnalyzer
         prev_point = track.points.first
 
         track.points.map do |p|
-          distance_m = distance_between(prev_point.lat, prev_point.lon, p.lat, p.lon)
+          distance_m = distance_between(prev_point, p)
           elapsed_sec = p.time - prev_point.time
           prev_point = p
 
@@ -191,10 +191,10 @@ class FoilActivityAnalyzer
     end
   end
 
-  def distance_between(a_lat, a_lon, b_lat, b_lon)
+  def distance_between(a, b)
     Geocoder::Calculations.distance_between(
-      [ a_lat, a_lon ],
-      [ b_lat, b_lon ],
+      [ a.lat, a.lon ],
+      [ b.lat, b.lon ],
       units: :km
     ) * 1_000
   end
