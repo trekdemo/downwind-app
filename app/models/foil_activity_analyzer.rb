@@ -51,6 +51,7 @@ class FoilActivityAnalyzer
       hr_max:,
       fastest_full_km:,
       fastest_full_10km:,
+      on_foil_sections:,
       route_bounds:,
       route_preview:
     }
@@ -95,6 +96,20 @@ class FoilActivityAnalyzer
   def fastest_full_km = fastest_full_distance(1_000)
   def fastest_full_10km = fastest_full_distance(10_000)
 
+  # Every stretch spent continuously on foil. A stretch starts at the last
+  # point before lift-off, as the on-foil distance and time of the first
+  # point on foil are measured from there.
+  #
+  # @return [Array<OnFoilSection>]
+  def on_foil_sections
+    foiling = data_frame[:on_foil].to_a
+
+    trackpoints.each_index
+      .chunk_while { |previous, current| foiling[previous] == foiling[current] }
+      .select { |indexes| foiling[indexes.first] == 1 }
+      .map { |indexes| on_foil_section(trackpoints[[ indexes.first - 1, 0 ].max], trackpoints.values_at(*indexes)) }
+  end
+
   def route_bounds
     south, north = *data_frame[:lat].minmax
     west, east = *data_frame[:lon].minmax
@@ -135,6 +150,23 @@ class FoilActivityAnalyzer
     end
 
     min_time
+  end
+
+  def on_foil_section(lift_off, points)
+    distance = points.sum { it[:distance_m] }
+    duration = points.last[:timestamp] - lift_off[:timestamp]
+    heart_rates = points.map { it[:hr] }
+
+    OnFoilSection.new(
+      started_at: lift_off[:timestamp],
+      ended_at: points.last[:timestamp],
+      distance:,
+      speed_avg: duration.positive? ? distance / duration : 0.0,
+      speed_max: points.map { it[:speed_m_s] }.max,
+      hr_avg: heart_rates.sum.fdiv(heart_rates.size),
+      hr_max: heart_rates.max,
+      position: [ lift_off[:lat], lift_off[:lon] ]
+    )
   end
 
   ROLLING_SPEED_WINDOW_SEC = 20

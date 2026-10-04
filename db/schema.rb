@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_29_190120) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_03_203913) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -73,6 +73,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_29_190120) do
     t.json "route_bounds"
     t.json "route_preview"
     t.integer "fastest_full_10km"
+    t.json "on_foil_sections"
     t.index ["activity_id"], name: "index_analyses_on_activity_id", unique: true
   end
 

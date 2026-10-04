@@ -140,6 +140,51 @@ RSpec.describe FoilActivityAnalyzer do
     end
   end
 
+  describe '#on_foil_sections' do
+    it 'has a section for every start' do
+      expect(analyzer.on_foil_sections.size).to eq(analyzer.starts)
+    end
+
+    it 'adds up to the distance and time on foil' do
+      sections = analyzer.on_foil_sections
+
+      expect(sections.sum(&:distance)).to be_within(0.001).of(analyzer.distance_on_foil)
+      expect(sections.sum(&:duration)).to eq(analyzer.time_on_foil)
+    end
+
+    context 'with two runs on foil' do
+      include_context 'with a synthetic track'
+
+      let(:segments) do
+        [
+          *Array.new(30) { [ 1, 2.0 ] },
+          *Array.new(40) { [ 1, 8.0 ] },
+          *Array.new(30) { [ 1, 1.0 ] },
+          *Array.new(60) { [ 1, 6.0 ] },
+          *Array.new(30) { [ 1, 1.0 ] }
+        ]
+      end
+
+      it 'describes each run from lift-off to touch-down' do
+        first, second = analyzer.on_foil_sections
+        trackpoints = analyzer.data_frame
+        lift_off = analyzer.data_frame[:on_foil].to_a.index(1) - 1
+
+        expect(analyzer.on_foil_sections.size).to eq(2)
+        expect(first).to have_attributes(
+          started_at: trackpoints[:timestamp][lift_off],
+          position: [ trackpoints[:lat][lift_off], trackpoints[:lon][lift_off] ],
+          hr_avg: 120,
+          hr_max: 120
+        )
+        expect(first.speed_avg).to be_within(0.001).of(first.distance / first.duration)
+        expect(first.speed_max).to eq(8.0)
+        expect(second.speed_max).to eq(6.0)
+        expect(second.started_at).to be > first.ended_at
+      end
+    end
+  end
+
   describe '#route_bounds' do
     it 'calculates geographical bounds from trackpoints' do
       bounds = analyzer.route_bounds

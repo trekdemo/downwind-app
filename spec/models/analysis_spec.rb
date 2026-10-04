@@ -15,4 +15,21 @@ RSpec.describe Analysis, type: :model do
       expect(center['lng']).to eq(0)
     end
   end
+
+  describe '#on_foil_sections' do
+    it 'reads the stored sections back as OnFoilSections' do
+      analysis = create(:analysis, :with_on_foil_sections).reload
+      section = analysis.on_foil_sections.first
+
+      expect(analysis.on_foil_sections.size).to eq(2)
+      expect(section).to be_a(OnFoilSection)
+      expect(section.started_at).to eq(Time.utc(2026, 5, 1, 10, 0, 0))
+      expect(section.duration).to eq(42)
+      expect(section.position).to eq([ 47.12345, 19.54321 ])
+    end
+
+    it 'is empty for analyses made before sections were stored' do
+      expect(create(:analysis).on_foil_sections).to eq([])
+    end
+  end
 end

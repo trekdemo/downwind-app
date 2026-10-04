@@ -6,6 +6,9 @@ class Analysis < ApplicationRecord
   # @!attribute route_bounds
   #   @return [Hash] The name of the task.
 
+  # Empty for analyses made before sections were stored
+  attribute :on_foil_sections, OnFoilSection::ListType.new
+
   def route_center
     {
       "lat" => (route_bounds["north"] + route_bounds["south"]) / 2.0,

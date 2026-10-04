@@ -16,6 +16,17 @@ FactoryBot.define do
     fastest_full_km { 120 }
     fastest_full_10km { 1500 }
 
+    trait :with_on_foil_sections do
+      on_foil_sections do
+        [
+          { started_at: Time.utc(2026, 5, 1, 10, 0, 0), ended_at: Time.utc(2026, 5, 1, 10, 0, 42), distance: 210.4, speed_avg: 5.01,
+            speed_max: 6.2, hr_avg: 151.3, hr_max: 164, position: [ 47.12345, 19.54321 ] },
+          { started_at: Time.utc(2026, 5, 1, 10, 3, 5), ended_at: Time.utc(2026, 5, 1, 10, 4, 0), distance: 305.0, speed_avg: 5.55,
+            speed_max: 7.1, hr_avg: 158.0, hr_max: 171, position: [ 47.12401, 19.54412 ] }
+        ]
+      end
+    end
+
     trait :with_route_preview do
       route_preview { [ [ 47.0, 19.0 ], [ 47.01, 19.0 ], [ 47.01, 19.02 ] ] }
     end
