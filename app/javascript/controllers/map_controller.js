@@ -15,7 +15,7 @@ export default class extends Controller {
   static values = {
     bounds: Object, // boundsValue
     gpxUrl: String, // gpxUrlValue
-    sections: { type: Array, default: [] }, // sectionsValue [{ started_at, ended_at }] ISO 8601 times
+    sections: { type: Array, default: [] }, // sectionsValue [{ id, started_at, ended_at }] ISO 8601 times
   }
   connect() {
     this.initializeMap()
@@ -99,8 +99,8 @@ export default class extends Controller {
       // const gpxData = await this.fetchGPX(this.gpxUrlValue, { cache: 'no-store' })
       const gpxData = await this.fetchGPX(this.gpxUrlValue)
       const routeData = this.parseGPX(gpxData)
-      this.renderRoute(routeData, { primary: true })
-      this.renderSections(routeData)
+      const hotlineConfig = this.renderRoute(routeData, { primary: true })
+      this.renderSections(routeData, hotlineConfig)
     } catch (error) {
       this.mapTarget.innerText = 'Error loading route: ' + error
       console.error('Route loading error:', error)
@@ -189,7 +189,7 @@ export default class extends Controller {
   renderRoute(routeData, options = {}) {
     const hotlinePoints = routeData.points.map(p => [p.lat, p.lng, p.speed])
 
-    this.hotlineConfig = {
+    const hotlineConfig = {
       min: routeData.minSpeed,
       max: routeData.maxSpeed,
       palette: {
@@ -207,51 +207,54 @@ export default class extends Controller {
     // Hotlines share one canvas per renderer, so the route needs its own
     // to live in its own pane
     const hotlineLayer = L.hotline(hotlinePoints, {
-      ...this.hotlineConfig,
+      ...hotlineConfig,
       renderer: L.Hotline.renderer({ pane: "route" }),
     })
     hotlineLayer.addTo(this.map)
 
     this.updateSpeedLegend(routeData.minSpeed, routeData.maxSpeed)
+
+    return hotlineConfig
   }
 
   // Cuts each section on foil out of the route by its start and end time.
   // A section gets a speed-coloured copy of its part of the route, shown
   // while it is highlighted, and a wide transparent line to hover it by.
   // Hovering only reports the section (map:section-enter/-leave); whoever
-  // owns the highlight calls back with highlightSection.
-  renderSections(routeData) {
+  // owns the highlight calls back with highlightSection. The highlights are
+  // coloured like the route (hotlineConfig).
+  renderSections(routeData, hotlineConfig) {
     const highlightRenderer = L.Hotline.renderer({ pane: "highlight" })
 
-    // Index of the section => its highlight, for the sections that can be drawn
+    // Id of the section => its highlight, for the sections that can be drawn
     this.sections = new Map()
 
-    this.sectionsValue.forEach(({ started_at, ended_at }, index) => {
+    this.sectionsValue.forEach(({ id, started_at, ended_at }) => {
       const startedAt = new Date(started_at)
       const endedAt = new Date(ended_at)
       const points = routeData.points.filter(p => p.time >= startedAt && p.time <= endedAt)
       if (points.length < 2) return
 
-      this.sections.set(index, L.hotline(points.map(p => [p.lat, p.lng, p.speed]), {
-        ...this.hotlineConfig,
+      this.sections.set(id, L.hotline(points.map(p => [p.lat, p.lng, p.speed]), {
+        ...hotlineConfig,
         weight: 5,
         renderer: highlightRenderer,
       }))
 
       L.polyline(points.map(p => [p.lat, p.lng]), { pane: "sections", weight: 16, opacity: 0 })
-        .on("mouseover", () => this.dispatch("section-enter", { detail: { index } }))
+        .on("mouseover", () => this.dispatch("section-enter", { detail: { id } }))
         .on("mouseout", () => this.dispatch("section-leave"))
         .addTo(this.map)
     })
   }
 
-  // Shows the section at the index on top of the faded route, or the route
-  // alone for -1. Before the route has loaded there's nothing to show yet.
-  highlightSection(index) {
+  // Shows the section with the id on top of the faded route, or the route
+  // alone for "". Before the route has loaded there's nothing to show yet.
+  highlightSection(id) {
     if (!this.sections) return
 
-    this.map.getPane("route").classList.toggle("route-faded", this.sections.has(index))
-    this.sections.forEach((highlight, i) => i === index ? highlight.addTo(this.map) : highlight.remove())
+    this.map.getPane("route").classList.toggle("route-faded", this.sections.has(id))
+    this.sections.forEach((highlight, sectionId) => sectionId === id ? highlight.addTo(this.map) : highlight.remove())
   }
 
   // Fills the optional speed legend targets with km/h values (speed is

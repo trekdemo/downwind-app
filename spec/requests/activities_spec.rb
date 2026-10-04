@@ -170,7 +170,7 @@ RSpec.describe "/activities", type: :request do
           get activity_url(activity)
 
           expect(response.body).to include("Sections on foil", "2 sections")
-          expect(response.body).to include("data-map-sections-value=\"[{&quot;started_at&quot;:&quot;#{Time.utc(2026, 5, 1, 10).in_time_zone.iso8601(3)}")
+          expect(response.body).to include("data-map-sections-value=\"[{&quot;id&quot;:#{Time.utc(2026, 5, 1, 10).to_i},&quot;started_at&quot;:&quot;#{Time.utc(2026, 5, 1, 10).in_time_zone.iso8601(3)}")
           expect(response.body).not_to include("Fastest 1 km")
         end
       end

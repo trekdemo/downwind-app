@@ -11,22 +11,27 @@ export default class extends Controller {
   ]
   static outlets = ["map"]
   static values = {
-    // highlightedValue index of the highlighted section, -1 for none like
-    // HTMLSelectElement#selectedIndex
-    highlighted: { type: Number, default: -1 },
+    // highlightedValue id of the highlighted section, 0 for none (no section
+    // starts at the epoch)
+    highlighted: { type: Number, default: 0 },
   }
 
-  // From a row (index param) or from the map (index in the event detail)
-  enter({ params, detail }) {
-    this.highlightedValue = params.index ?? detail.index
+  // From a row (id param)
+  enter({ params: { id } }) {
+    this.highlightedValue = id
+  }
+
+  // From the map (id in the event detail)
+  enterFromMap({ detail: { id } }) {
+    this.highlightedValue = id
   }
 
   leave() {
-    this.highlightedValue = -1
+    this.highlightedValue = 0
   }
 
-  highlightedValueChanged(index) {
-    this.rowTargets.forEach((row, i) => row.toggleAttribute("data-highlighted", i === index))
-    if (this.hasMapOutlet) this.mapOutlet.highlightSection(index)
+  highlightedValueChanged(id) {
+    this.rowTargets.forEach(row => row.toggleAttribute("data-highlighted", Number(row.dataset.onFoilSectionsIdParam) === id))
+    if (this.hasMapOutlet) this.mapOutlet.highlightSection(id)
   }
 }

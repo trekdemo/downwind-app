@@ -9,7 +9,7 @@
     class="space-y-4"
     data-controller="on-foil-sections"
     data-on-foil-sections-map-outlet="#<%= dom_id activity, :map %>"
-    data-action="map:section-enter->on-foil-sections#enter map:section-leave->on-foil-sections#leave"
+    data-action="map:section-enter->on-foil-sections#enterFromMapmap:section-leave->on-foil-sections#leave"
   >
     <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
       <%= render "detail_map", activity: activity, sections: sections %>

@@ -5,6 +5,13 @@
 OnFoilSection = Data.define(:started_at, :ended_at, :distance, :speed_avg, :speed_max, :hr_avg, :hr_max, :position) do
   def duration = ended_at - started_at
 
+  # Identifies the section across the list and the map, which only know it by
+  # its times. Sections never overlap, so the start, in seconds since the epoch, is unique within an activity.
+  def id = started_at.to_i
+
+  # What the map needs to cut the section out of the route
+  def to_time_window = { id:, started_at: started_at.iso8601(3), ended_at: ended_at.iso8601(3) }
+
   # Stores sections in a JSON column as a list of OnFoilSections
   class self::ListType < ActiveRecord::Type::Json
     def deserialize(json) = cast(super)

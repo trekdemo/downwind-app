@@ -13,7 +13,7 @@
     data-controller="map"
     data-map-gpx-url-value="<%= rails_blob_path(activity.gpx_file) %>"
     data-map-bounds-value="<%= activity.analysis.route_bounds.to_json %>"
-    data-map-sections-value="<%= sections.map { { started_at: it.started_at.iso8601(3), ended_at: it.ended_at.iso8601(3) } }.to_json %>"
+    data-map-sections-value="<%= sections.map(&:to_time_window).to_json %>"
     data-action="turbo:morph-element->map#handleMorph"
   >
     <div class="relative isolate">
