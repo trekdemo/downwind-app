@@ -159,3 +159,9 @@
 .route-map.leaflet-container {
   background: transparent;
 }
+
+/* Grays out the route while a section on foil is highlighted on the map */
+.leaflet-pane.route-faded {
+  filter: grayscale(1);
+  opacity: 0.3;
+}

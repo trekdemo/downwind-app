@@ -138,7 +138,7 @@ RSpec.describe "/activities", type: :request do
       let(:kind) { 'sup_dw' }
       let(:activity) do
         create(:activity, user: user, kind:, title: 'Downwind session').tap do |activity|
-          create(:analysis, :with_route_preview, activity:, route_bounds: { "north" => 1, "south" => 0, "east" => 1, "west" => 0 })
+          create(:analysis, :with_route_preview, :with_on_foil_sections, activity:, route_bounds: { "north" => 1, "south" => 0, "east" => 1, "west" => 0 })
         end
       end
 
@@ -156,10 +156,22 @@ RSpec.describe "/activities", type: :request do
       context "when it's a SUP DW activity" do
         let(:kind) { 'sup_dw' }
 
-        it "shows the fastest 1 km and 10 km, but not the sections on foil" do
+        it "shows the fastest 1 km and 10 km, and the sections on foil" do
           get activity_url(activity)
 
-          expect(response.body).to include("Fastest 1 km", "Fastest 10 km")
+          expect(response.body).to include("Fastest 1 km", "Fastest 10 km", "Sections on foil")
+        end
+      end
+
+      context "when it's a dockstart activity" do
+        let(:kind) { 'dockstart' }
+
+        it "lists the sections on foil, and hands their times to the map" do
+          get activity_url(activity)
+
+          expect(response.body).to include("Sections on foil", "2 sections")
+          expect(response.body).to include("data-map-sections-value=\"[{&quot;started_at&quot;:&quot;#{Time.utc(2026, 5, 1, 10).in_time_zone.iso8601(3)}")
+          expect(response.body).not_to include("Fastest 1 km")
         end
       end
     end

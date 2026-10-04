@@ -24,6 +24,9 @@ class Activity < ApplicationRecord
   # Set by the ActivityAnalyzerJob, stays nil if analysis fails
   def started_at = super || created_at
 
+  # Downwinds are judged by their pace over distance
+  def paced? = sup_dw?
+
   def analyzed?
     !!analysis&.persisted?
   end
