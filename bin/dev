@@ -6,6 +6,13 @@ if ! gem list foreman -i --silent; then
 fi
 
 # Default to port 3000 if not specified
+# Port precedence: explicit PORT, then a stable per-worktree port, then 3000.
+# A linked worktree has a .git *file* (the main checkout has a .git directory),
+# so parallel worktrees can run side by side without colliding.
+if [ -z "$PORT" ] && [ -f "$(git rev-parse --show-toplevel)/.git" ]; then
+  worktree_name="$(basename "$(git rev-parse --show-toplevel)")"
+  PORT=$((3001 + $(printf '%s' "$worktree_name" | cksum | cut -d' ' -f1) % 999))
+fi
 export PORT="${PORT:-3000}"
 
 # Let the debug gem allow remote connections,
