@@ -14,6 +14,13 @@ RSpec.describe OnFoilSection do
     end
   end
 
+  describe "#failed_start?" do
+    it "is true for sections of 5 seconds or less" do
+      expect(section).not_to be_failed_start
+      expect(section.with(ended_at: section.started_at + 5)).to be_failed_start
+    end
+  end
+
   describe "#to_time_window" do
     it "hands the map the id and the times to cut the section out of the route" do
       expect(section.to_time_window).to eq(

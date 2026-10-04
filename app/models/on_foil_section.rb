@@ -5,6 +5,10 @@
 OnFoilSection = Data.define(:started_at, :ended_at, :distance, :speed_avg, :speed_max, :hr_avg, :hr_max, :position) do
   def duration = ended_at - started_at
 
+  # A section of 5 seconds or less is a failed start: it counts as a start
+  # but isn't worth listing or highlighting.
+  def failed_start? = duration <= 5
+
   # Identifies the section across the list and the map, which only know it by
   # its times. Sections never overlap, so the start, in seconds since the epoch, is unique within an activity.
   def id = started_at.to_i

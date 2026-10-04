@@ -28,6 +28,15 @@ RSpec.describe Analysis, type: :model do
       expect(section.position).to eq([ 47.12345, 19.54321 ])
     end
 
+    it 'leaves failed starts out of the shown sections' do
+      analysis = create(:analysis, :with_on_foil_sections)
+      failed = analysis.on_foil_sections.first.with(ended_at: analysis.on_foil_sections.first.started_at + 3)
+      analysis.on_foil_sections = [ failed, *analysis.on_foil_sections.drop(1) ]
+
+      expect(analysis.on_foil_sections.size).to eq(2)
+      expect(analysis.successful_on_foil_sections).to eq(analysis.on_foil_sections.drop(1))
+    end
+
     it 'is empty for analyses made before sections were stored' do
       expect(create(:analysis).on_foil_sections).to eq([])
     end
