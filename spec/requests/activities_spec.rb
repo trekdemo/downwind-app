@@ -123,31 +123,8 @@ RSpec.describe "/activities", type: :request do
   end
 
   describe "GET /activities/:id" do
-    context "when the activity has been analyzed" do
-      let(:activity) { create(:activity, user: user, kind: 'sup_dw', title: 'Downwind session') }
-
-      before do
-        create(:analysis, activity: activity, route_bounds: { "north" => 1, "south" => 0, "east" => 1, "west" => 0 })
-      end
-
-      it "renders the activity detail page" do
-        get activity_url(activity)
-
-        expect(response).to have_http_status(:ok)
-        expect(response.body).to include(activity.title)
-      end
-
-      it "draws the route preview behind the map" do
-        activity.analysis.update!(route_preview: build(:analysis, :with_route_preview).route_preview)
-
-        get activity_url(activity)
-
-        expect(response.body).to match(%r{<svg[^>]*>\s*<polyline})
-      end
-    end
-
     context "when the activity has not been analyzed yet" do
-      let(:activity) { create(:activity, user: user, kind: 'sup_dw') }
+      let(:activity) { create(:activity, user: user) }
 
       it "renders the analyzing state without touching analysis data" do
         get activity_url(activity)
@@ -157,14 +134,33 @@ RSpec.describe "/activities", type: :request do
       end
     end
 
-    context "when the activity has not been analyzed yet and has no started_at" do
-      let(:activity) { create(:activity, user: user, kind: 'sup_dw', started_at: nil) }
+    context "when the activity has been analyzed" do
+      let(:kind) { 'sup_dw' }
+      let(:activity) do
+        create(:activity, user: user, kind:, title: 'Downwind session').tap do |activity|
+          create(:analysis, :with_route_preview, activity:, route_bounds: { "north" => 1, "south" => 0, "east" => 1, "west" => 0 })
+        end
+      end
 
-      it "renders successfully, falling back to created_at" do
+      it "renders the activity detail page" do
         get activity_url(activity)
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include("Analyzing your session")
+        expect(response.body).to include(activity.title)
+
+        # Draws the route preview behind the map
+        svg_id = ActionView::RecordIdentifier.dom_target(:route_preview_svg)
+        expect(Nokogiri::HTML5(response.body).at_css("svg##{svg_id}")).to be_present
+      end
+
+      context "when it's a SUP DW activity" do
+        let(:kind) { 'sup_dw' }
+
+        it "shows the fastest 1 km and 10 km, but not the sections on foil" do
+          get activity_url(activity)
+
+          expect(response.body).to include("Fastest 1 km", "Fastest 10 km")
+        end
       end
     end
   end

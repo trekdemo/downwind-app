@@ -96,6 +96,7 @@ module ActivitiesHelper
         "vector-effect": "non-scaling-stroke"
       ),
       # Padding keeps the rounded line caps inside the box
+      id: dom_target(:route_preview_svg),
       viewBox: "-2 -2 #{(width * factor + 4).round(1)} #{(height * factor + 4).round(1)}",
       preserveAspectRatio: "xMidYMid meet",
       aria: { hidden: true },
