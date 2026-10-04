@@ -1,14 +1,18 @@
 <%# locals: (activity:) %>
+
 <% analysis = activity.analysis %>
+
 <% distance_value, distance_unit = distance_parts(analysis.distance_total) %>
+
 <% avg_speed_value, avg_speed_unit = speed_parts(analysis.speed_avg * 3.6) %>
+
 <div id="<%= dom_id activity, :stats %>" class="card">
   <div class="card-body grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
     <%= render "application/stat", label: "Distance", value: distance_value, unit: distance_unit, icon: :ruler %>
     <%= render "application/stat", label: "Duration", value: duration_parts(analysis.duration)[0], icon: :clock %>
     <%= render "application/stat", label: "On foil", value: number_to_percentage(analysis.distance_on_foil_percentage || 0, precision: 0), icon: :wave %>
-    <%= render "application/stat", label: "Paddle-ups", value: analysis.starts, icon: :flag %>
+    <%= render "application/stat", label: "Starts", value: analysis.starts, icon: :flag %>
     <%= render "application/stat", label: "Avg speed", value: avg_speed_value, unit: avg_speed_unit, icon: :bolt %>
-    <%= render "application/stat", label: "Max HR", value: number_with_precision(analysis.hr_max, precision: 0), unit: "bpm", icon: :heart %>
+    <%= render "application/stat", label: "Avg HR", value: number_with_precision(analysis.hr_avg, precision: 0), unit: "bpm", icon: :heart %>
   </div>
 </div>

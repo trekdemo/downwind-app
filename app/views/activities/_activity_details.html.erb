@@ -5,6 +5,12 @@
 <div class="space-y-4">
   <%= render "detail_hero", activity: activity %>
 
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
+    <%= render "detail_speed", activity: activity %>
+    <%= render "detail_heart_rate", activity: activity %>
+    <%= render "detail_pace", activity: activity if activity.paced? %>
+  </div>
+
   <div
     class="space-y-4"
     data-controller="on-foil-sections"
@@ -17,11 +23,5 @@
     </div>
 
     <%= render "detail_on_foil_sections", sections: sections %>
-  </div>
-
-  <div class="grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
-    <%= render "detail_speed", activity: activity %>
-    <%= render "detail_heart_rate", activity: activity %>
-    <%= render "detail_pace", activity: activity if activity.paced? %>
   </div>
 </div>
