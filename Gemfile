@@ -29,7 +29,7 @@ gem "turbo-rails"
 gem "stimulus-rails"
 
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
-gem "tailwindcss-rails", "~> 3.3"
+gem "tailwindcss-rails", ">= 4.6", "< 5"
 
 gem "clearance", "~> 2.8"
 

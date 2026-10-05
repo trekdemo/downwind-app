@@ -1,0 +1,220 @@
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --font-sans:
+    'Inter var', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  --color-brand-50: #ecfeff;
+  --color-brand-100: #cffafe;
+  --color-brand-200: #a5f3fc;
+  --color-brand-300: #67e8f9;
+  --color-brand-400: #22d3ee;
+  --color-brand-500: #06b6d4;
+  --color-brand-600: #0891b2;
+  --color-brand-700: #0e7490;
+  --color-brand-800: #155e75;
+  --color-brand-900: #164e63;
+  --color-brand-950: #083344;
+
+  --color-energy-50: #fff7ed;
+  --color-energy-100: #ffedd5;
+  --color-energy-200: #fed7aa;
+  --color-energy-300: #fdba74;
+  --color-energy-400: #fb923c;
+  --color-energy-500: #f97316;
+  --color-energy-600: #ea580c;
+  --color-energy-700: #c2410c;
+  --color-energy-800: #9a3412;
+  --color-energy-900: #7c2d12;
+  --color-energy-950: #431407;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  /* v4 dropped `cursor: pointer` from buttons in Preflight */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility btn {
+  /* Buttons */
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium
+           transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-400
+           focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:opacity-50
+           disabled:pointer-events-none;
+}
+
+@utility btn-primary {
+  @apply btn bg-orange-500 text-slate-950 hover:bg-orange-400;
+}
+
+@utility btn-secondary {
+  @apply btn bg-slate-800 text-slate-100 ring-1 ring-inset ring-slate-700 hover:bg-slate-700;
+}
+
+@utility btn-ghost {
+  @apply btn bg-transparent text-slate-300 hover:bg-slate-800 hover:text-slate-100;
+}
+
+@utility btn-danger {
+  @apply btn bg-rose-600 text-white hover:bg-rose-500;
+}
+
+@utility btn-sm {
+  @apply px-3 py-1.5 text-xs;
+}
+
+@utility card {
+  /* Cards */
+  @apply rounded-xl bg-slate-900 ring-1 ring-white/5;
+}
+
+@utility card-header {
+  @apply flex items-center justify-between border-b border-slate-800 px-4 py-3 sm:px-5;
+}
+
+@utility card-title {
+  @apply text-[11px] font-medium uppercase tracking-wider text-slate-400;
+}
+
+@utility card-body {
+  @apply p-4 sm:p-5;
+}
+
+@utility label {
+  /* Forms */
+  @apply mb-1.5 block text-sm font-medium text-slate-300;
+}
+
+@utility input {
+  @apply block w-full rounded-lg border-0 bg-slate-900 px-3 py-2 text-sm text-slate-100
+           ring-1 ring-inset ring-slate-700 placeholder:text-slate-500
+           focus:ring-2 focus:ring-inset focus:ring-cyan-400;
+}
+
+@utility select {
+  @apply input pr-8;
+}
+
+@utility badge {
+  /* Badges */
+  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
+}
+
+@utility badge-cyan {
+  @apply badge bg-cyan-500/10 text-cyan-300 ring-1 ring-inset ring-cyan-500/30;
+}
+
+@utility badge-sky {
+  @apply badge bg-sky-500/10 text-sky-300 ring-1 ring-inset ring-sky-500/30;
+}
+
+@utility badge-violet {
+  @apply badge bg-violet-500/10 text-violet-300 ring-1 ring-inset ring-violet-500/30;
+}
+
+@utility badge-teal {
+  @apply badge bg-teal-500/10 text-teal-300 ring-1 ring-inset ring-teal-500/30;
+}
+
+@utility badge-amber {
+  @apply badge bg-amber-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/30;
+}
+
+@utility badge-slate {
+  @apply badge bg-slate-700/40 text-slate-300 ring-1 ring-inset ring-slate-600/40;
+}
+
+@utility link {
+  /* Links */
+  @apply text-cyan-400 hover:text-cyan-300 underline-offset-2 hover:underline;
+}
+
+@utility stat-label {
+  /* Stats */
+  @apply text-[11px] font-medium uppercase tracking-wider text-slate-400;
+}
+
+@utility stat-value {
+  @apply font-semibold tracking-tight text-slate-50 tabular-nums;
+}
+
+@utility stat-unit {
+  @apply text-sm text-slate-400 tabular-nums;
+}
+
+@utility table {
+  /* Tables */
+  @apply min-w-full divide-y divide-slate-800;
+
+  & thead {
+    @apply bg-slate-900/50;
+  }
+
+  & thead th {
+    @apply px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-slate-400;
+  }
+
+  & tbody {
+    @apply divide-y divide-slate-800;
+  }
+
+  & tbody tr {
+    @apply hover:bg-slate-800/50;
+  }
+
+  & tbody td {
+    @apply whitespace-nowrap px-4 py-3 text-sm text-slate-200;
+  }
+}
+
+@utility progress-foil {
+  /* On-foil progress bar */
+  @apply h-1.5 w-full appearance-none overflow-hidden rounded-full bg-slate-800;
+
+  &::-webkit-progress-bar {
+    @apply rounded-full bg-slate-800;
+  }
+
+  &::-webkit-progress-value {
+    @apply rounded-full bg-cyan-500;
+  }
+
+  &::-moz-progress-bar {
+    @apply rounded-full bg-cyan-500;
+  }
+}
+
+/* Leaflet paints the map container grey as soon as it initializes; keep it
+   transparent so the route preview behind it shows until the tiles arrive.
+   Outside @layer so Tailwind never purges the Leaflet-only class. */
+.route-map.leaflet-container {
+  background: transparent;
+}
+
+/* Grays out the route while a section on foil is highlighted on the map */
+.leaflet-pane.route-faded {
+  filter: grayscale(1);
+  opacity: 0.3;
+}

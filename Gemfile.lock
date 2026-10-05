@@ -417,15 +417,14 @@ GEM
       railties (>= 6.0.0)
     strong_migrations (2.8.0)
       activerecord (>= 7.2)
-    tailwindcss-rails (3.3.2)
+    tailwindcss-rails (4.6.0)
       railties (>= 7.0.0)
-      tailwindcss-ruby (~> 3.0)
-    tailwindcss-ruby (3.4.19)
-    tailwindcss-ruby (3.4.19-aarch64-linux)
-    tailwindcss-ruby (3.4.19-arm-linux)
-    tailwindcss-ruby (3.4.19-arm64-darwin)
-    tailwindcss-ruby (3.4.19-x86_64-darwin)
-    tailwindcss-ruby (3.4.19-x86_64-linux)
+      tailwindcss-ruby (~> 4.0)
+    tailwindcss-ruby (4.3.3)
+    tailwindcss-ruby (4.3.3-aarch64-linux-gnu)
+    tailwindcss-ruby (4.3.3-arm64-darwin)
+    tailwindcss-ruby (4.3.3-x86_64-darwin)
+    tailwindcss-ruby (4.3.3-x86_64-linux-gnu)
     thor (1.3.2)
     thruster (0.1.8)
     thruster (0.1.8-aarch64-linux)
@@ -499,7 +498,7 @@ DEPENDENCIES
   sqlite3 (>= 2.1)
   stimulus-rails
   strong_migrations (~> 2.0)
-  tailwindcss-rails (~> 3.3)
+  tailwindcss-rails (>= 4.6, < 5)
   thruster
   turbo-rails
   tzinfo-data
