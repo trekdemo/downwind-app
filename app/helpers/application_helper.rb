@@ -43,6 +43,11 @@ module ApplicationHelper
   }.freeze
   private_constant :ICONS
 
+  # @return [Array<Symbol>] every name {#icon} accepts
+  def icon_names
+    ICONS.keys
+  end
+
   def icon(name, class: "size-5")
     css_class = binding.local_variable_get(:class)
     path_data = ICONS.fetch(name.to_sym) do
