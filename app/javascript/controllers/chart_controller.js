@@ -5,11 +5,12 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 Chart.register(...registerables, annotationPlugin);
 
 // Colours are CSS colour strings referencing the theme's semantic roles
-// (e.g. "var(--color-accent)"), resolved when the chart is built; see
-// resolveColors.
+// (e.g. "var(--color-accent)"), resolved for the current colour scheme when
+// the chart is built; see resolveColors.
 const FG_MUTED = "var(--color-fg-muted)"
 const LINE_SUBTLE = "var(--color-line-subtle)"
 const RADIAL_TYPES = ["doughnut", "pie", "polarArea"]
+const COLOR_SCHEME = window.matchMedia("(prefers-color-scheme: dark)")
 
 Chart.defaults.font.family = "Inter var, ui-sans-serif, system-ui, sans-serif"
 
@@ -37,9 +38,10 @@ function isPlainObject(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value)
 }
 
-// Canvas does not understand var(), so every string containing var() is
-// resolved to a concrete colour: the computed `color` of a probe element
-// inside `context`. Other values pass through unchanged.
+// Canvas understands neither var() nor light-dark(), so every string
+// containing var() is resolved to a concrete colour: the computed `color`
+// of a probe element inside `context` follows the colour scheme in effect
+// there. Other values pass through unchanged.
 function resolveColors(value, context) {
   const probe = document.createElement("span")
   probe.hidden = true
@@ -101,10 +103,14 @@ export default class extends Controller {
     // canvas bitmap), which blanks the chart. Rebuilding from scratch is
     // simpler and more robust than trying to restore the canvas in place.
     this.canvasElement.addEventListener("turbo:morph-element", this.redraw)
+
+    // Colours are resolved once per build, so a scheme switch needs a rebuild
+    COLOR_SCHEME.addEventListener("change", this.redraw)
   }
 
   disconnect() {
     this.canvasElement.removeEventListener("turbo:morph-element", this.redraw)
+    COLOR_SCHEME.removeEventListener("change", this.redraw)
     this.chart.destroy()
     this.chart = undefined
   }

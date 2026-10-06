@@ -36,7 +36,7 @@
   <section id="colors" class="card scroll-mt-20">
     <div class="card-header">
       <h2 class="card-title"><%= sections[:colors] %></h2>
-      <span class="stat-unit">Semantic roles</span>
+      <span class="stat-unit">Semantic roles, light | dark</span>
     </div>
     <div class="card-body space-y-8">
       <% Admin::DesignComponentsHelper::COLOR_ROLES.each do |group| %>
@@ -45,7 +45,10 @@
           <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <% group[:colors].each do |color| %>
               <div class="flex gap-3 rounded-lg bg-canvas/60 p-3 ring-1 ring-inset ring-line-subtle">
-                <div class="size-12 shrink-0 rounded-lg ring-1 ring-inset ring-line-card/10 <%= color[:swatch] %>"></div>
+                <div class="flex size-12 shrink-0 overflow-hidden rounded-lg ring-1 ring-inset ring-line-strong/40">
+                  <div class="flex-1 scheme-light <%= color[:swatch] %>"></div>
+                  <div class="flex-1 scheme-dark <%= color[:swatch] %>"></div>
+                </div>
                 <div class="min-w-0 space-y-1">
                   <p class="flex flex-wrap items-baseline gap-x-2">
                     <span class="text-sm font-medium text-fg-emphasis"><%= swatch_role(color) %></span>
@@ -60,7 +63,8 @@
       <% end %>
 
       <p class="text-xs text-fg-muted">
-        Defined in the semantic <code class="text-fg-secondary">@theme</code> block.
+        Defined as <code class="text-fg-secondary">light-dark()</code> pairs in the semantic
+        <code class="text-fg-secondary">@theme</code> block; the page follows the OS colour scheme.
       </p>
     </div>
   </section>

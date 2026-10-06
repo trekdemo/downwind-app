@@ -14,66 +14,71 @@
   Admin::DesignComponentsHelper). Views and components use only these,
   never the palette directly.
 
+  Each role is light-dark(<light>, <dark>): the browser picks the value
+  from the `color-scheme` of the element using it, so the scheme follows
+  the OS (`color-scheme: light dark` on :root) and a subtree can be pinned
+  to either one with `scheme-light` / `scheme-dark`.
+
   Not `@theme inline`: utilities must reference the role's variable rather
-  than copy its value, so a role can be given another value at runtime.
+  than copy its value, or the scheme could not resolve per element.
 */
 @theme {
   /* Surfaces */
-  --color-canvas: var(--color-slate-950);
-  --color-raised: var(--color-slate-900);
-  --color-sunken: var(--color-slate-800);
+  --color-canvas: light-dark(var(--color-slate-50), var(--color-slate-950));
+  --color-raised: light-dark(var(--color-white), var(--color-slate-900));
+  --color-sunken: light-dark(var(--color-slate-100), var(--color-slate-800));
 
   /* Lines (borders, rings, dividers) */
-  --color-line-card: var(--color-white);
-  --color-line-subtle: var(--color-slate-800);
-  --color-line: var(--color-slate-700);
-  --color-line-strong: var(--color-slate-600);
+  --color-line-card: light-dark(var(--color-black), var(--color-white));
+  --color-line-subtle: light-dark(var(--color-slate-200), var(--color-slate-800));
+  --color-line: light-dark(var(--color-slate-300), var(--color-slate-700));
+  --color-line-strong: light-dark(var(--color-slate-400), var(--color-slate-600));
 
   /* Foreground (text and icons) */
-  --color-fg-strong: var(--color-slate-50);
-  --color-fg-emphasis: var(--color-slate-100);
-  --color-fg: var(--color-slate-200);
-  --color-fg-secondary: var(--color-slate-300);
-  --color-fg-muted: var(--color-slate-400);
-  --color-fg-placeholder: var(--color-slate-500);
-  --color-fg-faint: var(--color-slate-600);
+  --color-fg-strong: light-dark(var(--color-slate-950), var(--color-slate-50));
+  --color-fg-emphasis: light-dark(var(--color-slate-900), var(--color-slate-100));
+  --color-fg: light-dark(var(--color-slate-800), var(--color-slate-200));
+  --color-fg-secondary: light-dark(var(--color-slate-700), var(--color-slate-300));
+  --color-fg-muted: light-dark(var(--color-slate-500), var(--color-slate-400));
+  --color-fg-placeholder: light-dark(var(--color-slate-400), var(--color-slate-500));
+  --color-fg-faint: light-dark(var(--color-slate-300), var(--color-slate-600));
   --color-on-cta: var(--color-slate-950);
   --color-on-danger: var(--color-white);
 
   /* Accent (brand) */
-  --color-accent-fg: var(--color-cyan-300);
-  --color-accent: var(--color-cyan-400);
+  --color-accent-fg: light-dark(var(--color-cyan-700), var(--color-cyan-300));
+  --color-accent: light-dark(var(--color-cyan-600), var(--color-cyan-400));
   --color-accent-solid: var(--color-cyan-500);
 
   /* Call to action */
   --color-cta: var(--color-orange-500);
-  --color-cta-hover: var(--color-orange-400);
+  --color-cta-hover: light-dark(var(--color-orange-600), var(--color-orange-400));
 
   /* Status */
   --color-danger: var(--color-rose-600);
   --color-danger-hover: var(--color-rose-500);
-  --color-danger-icon: var(--color-rose-400);
-  --color-danger-fg: var(--color-rose-300);
-  --color-danger-fg-soft: var(--color-rose-200);
+  --color-danger-icon: light-dark(var(--color-rose-500), var(--color-rose-400));
+  --color-danger-fg: light-dark(var(--color-rose-700), var(--color-rose-300));
+  --color-danger-fg-soft: light-dark(var(--color-rose-800), var(--color-rose-200));
   --color-success: var(--color-emerald-500);
-  --color-success-icon: var(--color-emerald-400);
-  --color-success-fg: var(--color-emerald-300);
+  --color-success-icon: light-dark(var(--color-emerald-600), var(--color-emerald-400));
+  --color-success-fg: light-dark(var(--color-emerald-700), var(--color-emerald-300));
   --color-pending: var(--color-amber-500);
-  --color-pending-fg: var(--color-amber-300);
+  --color-pending-fg: light-dark(var(--color-amber-700), var(--color-amber-300));
 
   /* Activity kinds: their own roles, so a new accent leaves them alone */
   --color-kind-sup-dw: var(--color-cyan-500);
-  --color-kind-sup-dw-fg: var(--color-cyan-300);
+  --color-kind-sup-dw-fg: light-dark(var(--color-cyan-700), var(--color-cyan-300));
   --color-kind-sup-fwpu: var(--color-sky-500);
-  --color-kind-sup-fwpu-fg: var(--color-sky-300);
+  --color-kind-sup-fwpu-fg: light-dark(var(--color-sky-700), var(--color-sky-300));
   --color-kind-dockstart: var(--color-violet-500);
-  --color-kind-dockstart-fg: var(--color-violet-300);
+  --color-kind-dockstart-fg: light-dark(var(--color-violet-700), var(--color-violet-300));
   --color-kind-wingfoil: var(--color-teal-500);
-  --color-kind-wingfoil-fg: var(--color-teal-300);
+  --color-kind-wingfoil-fg: light-dark(var(--color-teal-700), var(--color-teal-300));
 
   /* Data visualisation, read by the chart and map controllers */
-  --color-chart-series-secondary: var(--color-slate-600);
-  --color-chart-off-foil: var(--color-slate-700);
+  --color-chart-series-secondary: light-dark(var(--color-slate-400), var(--color-slate-600));
+  --color-chart-off-foil: light-dark(var(--color-slate-200), var(--color-slate-700));
   --color-speed-slow: #1974D2;
   --color-speed-medium: #FFFF00;
   --color-speed-fast: #FF0000;
@@ -89,6 +94,10 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
   *,
   ::after,
   ::before,
