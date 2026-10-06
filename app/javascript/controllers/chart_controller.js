@@ -4,14 +4,14 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 
 Chart.register(...registerables, annotationPlugin);
 
-// Night-ocean theme applied globally to every Chart.js instance.
-const SLATE_400 = "#94a3b8"
-const SLATE_800 = "#1e293b"
+// Colours are CSS colour strings referencing the theme's semantic roles
+// (e.g. "var(--color-accent)"), resolved when the chart is built; see
+// resolveColors.
+const FG_MUTED = "var(--color-fg-muted)"
+const LINE_SUBTLE = "var(--color-line-subtle)"
 const RADIAL_TYPES = ["doughnut", "pie", "polarArea"]
 
-Chart.defaults.color = SLATE_400
 Chart.defaults.font.family = "Inter var, ui-sans-serif, system-ui, sans-serif"
-Chart.defaults.borderColor = SLATE_800
 
 // Deep-merges plain objects (arrays and other values are overwritten, not
 // merged) so per-chart overrides (e.g. custom `scales`) still inherit the
@@ -35,6 +35,31 @@ function deepMerge(target, source) {
 
 function isPlainObject(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value)
+}
+
+// Canvas does not understand var(), so every string containing var() is
+// resolved to a concrete colour: the computed `color` of a probe element
+// inside `context`. Other values pass through unchanged.
+function resolveColors(value, context) {
+  const probe = document.createElement("span")
+  probe.hidden = true
+  context.append(probe)
+
+  const resolve = (node) => {
+    if (typeof node === "string" && node.includes("var(")) {
+      probe.style.color = node
+      return getComputedStyle(probe).color
+    }
+    if (Array.isArray(node)) return node.map(resolve)
+    if (isPlainObject(node)) return Object.fromEntries(Object.entries(node).map(([key, child]) => [key, resolve(child)]))
+    return node
+  }
+
+  try {
+    return resolve(value)
+  } finally {
+    probe.remove()
+  }
 }
 
 // Connects to data-controller="chart"
@@ -123,17 +148,19 @@ export default class extends Controller {
       console.warn("[@stimulus-components/chartjs] You need to pass data as JSON to see the chart.")
     }
 
-    return this.dataValue
+    return resolveColors(this.dataValue, this.canvasElement.parentElement)
   }
 
   get chartOptions() {
-    return deepMerge(this.defaultOptions, this.optionsValue)
+    return resolveColors(deepMerge(this.defaultOptions, this.optionsValue), this.canvasElement.parentElement)
   }
 
   get defaultOptions() {
     const options = {
       responsive: true,
       maintainAspectRatio: false,
+      color: FG_MUTED,
+      borderColor: LINE_SUBTLE,
       interaction: {
         intersect: false,
         mode: "index",
@@ -144,14 +171,14 @@ export default class extends Controller {
           labels: {
             usePointStyle: true,
             pointStyle: "circle",
-            color: SLATE_400,
+            color: FG_MUTED,
           },
         },
         tooltip: {
-          backgroundColor: "#0f172a",
-          titleColor: "#f1f5f9",
-          bodyColor: "#cbd5e1",
-          borderColor: SLATE_800,
+          backgroundColor: "var(--color-raised)",
+          titleColor: "var(--color-fg-emphasis)",
+          bodyColor: "var(--color-fg-secondary)",
+          borderColor: LINE_SUBTLE,
           borderWidth: 1,
           padding: 10,
           usePointStyle: true,
@@ -163,15 +190,15 @@ export default class extends Controller {
             display: false,
           },
           ticks: {
-            color: SLATE_400,
+            color: FG_MUTED,
           },
         },
         y: {
           grid: {
-            color: SLATE_800,
+            color: LINE_SUBTLE,
           },
           ticks: {
-            color: SLATE_400,
+            color: FG_MUTED,
           },
         },
       },

@@ -2,7 +2,7 @@
 <div class="card lg:col-span-2">
   <div class="card-header">
     <h2 class="card-title flex items-center gap-1.5">
-      <%= icon :"map-pin", class: "size-4 text-cyan-400" %>
+      <%= icon :"map-pin", class: "size-4 text-accent" %>
       Route
     </h2>
   </div>
@@ -18,14 +18,14 @@
   >
     <div class="relative isolate">
       <%# Shows through the transparent map container until the tiles cover it %>
-      <%= route_preview_svg(activity.analysis.route_preview, class: "absolute inset-0 size-full p-8 text-slate-600") %>
+      <%= route_preview_svg(activity.analysis.route_preview, class: "absolute inset-0 size-full p-8 text-fg-faint") %>
 
       <div
         data-map-target="loading"
-        class="absolute inset-0 z-1000 flex items-center justify-center rounded-lg bg-slate-900/40"
+        class="absolute inset-0 z-1000 flex items-center justify-center rounded-lg bg-raised/40"
       >
-        <div class="size-8 animate-spin rounded-full border-2 border-slate-600 border-t-cyan-400"></div>
-        <span class="ml-2 text-sm text-slate-400">Loading route&hellip;</span>
+        <div class="size-8 animate-spin rounded-full border-2 border-line-strong border-t-accent"></div>
+        <span class="ml-2 text-sm text-fg-muted">Loading route&hellip;</span>
       </div>
 
       <div
@@ -36,9 +36,9 @@
 
     <div class="mt-3 flex items-center gap-3">
       <span class="stat-unit" data-map-target="legendMin">&ndash;</span>
-      <div class="h-2 flex-1 rounded-full bg-linear-to-r from-[#1974D2] via-[#FFFF00] to-[#822EFF]"></div>
+      <div class="h-2 flex-1 rounded-full bg-linear-to-r from-speed-slow via-speed-medium to-speed-max"></div>
       <span class="stat-unit" data-map-target="legendMax">&ndash;</span>
     </div>
-    <p class="mt-1 text-center text-[11px] uppercase tracking-wider text-slate-400">Speed (km/h)</p>
+    <p class="mt-1 text-center text-[11px] uppercase tracking-wider text-fg-muted">Speed (km/h)</p>
   </div>
 </div>

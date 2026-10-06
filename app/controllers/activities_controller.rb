@@ -14,8 +14,8 @@ class ActivitiesController < ApplicationController
         {
           label: "% on foil",
           data: chart_activities.map { |activity| activity.analysis.distance_on_foil_percentage || 0 },
-          borderColor: "#22d3ee",
-          backgroundColor: "rgba(34, 211, 238, 0.15)",
+          borderColor: "var(--color-accent)",
+          backgroundColor: "color-mix(in oklab, var(--color-accent) 15%, transparent)",
           borderWidth: 2,
           pointStyle: false,
           type: "line",
@@ -27,7 +27,7 @@ class ActivitiesController < ApplicationController
         {
           label: "Paddle-ups",
           data: chart_activities.map { |activity| activity.analysis.starts || 0 },
-          backgroundColor: "#475569",
+          backgroundColor: "var(--color-chart-series-secondary)",
           borderWidth: 0,
           borderRadius: 4,
           barPercentage: 0.5,

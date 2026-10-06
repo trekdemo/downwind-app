@@ -17,16 +17,16 @@
 
 <div class="flex flex-col gap-4 pb-6">
   <div>
-    <h1 class="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">Design components</h1>
-    <p class="mt-1 text-sm text-slate-400">
+    <h1 class="text-2xl font-semibold tracking-tight text-fg-strong sm:text-3xl">Design components</h1>
+    <p class="mt-1 text-sm text-fg-muted">
       Every shared component, rendered with the same classes, partials and helpers as the app.
-      Defined in <code class="text-slate-300">app/assets/tailwind/application.css</code> unless noted.
+      Defined in <code class="text-fg-secondary">app/assets/tailwind/application.css</code> unless noted.
     </p>
   </div>
 
   <nav aria-label="Sections" class="flex flex-wrap gap-2">
     <% sections.each do |id, label| %>
-      <%= link_to label, "##{id}", class: "inline-flex items-center rounded-full bg-slate-900 px-3 py-1.5 text-sm font-medium text-slate-400 ring-1 ring-inset ring-slate-800 transition-colors hover:bg-slate-800 hover:text-slate-200" %>
+      <%= link_to label, "##{id}", class: "inline-flex items-center rounded-full bg-raised px-3 py-1.5 text-sm font-medium text-fg-muted ring-1 ring-inset ring-line-subtle transition-colors hover:bg-sunken hover:text-fg" %>
     <% end %>
   </nav>
 </div>
@@ -36,22 +36,22 @@
   <section id="colors" class="card scroll-mt-20">
     <div class="card-header">
       <h2 class="card-title"><%= sections[:colors] %></h2>
-      <span class="stat-unit">Proposed semantic roles</span>
+      <span class="stat-unit">Semantic roles</span>
     </div>
     <div class="card-body space-y-8">
       <% Admin::DesignComponentsHelper::COLOR_ROLES.each do |group| %>
         <div>
-          <h3 class="mb-3 text-sm font-semibold text-slate-100"><%= group[:group] %></h3>
+          <h3 class="mb-3 text-sm font-semibold text-fg-emphasis"><%= group[:group] %></h3>
           <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <% group[:colors].each do |color| %>
-              <div class="flex gap-3 rounded-lg bg-slate-950/60 p-3 ring-1 ring-inset ring-slate-800">
-                <div class="size-12 shrink-0 rounded-lg ring-1 ring-inset ring-white/10" style="<%= swatch_style(color) %>"></div>
+              <div class="flex gap-3 rounded-lg bg-canvas/60 p-3 ring-1 ring-inset ring-line-subtle">
+                <div class="size-12 shrink-0 rounded-lg ring-1 ring-inset ring-line-card/10 <%= color[:swatch] %>"></div>
                 <div class="min-w-0 space-y-1">
                   <p class="flex flex-wrap items-baseline gap-x-2">
-                    <span class="text-sm font-medium text-slate-100"><%= color[:role] %></span>
-                    <code class="text-xs text-slate-400"><%= swatch_label(color) %></code>
+                    <span class="text-sm font-medium text-fg-emphasis"><%= swatch_role(color) %></span>
+                    <code class="text-xs text-fg-muted"><%= swatch_label(color) %></code>
                   </p>
-                  <p class="text-xs text-slate-400"><%= color[:usage] %></p>
+                  <p class="text-xs text-fg-muted"><%= color[:usage] %></p>
                 </div>
               </div>
             <% end %>
@@ -59,9 +59,8 @@
         </div>
       <% end %>
 
-      <p class="text-xs text-slate-400">
-        <code class="text-slate-300">--color-brand-*</code> and <code class="text-slate-300">--color-energy-*</code>
-        are declared in <code class="text-slate-300">@theme</code> with exactly the cyan and orange values, but no class uses them yet.
+      <p class="text-xs text-fg-muted">
+        Defined in the semantic <code class="text-fg-secondary">@theme</code> block.
       </p>
     </div>
   </section>
@@ -71,16 +70,16 @@
     <div class="card-header"><h2 class="card-title"><%= sections[:typography] %></h2></div>
     <div class="card-body grid grid-cols-1 gap-6 lg:grid-cols-2">
       <%= design_example "Page title", source: "views (h1)" do %>
-        <h1 class="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">Training log</h1>
-        <p class="mt-1 text-sm text-slate-400">12 sessions</p>
+        <h1 class="text-2xl font-semibold tracking-tight text-fg-strong sm:text-3xl">Training log</h1>
+        <p class="mt-1 text-sm text-fg-muted">12 sessions</p>
       <% end %>
 
       <%= design_example "Auth card title", source: "sessions/new, passwords/*" do %>
-        <h1 class="text-xl font-semibold tracking-tight text-slate-50">Sign in</h1>
+        <h1 class="text-xl font-semibold tracking-tight text-fg-strong">Sign in</h1>
       <% end %>
 
       <%= design_example "Section heading", source: "activities/index" do %>
-        <h2 class="text-lg font-semibold text-slate-100">Recent activities</h2>
+        <h2 class="text-lg font-semibold text-fg-emphasis">Recent activities</h2>
       <% end %>
 
       <%= design_example "Eyebrow label", source: ".card-title, .stat-label, th" do %>
@@ -88,8 +87,8 @@
       <% end %>
 
       <%= design_example "Body and muted text", source: "<body>, views" do %>
-        <p class="text-sm text-slate-200">Body text inherits slate-200 from &lt;body&gt;.</p>
-        <p class="mt-1 text-sm text-slate-400">Muted helper text in slate-400.</p>
+        <p class="text-sm text-fg">Body text inherits fg from &lt;body&gt;.</p>
+        <p class="mt-1 text-sm text-fg-muted">Muted helper text in fg-muted.</p>
       <% end %>
 
       <%= design_example "Link", source: ".link" do %>
@@ -145,10 +144,10 @@
         </div>
       <% end %>
 
-      <%= design_example "Status and neutral", source: ".badge-amber, .badge-slate" do %>
+      <%= design_example "Status and neutral", source: ".badge-pending, .badge-neutral" do %>
         <div class="flex flex-wrap gap-2">
-          <span class="badge-amber">Analyzing…</span>
-          <span class="badge-slate"><%= icon :bolt, class: "size-3.5 text-cyan-400" %> Lift speed 12.0 km/h</span>
+          <span class="badge-pending">Analyzing…</span>
+          <span class="badge-neutral"><%= icon :bolt, class: "size-3.5 text-accent" %> Lift speed 12.0 km/h</span>
         </div>
       <% end %>
     </div>
@@ -159,8 +158,8 @@
     <div class="card-header"><h2 class="card-title"><%= sections[:navigation] %></h2></div>
     <div class="card-body grid grid-cols-1 gap-6 lg:grid-cols-2">
       <%= design_example "Logo tile", source: "application/_header" do %>
-        <div class="flex items-center gap-2 font-semibold text-slate-100">
-          <span class="flex size-8 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400">
+        <div class="flex items-center gap-2 font-semibold text-fg-emphasis">
+          <span class="flex size-8 items-center justify-center rounded-lg bg-accent-solid/10 text-accent">
             <%= icon :wave, class: "size-5" %>
           </span>
           Downwind Logbook
@@ -169,24 +168,24 @@
 
       <%= design_example "Header nav link", source: "application/_header" do %>
         <div class="flex items-center gap-1">
-          <a href="#" aria-current="page" class="rounded-full px-3 py-1.5 text-sm font-medium bg-cyan-500/10 text-cyan-300">Dashboard</a>
-          <a href="#" class="rounded-full px-3 py-1.5 text-sm font-medium text-slate-400 hover:text-slate-100">Inactive</a>
+          <a href="#" aria-current="page" class="rounded-full px-3 py-1.5 text-sm font-medium bg-accent-solid/10 text-accent-fg">Dashboard</a>
+          <a href="#" class="rounded-full px-3 py-1.5 text-sm font-medium text-fg-muted hover:text-fg-emphasis">Inactive</a>
         </div>
       <% end %>
 
       <%= design_example "Filter pills", source: "activities/index" do %>
         <div class="flex flex-wrap gap-2">
-          <a href="#" aria-current="page" class="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium ring-1 ring-inset transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 bg-cyan-500/10 text-cyan-300 ring-cyan-500/30">All</a>
-          <a href="#" class="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium ring-1 ring-inset transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 bg-slate-900 text-slate-400 ring-slate-800 hover:bg-slate-800 hover:text-slate-200">Wingfoil</a>
+          <a href="#" aria-current="page" class="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium ring-1 ring-inset transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas bg-accent-solid/10 text-accent-fg ring-accent-solid/30">All</a>
+          <a href="#" class="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium ring-1 ring-inset transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas bg-raised text-fg-muted ring-line-subtle hover:bg-sunken hover:text-fg">Wingfoil</a>
         </div>
       <% end %>
 
       <%= design_example "Back link and avatar", source: "activities/show, application/_header" do %>
         <div class="flex items-center justify-between">
-          <a href="#" class="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-cyan-300">
+          <a href="#" class="inline-flex items-center gap-1.5 text-sm text-fg-muted hover:text-accent-fg">
             <%= icon :"arrow-left", class: "size-4" %> Training log
           </a>
-          <span class="flex size-8 items-center justify-center rounded-full bg-slate-800 text-xs font-semibold uppercase text-slate-300">g</span>
+          <span class="flex size-8 items-center justify-center rounded-full bg-sunken text-xs font-semibold uppercase text-fg-secondary">g</span>
         </div>
       <% end %>
     </div>
@@ -199,7 +198,7 @@
       <%= design_example "Card with header", source: ".card, .card-header, .card-title, .card-body" do %>
         <div class="card">
           <div class="card-header">
-            <h2 class="card-title flex items-center gap-1.5"><%= icon :bolt, class: "size-4 text-cyan-400" %> Speed</h2>
+            <h2 class="card-title flex items-center gap-1.5"><%= icon :bolt, class: "size-4 text-accent" %> Speed</h2>
             <span class="stat-unit">3 sections</span>
           </div>
           <div class="card-body text-sm">Card content</div>
@@ -211,17 +210,17 @@
       <% end %>
 
       <%= design_example "Interactive card", source: "activities/_activity" do %>
-        <div class="card card-body transition hover:ring-1 hover:ring-cyan-500/40">
+        <div class="card card-body transition hover:ring-1 hover:ring-accent-solid/40">
           <div class="mb-1.5"><%= kind_badge("sup_dw") %></div>
-          <h3 class="truncate text-base font-semibold text-slate-100 hover:text-cyan-400">Morning downwinder</h3>
+          <h3 class="truncate text-base font-semibold text-fg-emphasis hover:text-accent">Morning downwinder</h3>
         </div>
       <% end %>
 
       <%= design_example "Empty state", source: "activities/index" do %>
         <div class="card card-body flex flex-col items-center gap-3 py-10 text-center">
-          <%= icon :wave, class: "size-10 text-slate-600" %>
-          <h2 class="text-lg font-semibold text-slate-200">No activities yet</h2>
-          <p class="max-w-sm text-sm text-slate-400">Upload a GPX file to see your stats here.</p>
+          <%= icon :wave, class: "size-10 text-fg-faint" %>
+          <h2 class="text-lg font-semibold text-fg">No activities yet</h2>
+          <p class="max-w-sm text-sm text-fg-muted">Upload a GPX file to see your stats here.</p>
           <a href="#" class="btn-primary mt-2"><%= icon :upload, class: "size-4" %> Upload your first GPX</a>
         </div>
       <% end %>
@@ -274,7 +273,7 @@
         <%= form.label :lift_speed_kmh, "Lift speed", class: "label" %>
         <div class="relative">
           <%= form.number_field :lift_speed_kmh, step: 0.1, min: 0, value: 12, class: "input pr-14" %>
-          <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-slate-400">km/h</span>
+          <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-fg-muted">km/h</span>
         </div>
       <% end %>
 
@@ -291,7 +290,7 @@
               <%= form.radio_button :radio_kind, kind, checked: index.zero?, class: "peer sr-only" %>
               <%= form.label "radio_kind_#{kind}",
                   Activity.human_attribute_name("kind.#{kind}"),
-                  class: "flex cursor-pointer items-center justify-center rounded-lg px-4 py-3 text-sm font-medium text-slate-300 ring-1 ring-inset ring-slate-700 transition-colors hover:bg-slate-800 peer-checked:bg-cyan-500/10 peer-checked:text-cyan-300 peer-checked:ring-cyan-400 peer-focus-visible:ring-2 peer-focus-visible:ring-cyan-400" %>
+                  class: "flex cursor-pointer items-center justify-center rounded-lg px-4 py-3 text-sm font-medium text-fg-secondary ring-1 ring-inset ring-line transition-colors hover:bg-sunken peer-checked:bg-accent-solid/10 peer-checked:text-accent-fg peer-checked:ring-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent" %>
             </div>
           <% end %>
         </div>
@@ -299,18 +298,18 @@
 
       <div class="lg:col-span-2">
         <%= design_example "File dropzone", source: "activities/_form + file-input controller" do %>
-          <div data-controller="file-input" data-file-input-dragover-class="border-cyan-400 bg-cyan-500/5">
+          <div data-controller="file-input" data-file-input-dragover-class="border-accent bg-accent-solid/5">
             <%= form.label :gpx_file,
-                class: "flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-slate-700 bg-slate-900/50 px-4 py-10 text-center transition-colors hover:border-cyan-400 hover:bg-cyan-500/5",
+                class: "flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-line bg-raised/50 px-4 py-10 text-center transition-colors hover:border-accent hover:bg-accent-solid/5",
                 data: { file_input_target: "dropzone", action: "dragover->file-input#dragover dragleave->file-input#dragleave drop->file-input#drop" } do %>
-              <span class="flex size-12 items-center justify-center rounded-full bg-slate-800 text-cyan-400">
+              <span class="flex size-12 items-center justify-center rounded-full bg-sunken text-accent">
                 <%= icon :upload, class: "size-6" %>
               </span>
-              <span class="text-sm font-semibold text-slate-200">
+              <span class="text-sm font-semibold text-fg">
                 Drop your GPX file here or <span class="link">browse</span>
               </span>
-              <span class="text-xs text-slate-400">GPX export from your watch or phone</span>
-              <span class="text-xs font-medium text-cyan-300" data-file-input-target="filename"></span>
+              <span class="text-xs text-fg-muted">GPX export from your watch or phone</span>
+              <span class="text-xs font-medium text-accent-fg" data-file-input-target="filename"></span>
               <%= form.file_field :gpx_file, class: "sr-only", data: { file_input_target: "input", action: "change->file-input#change" } %>
             <% end %>
           </div>
@@ -324,55 +323,55 @@
     <div class="card-header"><h2 class="card-title"><%= sections[:feedback] %></h2></div>
     <div class="card-body grid grid-cols-1 gap-6 lg:grid-cols-2">
       <%= design_example "Flash notice", source: "application/_flash" do %>
-        <div class="flex items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-300 ring-1 ring-inset ring-emerald-500/30">
+        <div class="flex items-center gap-2 rounded-xl bg-success/10 px-4 py-3 text-sm font-medium text-success-fg ring-1 ring-inset ring-success/30">
           <%= icon :check, class: "size-5 shrink-0" %>
           <span>Activity was successfully updated.</span>
         </div>
       <% end %>
 
       <%= design_example "Flash alert", source: "application/_flash" do %>
-        <div class="flex items-center gap-2 rounded-xl bg-rose-500/10 px-4 py-3 text-sm font-medium text-rose-300 ring-1 ring-inset ring-rose-500/30">
+        <div class="flex items-center gap-2 rounded-xl bg-danger-hover/10 px-4 py-3 text-sm font-medium text-danger-fg ring-1 ring-inset ring-danger-hover/30">
           <%= icon :x, class: "size-5 shrink-0" %>
           <span>Bad email or password.</span>
         </div>
       <% end %>
 
       <%= design_example "Form errors", source: "activities/_form, admin/users/_form" do %>
-        <div class="card ring-1 ring-inset ring-rose-500/30 bg-rose-500/5 px-4 py-3">
-          <div class="flex items-center gap-2 text-rose-300">
+        <div class="card ring-1 ring-inset ring-danger-hover/30 bg-danger-hover/5 px-4 py-3">
+          <div class="flex items-center gap-2 text-danger-fg">
             <%= icon :x, class: "size-5 shrink-0" %>
             <h2 class="font-medium">1 error prohibited this activity from being saved:</h2>
           </div>
-          <ul class="mt-2 list-inside list-disc text-sm text-rose-200/90">
+          <ul class="mt-2 list-inside list-disc text-sm text-danger-fg-soft/90">
             <li>Gpx file can't be blank</li>
           </ul>
         </div>
       <% end %>
 
       <%= design_example "Success icon", source: "passwords/create" do %>
-        <span class="flex size-10 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400">
+        <span class="flex size-10 items-center justify-center rounded-full bg-success/10 text-success-icon">
           <%= icon :check, class: "size-5" %>
         </span>
       <% end %>
 
       <%= design_example "Spinners", source: "activities/_detail_analyzing, _detail_map" do %>
         <div class="flex items-center gap-6">
-          <div class="size-10 animate-spin rounded-full border-2 border-slate-700 border-t-cyan-400"></div>
+          <div class="size-10 animate-spin rounded-full border-2 border-line border-t-accent"></div>
           <div class="flex items-center">
-            <div class="size-8 animate-spin rounded-full border-2 border-slate-600 border-t-cyan-400"></div>
-            <span class="ml-2 text-sm text-slate-400">Loading route&hellip;</span>
+            <div class="size-8 animate-spin rounded-full border-2 border-line-strong border-t-accent"></div>
+            <span class="ml-2 text-sm text-fg-muted">Loading route&hellip;</span>
           </div>
         </div>
       <% end %>
 
       <%= design_example "Skeleton", source: "activities/_activity" do %>
         <div class="animate-pulse space-y-3" role="status">
-          <div class="h-4 w-1/3 rounded-full bg-slate-800"></div>
+          <div class="h-4 w-1/3 rounded-full bg-sunken"></div>
           <div class="grid grid-cols-4 gap-3">
-            <div class="h-10 rounded-lg bg-slate-800"></div>
-            <div class="h-10 rounded-lg bg-slate-800"></div>
-            <div class="h-10 rounded-lg bg-slate-800"></div>
-            <div class="h-10 rounded-lg bg-slate-800"></div>
+            <div class="h-10 rounded-lg bg-sunken"></div>
+            <div class="h-10 rounded-lg bg-sunken"></div>
+            <div class="h-10 rounded-lg bg-sunken"></div>
+            <div class="h-10 rounded-lg bg-sunken"></div>
           </div>
           <span class="sr-only">Loading…</span>
         </div>
@@ -398,8 +397,8 @@
             <tbody>
               <% [ [ "0:01:12", 142 ], [ "0:00:48", 151 ] ].each_with_index do |(duration, hr), index| %>
                 <tr class="tabular-nums">
-                  <td class="text-slate-400"><%= index + 1 %></td>
-                  <td class="font-medium text-slate-100"><%= duration %></td>
+                  <td class="text-fg-muted"><%= index + 1 %></td>
+                  <td class="font-medium text-fg-emphasis"><%= duration %></td>
                   <td><%= hr %> <span class="stat-unit">bpm</span></td>
                   <td class="text-right"><a href="#" class="link">Details</a></td>
                 </tr>
@@ -417,8 +416,8 @@
     <div class="card-body grid grid-cols-1 gap-6 lg:grid-cols-2">
       <%= design_example "On-foil progress", source: ".progress-foil" do %>
         <div class="mb-1 flex items-center justify-between text-xs">
-          <span class="text-slate-400">On foil</span>
-          <span class="tabular-nums text-cyan-400">64%</span>
+          <span class="text-fg-muted">On foil</span>
+          <span class="tabular-nums text-accent">64%</span>
         </div>
         <progress class="progress-foil" max="100" value="64"></progress>
       <% end %>
@@ -426,18 +425,18 @@
       <%= design_example "Speed legend", source: "activities/_detail_map + map controller" do %>
         <div class="flex items-center gap-3">
           <span class="stat-unit">8</span>
-          <div class="h-2 flex-1 rounded-full bg-linear-to-r from-[#1974D2] via-[#FFFF00] to-[#822EFF]"></div>
+          <div class="h-2 flex-1 rounded-full bg-linear-to-r from-speed-slow via-speed-medium to-speed-max"></div>
           <span class="stat-unit">24</span>
         </div>
-        <p class="mt-1 text-center text-[11px] uppercase tracking-wider text-slate-400">Speed (km/h)</p>
+        <p class="mt-1 text-center text-[11px] uppercase tracking-wider text-fg-muted">Speed (km/h)</p>
       <% end %>
 
       <%= design_example "Route preview", source: "ActivitiesHelper#route_preview_svg" do %>
         <div class="flex gap-4">
-          <div class="size-24 rounded-lg bg-slate-950/60 p-2 text-cyan-400/80">
+          <div class="size-24 rounded-lg bg-canvas/60 p-2 text-accent/80">
             <%= route_preview_svg(sample_route_preview, class: "size-full") %>
           </div>
-          <div class="size-24 p-2 text-slate-600">
+          <div class="size-24 p-2 text-fg-faint">
             <%= route_preview_svg(sample_route_preview, class: "size-full") %>
           </div>
         </div>
@@ -452,8 +451,8 @@
             data-chart-data-value="<%= {
               labels: [ "On foil", "Off foil" ],
               datasets: [
-                { label: "Distance", data: [ 64, 36 ], backgroundColor: [ "#06b6d4", "#334155" ], borderWidth: 0 },
-                { label: "Time", data: [ 58, 42 ], backgroundColor: [ "#06b6d4", "#334155" ], borderWidth: 0 }
+                { label: "Distance", data: [ 64, 36 ], backgroundColor: [ "var(--color-accent-solid)", "var(--color-chart-off-foil)" ], borderWidth: 0 },
+                { label: "Time", data: [ 58, 42 ], backgroundColor: [ "var(--color-accent-solid)", "var(--color-chart-off-foil)" ], borderWidth: 0 }
               ]
             }.to_json %>"
             data-chart-options-value="<%= { cutout: "70%", plugins: { legend: { display: false } } }.to_json %>"
@@ -473,8 +472,8 @@
               data-chart-data-value="<%= {
                 labels: %w[Jun Jul Aug Sep Oct],
                 datasets: [
-                  { label: "% on foil", data: [ 22, 35, 41, 58, 64 ], borderColor: "#22d3ee", backgroundColor: "rgba(34, 211, 238, 0.15)", borderWidth: 2, pointStyle: false, type: "line", fill: true, tension: 0.3, suffix: "%", yAxisID: "y" },
-                  { label: "Paddle-ups", data: [ 9, 7, 6, 4, 3 ], backgroundColor: "#475569", borderWidth: 0, borderRadius: 4, barPercentage: 0.5, type: "bar", yAxisID: "y2" }
+                  { label: "% on foil", data: [ 22, 35, 41, 58, 64 ], borderColor: "var(--color-accent)", backgroundColor: "color-mix(in oklab, var(--color-accent) 15%, transparent)", borderWidth: 2, pointStyle: false, type: "line", fill: true, tension: 0.3, suffix: "%", yAxisID: "y" },
+                  { label: "Paddle-ups", data: [ 9, 7, 6, 4, 3 ], backgroundColor: "var(--color-chart-series-secondary)", borderWidth: 0, borderRadius: 4, barPercentage: 0.5, type: "bar", yAxisID: "y2" }
                 ]
               }.to_json %>"
               data-chart-options-value="<%= {
@@ -494,13 +493,13 @@
   <section id="icons" class="card scroll-mt-20">
     <div class="card-header">
       <h2 class="card-title"><%= sections[:icons] %></h2>
-      <code class="text-xs text-slate-500">ApplicationHelper#icon</code>
+      <code class="text-xs text-fg-placeholder">ApplicationHelper#icon</code>
     </div>
     <div class="card-body grid grid-cols-3 gap-3 sm:grid-cols-6 lg:grid-cols-8">
       <% icon_names.each do |name| %>
-        <div class="flex flex-col items-center gap-2 rounded-lg bg-slate-950/60 p-3 text-slate-200 ring-1 ring-inset ring-slate-800">
+        <div class="flex flex-col items-center gap-2 rounded-lg bg-canvas/60 p-3 text-fg ring-1 ring-inset ring-line-subtle">
           <%= icon name, class: "size-6" %>
-          <code class="truncate text-[11px] text-slate-400"><%= name %></code>
+          <code class="truncate text-[11px] text-fg-muted"><%= name %></code>
         </div>
       <% end %>
     </div>

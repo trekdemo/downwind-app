@@ -1,14 +1,14 @@
 <%= form_with(model: activity, id: dom_id(activity), class: "space-y-6") do |form| %>
   <% if activity.errors.any? %>
-    <div id="error_explanation" class="card ring-1 ring-inset ring-rose-500/30 bg-rose-500/5 px-4 py-3">
-      <div class="flex items-center gap-2 text-rose-300">
+    <div id="error_explanation" class="card ring-1 ring-inset ring-danger-hover/30 bg-danger-hover/5 px-4 py-3">
+      <div class="flex items-center gap-2 text-danger-fg">
         <%= icon :x, class: "size-5 shrink-0" %>
         <h2 class="font-medium">
           <%= pluralize(activity.errors.count, "error") %> prohibited this activity from being saved:
         </h2>
       </div>
 
-      <ul class="mt-2 list-inside list-disc text-sm text-rose-200/90">
+      <ul class="mt-2 list-inside list-disc text-sm text-danger-fg-soft/90">
         <% activity.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -17,18 +17,18 @@
   <% end %>
 
   <% if form.object.new_record? %>
-    <div data-controller="file-input" data-file-input-dragover-class="border-cyan-400 bg-cyan-500/5">
+    <div data-controller="file-input" data-file-input-dragover-class="border-accent bg-accent-solid/5">
       <%= form.label :gpx_file,
-          class: "flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-slate-700 bg-slate-900/50 px-4 py-10 text-center transition-colors hover:border-cyan-400 hover:bg-cyan-500/5",
+          class: "flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-line bg-raised/50 px-4 py-10 text-center transition-colors hover:border-accent hover:bg-accent-solid/5",
           data: { file_input_target: "dropzone", action: "dragover->file-input#dragover dragleave->file-input#dragleave drop->file-input#drop" } do %>
-        <span class="flex size-12 items-center justify-center rounded-full bg-slate-800 text-cyan-400">
+        <span class="flex size-12 items-center justify-center rounded-full bg-sunken text-accent">
           <%= icon :upload, class: "size-6" %>
         </span>
-        <span class="text-sm font-semibold text-slate-200">
+        <span class="text-sm font-semibold text-fg">
           Drop your GPX file here or <span class="link">browse</span>
         </span>
-        <span class="text-xs text-slate-400">GPX export from your watch or phone</span>
-        <span class="text-xs font-medium text-cyan-300" data-file-input-target="filename"></span>
+        <span class="text-xs text-fg-muted">GPX export from your watch or phone</span>
+        <span class="text-xs font-medium text-accent-fg" data-file-input-target="filename"></span>
 
         <%= form.file_field :gpx_file,
             class: "sr-only",
@@ -41,7 +41,7 @@
     <%= form.label :lift_speed_kmh, class: "label" %>
     <div class="relative">
       <%= form.number_field :lift_speed_kmh, step: 0.1, min: 0, class: "input pr-14" %>
-      <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-slate-400">km/h</span>
+      <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-fg-muted">km/h</span>
     </div>
   </div>
 
@@ -54,7 +54,7 @@
           <%= form.label "kind_#{k}",
               Activity.human_attribute_name("kind.#{k}"),
               for: "activity_kind_#{k}",
-              class: "flex cursor-pointer items-center justify-center rounded-lg px-4 py-3 text-sm font-medium text-slate-300 ring-1 ring-inset ring-slate-700 transition-colors hover:bg-slate-800 peer-checked:bg-cyan-500/10 peer-checked:text-cyan-300 peer-checked:ring-cyan-400 peer-focus-visible:ring-2 peer-focus-visible:ring-cyan-400" %>
+              class: "flex cursor-pointer items-center justify-center rounded-lg px-4 py-3 text-sm font-medium text-fg-secondary ring-1 ring-inset ring-line transition-colors hover:bg-sunken peer-checked:bg-accent-solid/10 peer-checked:text-accent-fg peer-checked:ring-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent" %>
         </div>
       <% end %>
     </div>

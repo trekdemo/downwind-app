@@ -5,7 +5,7 @@
 <div class="card">
   <div class="card-header">
     <h2 class="card-title flex items-center gap-1.5">
-      <%= icon :wave, class: "size-4 text-cyan-400" %>
+      <%= icon :wave, class: "size-4 text-accent" %>
       Foiling
     </h2>
   </div>
@@ -19,8 +19,8 @@
         data-chart-data-value="<%= {
           labels: [ "On foil", "Off foil" ],
           datasets: [
-            { label: "Distance", data: [ distance_pct, 100 - distance_pct ], backgroundColor: [ "#06b6d4", "#334155" ], borderWidth: 0 },
-            { label: "Time", data: [ time_pct, 100 - time_pct ], backgroundColor: [ "#06b6d4", "#334155" ], borderWidth: 0 },
+            { label: "Distance", data: [ distance_pct, 100 - distance_pct ], backgroundColor: [ "var(--color-accent-solid)", "var(--color-chart-off-foil)" ], borderWidth: 0 },
+            { label: "Time", data: [ time_pct, 100 - time_pct ], backgroundColor: [ "var(--color-accent-solid)", "var(--color-chart-off-foil)" ], borderWidth: 0 },
           ],
         }.to_json %>"
         data-chart-options-value="<%= {

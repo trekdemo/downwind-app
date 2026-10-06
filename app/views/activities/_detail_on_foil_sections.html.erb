@@ -3,13 +3,13 @@
 <div class="card">
   <div class="card-header">
     <h2 class="card-title flex items-center gap-1.5">
-      <%= icon :wave, class: "size-4 text-cyan-400" %> Sections on foil
+      <%= icon :wave, class: "size-4 text-accent" %> Sections on foil
     </h2>
     <span class="stat-unit"><%= pluralize(sections.size, "section") %> above 5 sec</span>
   </div>
 
   <% if sections.empty? %>
-    <p class="card-body text-sm text-slate-400">No sections on foil.</p>
+    <p class="card-body text-sm text-fg-muted">No sections on foil.</p>
   <% else %>
     <div class="overflow-x-auto">
       <table class="table">
@@ -30,13 +30,13 @@
               tabindex="0"
               class="
                 cursor-pointer tabular-nums focus:outline-hidden
-                data-highlighted:bg-slate-800/50
+                data-highlighted:bg-sunken/50
               "
               data-on-foil-sections-target="row"
               data-on-foil-sections-id-param="<%= section.id %>"
               data-action="mouseenter->on-foil-sections#enter mouseleave->on-foil-sections#leave focus->on-foil-sections#enter blur->on-foil-sections#leave"
             >
-              <td class="text-slate-400"><%= index + 1 %></td>
+              <td class="text-fg-muted"><%= index + 1 %></td>
               <td><%= number_to_duration(section.duration) %></td>
               <td><%= number_to_distance(section.distance) %></td>
               <td><%= number_to_speed(section.speed_avg * 3.6) %></td>

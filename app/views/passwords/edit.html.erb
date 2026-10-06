@@ -1,17 +1,17 @@
 <% content_for :title, t(".title") %>
 
-<div id="clearance" class="password-reset grid min-h-[calc(100vh-10rem)] place-items-center bg-radial-[ellipse_at_top] from-cyan-500/10 to-transparent to-60%">
+<div id="clearance" class="password-reset grid min-h-[calc(100vh-10rem)] place-items-center bg-radial-[ellipse_at_top] from-accent-solid/10 to-transparent to-60%">
   <div class="w-full max-w-sm">
     <div class="mb-6 flex flex-col items-center gap-2 text-center">
-      <span class="flex size-10 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400">
+      <span class="flex size-10 items-center justify-center rounded-lg bg-accent-solid/10 text-accent">
         <%= icon :wave, class: "size-6" %>
       </span>
-      <span class="font-semibold text-slate-100">Downwind Logbook</span>
+      <span class="font-semibold text-fg-emphasis">Downwind Logbook</span>
     </div>
 
     <div class="card card-body">
-      <h1 class="mb-2 text-xl font-semibold tracking-tight text-slate-50"><%= t(".title") %></h1>
-      <p class="mb-4 text-sm text-slate-400"><%= t(".description") %></p>
+      <h1 class="mb-2 text-xl font-semibold tracking-tight text-fg-strong"><%= t(".title") %></h1>
+      <p class="mb-4 text-sm text-fg-muted"><%= t(".description") %></p>
 
       <%= form_for :password_reset,
             url: [@user, :password, token: @user.confirmation_token],

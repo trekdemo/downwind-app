@@ -1,9 +1,9 @@
 module ActivitiesHelper
   KIND_BADGE_VARIANTS = {
-    "sup_dw" => "badge-cyan",
-    "sup_fwpu" => "badge-sky",
-    "dockstart" => "badge-violet",
-    "wingfoil" => "badge-teal"
+    "sup_dw" => "badge-sup-dw",
+    "sup_fwpu" => "badge-sup-fwpu",
+    "dockstart" => "badge-dockstart",
+    "wingfoil" => "badge-wingfoil"
   }.freeze
   private_constant :KIND_BADGE_VARIANTS
 

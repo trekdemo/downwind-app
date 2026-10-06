@@ -189,14 +189,20 @@ export default class extends Controller {
   renderRoute(routeData, options = {}) {
     const hotlinePoints = routeData.points.map(p => [p.lat, p.lng, p.speed])
 
+    // The speed colours are theme roles shared with the legend. They are
+    // plain colours in both schemes, so the custom property can be read as
+    // is. Names are spelled out in full so Tailwind keeps the variables.
+    const styles = getComputedStyle(this.element)
+    const speedColor = (property) => styles.getPropertyValue(property).trim()
+
     const hotlineConfig = {
       min: routeData.minSpeed,
       max: routeData.maxSpeed,
       palette: {
-        0.0: '#1974D2',   // Blue - slow
-        0.5: '#FFFF00',   // Yellow - medium
-        0.75: '#FF0000',  // Red - fast
-        1.0: '#822EFF'    // Purple - very fast
+        0.0: speedColor("--color-speed-slow"),
+        0.5: speedColor("--color-speed-medium"),
+        0.75: speedColor("--color-speed-fast"),
+        1.0: speedColor("--color-speed-max")
       },
       outlineWidth: 0.5,
       weight: options.primary ? 4 : 3,

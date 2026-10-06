@@ -1,8 +1,8 @@
-<header class="sticky top-0 z-10 h-14 border-b border-slate-800 bg-slate-950/80 backdrop-blur-sm">
+<header class="sticky top-0 z-10 h-14 border-b border-line-subtle bg-canvas/80 backdrop-blur-sm">
   <div class="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
     <div class="flex items-center gap-6">
-      <%= link_to root_path, class: "flex items-center gap-2 font-semibold text-slate-100" do %>
-        <span class="flex size-8 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400">
+      <%= link_to root_path, class: "flex items-center gap-2 font-semibold text-fg-emphasis" do %>
+        <span class="flex size-8 items-center justify-center rounded-lg bg-accent-solid/10 text-accent">
           <%= icon :wave, class: "size-5" %>
         </span>
         <span class="hidden sm:inline">Downwind Logbook</span>
@@ -11,7 +11,7 @@
       <% if signed_in? %>
         <nav class="flex items-center gap-1">
           <%= link_to activities_path,
-              class: "rounded-full px-3 py-1.5 text-sm font-medium #{controller_name == "activities" && action_name == "index" ? "bg-cyan-500/10 text-cyan-300" : "text-slate-400 hover:text-slate-100"}",
+              class: "rounded-full px-3 py-1.5 text-sm font-medium #{controller_name == "activities" && action_name == "index" ? "bg-accent-solid/10 text-accent-fg" : "text-fg-muted hover:text-fg-emphasis"}",
               "aria-current": (controller_name == "activities" && action_name == "index") ? "page" : nil do %>
             Dashboard
           <% end %>
@@ -26,7 +26,7 @@
           <span class="sr-only sm:not-sr-only">Upload</span>
         <% end %>
 
-        <span class="hidden size-8 items-center justify-center rounded-full bg-slate-800 text-xs font-semibold uppercase text-slate-300 sm:flex">
+        <span class="hidden size-8 items-center justify-center rounded-full bg-sunken text-xs font-semibold uppercase text-fg-secondary sm:flex">
           <%= current_user.email.first %>
         </span>
 

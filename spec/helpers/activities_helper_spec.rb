@@ -57,14 +57,14 @@ RSpec.describe ActivitiesHelper, type: :helper do
     it 'renders the human kind name with a per-kind colour class' do
       badge = helper.kind_badge('sup_dw')
 
-      expect(badge).to include('badge-cyan')
+      expect(badge).to include('badge-sup-dw')
       expect(badge).to include('Downwind SUP')
     end
 
     it 'accepts an activity and reads its kind' do
       activity = build(:activity, kind: 'wingfoil')
 
-      expect(helper.kind_badge(activity)).to include('badge-teal')
+      expect(helper.kind_badge(activity)).to include('badge-wingfoil')
     end
   end
 

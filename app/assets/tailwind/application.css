@@ -10,6 +10,77 @@
 }
 
 /*
+  Semantic colours, named by the role they play (see COLOR_ROLES in
+  Admin::DesignComponentsHelper). Views and components use only these,
+  never the palette directly.
+
+  Not `@theme inline`: utilities must reference the role's variable rather
+  than copy its value, so a role can be given another value at runtime.
+*/
+@theme {
+  /* Surfaces */
+  --color-canvas: var(--color-slate-950);
+  --color-raised: var(--color-slate-900);
+  --color-sunken: var(--color-slate-800);
+
+  /* Lines (borders, rings, dividers) */
+  --color-line-card: var(--color-white);
+  --color-line-subtle: var(--color-slate-800);
+  --color-line: var(--color-slate-700);
+  --color-line-strong: var(--color-slate-600);
+
+  /* Foreground (text and icons) */
+  --color-fg-strong: var(--color-slate-50);
+  --color-fg-emphasis: var(--color-slate-100);
+  --color-fg: var(--color-slate-200);
+  --color-fg-secondary: var(--color-slate-300);
+  --color-fg-muted: var(--color-slate-400);
+  --color-fg-placeholder: var(--color-slate-500);
+  --color-fg-faint: var(--color-slate-600);
+  --color-on-cta: var(--color-slate-950);
+  --color-on-danger: var(--color-white);
+
+  /* Accent (brand) */
+  --color-accent-fg: var(--color-cyan-300);
+  --color-accent: var(--color-cyan-400);
+  --color-accent-solid: var(--color-cyan-500);
+
+  /* Call to action */
+  --color-cta: var(--color-orange-500);
+  --color-cta-hover: var(--color-orange-400);
+
+  /* Status */
+  --color-danger: var(--color-rose-600);
+  --color-danger-hover: var(--color-rose-500);
+  --color-danger-icon: var(--color-rose-400);
+  --color-danger-fg: var(--color-rose-300);
+  --color-danger-fg-soft: var(--color-rose-200);
+  --color-success: var(--color-emerald-500);
+  --color-success-icon: var(--color-emerald-400);
+  --color-success-fg: var(--color-emerald-300);
+  --color-pending: var(--color-amber-500);
+  --color-pending-fg: var(--color-amber-300);
+
+  /* Activity kinds: their own roles, so a new accent leaves them alone */
+  --color-kind-sup-dw: var(--color-cyan-500);
+  --color-kind-sup-dw-fg: var(--color-cyan-300);
+  --color-kind-sup-fwpu: var(--color-sky-500);
+  --color-kind-sup-fwpu-fg: var(--color-sky-300);
+  --color-kind-dockstart: var(--color-violet-500);
+  --color-kind-dockstart-fg: var(--color-violet-300);
+  --color-kind-wingfoil: var(--color-teal-500);
+  --color-kind-wingfoil-fg: var(--color-teal-300);
+
+  /* Data visualisation, read by the chart and map controllers */
+  --color-chart-series-secondary: var(--color-slate-600);
+  --color-chart-off-foil: var(--color-slate-700);
+  --color-speed-slow: #1974D2;
+  --color-speed-medium: #FFFF00;
+  --color-speed-fast: #FF0000;
+  --color-speed-max: #822EFF;
+}
+
+/*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
   looks the same as it did with Tailwind CSS v3.
@@ -23,7 +94,7 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+    border-color: var(--color-line, currentcolor);
   }
 
   /* v4 dropped `cursor: pointer` from buttons in Preflight */
@@ -36,25 +107,25 @@
 @utility btn {
   /* Buttons */
   @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium
-           transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-400
-           focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:opacity-50
+           transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent
+           focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:opacity-50
            disabled:pointer-events-none;
 }
 
 @utility btn-primary {
-  @apply btn bg-orange-500 text-slate-950 hover:bg-orange-400;
+  @apply btn bg-cta text-on-cta hover:bg-cta-hover;
 }
 
 @utility btn-secondary {
-  @apply btn bg-slate-800 text-slate-100 ring-1 ring-inset ring-slate-700 hover:bg-slate-700;
+  @apply btn bg-sunken text-fg-emphasis ring-1 ring-inset ring-line hover:bg-line;
 }
 
 @utility btn-ghost {
-  @apply btn bg-transparent text-slate-300 hover:bg-slate-800 hover:text-slate-100;
+  @apply btn bg-transparent text-fg-secondary hover:bg-sunken hover:text-fg-emphasis;
 }
 
 @utility btn-danger {
-  @apply btn bg-rose-600 text-white hover:bg-rose-500;
+  @apply btn bg-danger text-on-danger hover:bg-danger-hover;
 }
 
 @utility btn-sm {
@@ -63,15 +134,15 @@
 
 @utility card {
   /* Cards */
-  @apply rounded-xl bg-slate-900 ring-1 ring-white/5;
+  @apply rounded-xl bg-raised ring-1 ring-line-card/5;
 }
 
 @utility card-header {
-  @apply flex items-center justify-between border-b border-slate-800 px-4 py-3 sm:px-5;
+  @apply flex items-center justify-between border-b border-line-subtle px-4 py-3 sm:px-5;
 }
 
 @utility card-title {
-  @apply text-[11px] font-medium uppercase tracking-wider text-slate-400;
+  @apply text-[11px] font-medium uppercase tracking-wider text-fg-muted;
 }
 
 @utility card-body {
@@ -80,13 +151,13 @@
 
 @utility label {
   /* Forms */
-  @apply mb-1.5 block text-sm font-medium text-slate-300;
+  @apply mb-1.5 block text-sm font-medium text-fg-secondary;
 }
 
 @utility input {
-  @apply block w-full rounded-lg border-0 bg-slate-900 px-3 py-2 text-sm text-slate-100
-           ring-1 ring-inset ring-slate-700 placeholder:text-slate-500
-           focus:ring-2 focus:ring-inset focus:ring-cyan-400;
+  @apply block w-full rounded-lg border-0 bg-raised px-3 py-2 text-sm text-fg-emphasis
+           ring-1 ring-inset ring-line placeholder:text-fg-placeholder
+           focus:ring-2 focus:ring-inset focus:ring-accent;
 }
 
 @utility select {
@@ -98,87 +169,87 @@
   @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
 }
 
-@utility badge-cyan {
-  @apply badge bg-cyan-500/10 text-cyan-300 ring-1 ring-inset ring-cyan-500/30;
+@utility badge-sup-dw {
+  @apply badge bg-kind-sup-dw/10 text-kind-sup-dw-fg ring-1 ring-inset ring-kind-sup-dw/30;
 }
 
-@utility badge-sky {
-  @apply badge bg-sky-500/10 text-sky-300 ring-1 ring-inset ring-sky-500/30;
+@utility badge-sup-fwpu {
+  @apply badge bg-kind-sup-fwpu/10 text-kind-sup-fwpu-fg ring-1 ring-inset ring-kind-sup-fwpu/30;
 }
 
-@utility badge-violet {
-  @apply badge bg-violet-500/10 text-violet-300 ring-1 ring-inset ring-violet-500/30;
+@utility badge-dockstart {
+  @apply badge bg-kind-dockstart/10 text-kind-dockstart-fg ring-1 ring-inset ring-kind-dockstart/30;
 }
 
-@utility badge-teal {
-  @apply badge bg-teal-500/10 text-teal-300 ring-1 ring-inset ring-teal-500/30;
+@utility badge-wingfoil {
+  @apply badge bg-kind-wingfoil/10 text-kind-wingfoil-fg ring-1 ring-inset ring-kind-wingfoil/30;
 }
 
-@utility badge-amber {
-  @apply badge bg-amber-500/10 text-amber-300 ring-1 ring-inset ring-amber-500/30;
+@utility badge-pending {
+  @apply badge bg-pending/10 text-pending-fg ring-1 ring-inset ring-pending/30;
 }
 
-@utility badge-slate {
-  @apply badge bg-slate-700/40 text-slate-300 ring-1 ring-inset ring-slate-600/40;
+@utility badge-neutral {
+  @apply badge bg-line/40 text-fg-secondary ring-1 ring-inset ring-line-strong/40;
 }
 
 @utility link {
   /* Links */
-  @apply text-cyan-400 hover:text-cyan-300 underline-offset-2 hover:underline;
+  @apply text-accent hover:text-accent-fg underline-offset-2 hover:underline;
 }
 
 @utility stat-label {
   /* Stats */
-  @apply text-[11px] font-medium uppercase tracking-wider text-slate-400;
+  @apply text-[11px] font-medium uppercase tracking-wider text-fg-muted;
 }
 
 @utility stat-value {
-  @apply font-semibold tracking-tight text-slate-50 tabular-nums;
+  @apply font-semibold tracking-tight text-fg-strong tabular-nums;
 }
 
 @utility stat-unit {
-  @apply text-sm text-slate-400 tabular-nums;
+  @apply text-sm text-fg-muted tabular-nums;
 }
 
 @utility table {
   /* Tables */
-  @apply min-w-full divide-y divide-slate-800;
+  @apply min-w-full divide-y divide-line-subtle;
 
   & thead {
-    @apply bg-slate-900/50;
+    @apply bg-raised/50;
   }
 
   & thead th {
-    @apply px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-slate-400;
+    @apply px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-fg-muted;
   }
 
   & tbody {
-    @apply divide-y divide-slate-800;
+    @apply divide-y divide-line-subtle;
   }
 
   & tbody tr {
-    @apply hover:bg-slate-800/50;
+    @apply hover:bg-sunken/50;
   }
 
   & tbody td {
-    @apply whitespace-nowrap px-4 py-3 text-sm text-slate-200;
+    @apply whitespace-nowrap px-4 py-3 text-sm text-fg;
   }
 }
 
 @utility progress-foil {
   /* On-foil progress bar */
-  @apply h-1.5 w-full appearance-none overflow-hidden rounded-full bg-slate-800;
+  @apply h-1.5 w-full appearance-none overflow-hidden rounded-full bg-sunken;
 
   &::-webkit-progress-bar {
-    @apply rounded-full bg-slate-800;
+    @apply rounded-full bg-sunken;
   }
 
   &::-webkit-progress-value {
-    @apply rounded-full bg-cyan-500;
+    @apply rounded-full bg-accent-solid;
   }
 
   &::-moz-progress-bar {
-    @apply rounded-full bg-cyan-500;
+    @apply rounded-full bg-accent-solid;
   }
 }
 
