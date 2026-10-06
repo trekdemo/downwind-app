@@ -4,7 +4,7 @@
 
 <div id="<%= dom_id @activity %>" class="space-y-6">
   <div>
-    <%= link_to activities_path, class: "inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-cyan-300" do %>
+    <%= link_to activities_path, class: "inline-flex items-center gap-1.5 text-sm text-fg-muted hover:text-accent-fg" do %>
       <%= icon :"arrow-left", class: "size-4" %>
       Training log
     <% end %>
@@ -12,13 +12,13 @@
     <div class="mt-2 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
       <div class="min-w-0 space-y-1.5">
         <div class="flex flex-wrap items-center gap-2">
-          <h1 class="truncate text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl" title="<%= @activity.title.presence || "Untitled activity" %>">
+          <h1 class="truncate text-2xl font-semibold tracking-tight text-fg-strong sm:text-3xl" title="<%= @activity.title.presence || "Untitled activity" %>">
             <%= @activity.title.presence || "Untitled activity" %>
           </h1>
           <%= kind_badge(@activity) %>
         </div>
 
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-400">
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-fg-muted">
           <span class="inline-flex items-center gap-1.5">
             <%= icon :calendar, class: "size-4" %>
             <% if @activity.started_at %>
@@ -28,8 +28,8 @@
             <% end %>
           </span>
 
-          <span class="badge-slate">
-            <%= icon :bolt, class: "size-3.5 text-cyan-400" %>
+          <span class="badge-neutral">
+            <%= icon :bolt, class: "size-3.5 text-accent" %>
             Lift speed <%= number_to_speed(@activity.lift_speed_kmh) %>
           </span>
         </div>

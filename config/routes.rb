@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users, except: [ :create ]
+    resources :design_components, only: :index
   end
   mount MissionControl::Jobs::Engine, at: "/admin/jobs"
 

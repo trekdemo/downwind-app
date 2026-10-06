@@ -3,14 +3,14 @@
 <%# TODO: What would it look like with turbo_frame? %>
 <%= turbo_stream_from current_user, :activities %>
 
-<% filter_pill_base = "inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium ring-1 ring-inset transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" %>
-<% filter_pill_active = "#{filter_pill_base} bg-cyan-500/10 text-cyan-300 ring-cyan-500/30" %>
-<% filter_pill_inactive = "#{filter_pill_base} bg-slate-900 text-slate-400 ring-slate-800 hover:bg-slate-800 hover:text-slate-200" %>
+<% filter_pill_base = "inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium ring-1 ring-inset transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas" %>
+<% filter_pill_active = "#{filter_pill_base} bg-accent-solid/10 text-accent-fg ring-accent-solid/30" %>
+<% filter_pill_inactive = "#{filter_pill_base} bg-raised text-fg-muted ring-line-subtle hover:bg-sunken hover:text-fg" %>
 
 <div class="flex flex-col gap-4 pb-6 sm:flex-row sm:items-center sm:justify-between">
   <div>
-    <h1 class="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">Training log</h1>
-    <p class="mt-1 text-sm text-slate-400"><%= pluralize(@activities.size, "session") %></p>
+    <h1 class="text-2xl font-semibold tracking-tight text-fg-strong sm:text-3xl">Training log</h1>
+    <p class="mt-1 text-sm text-fg-muted"><%= pluralize(@activities.size, "session") %></p>
   </div>
 
   <nav aria-label="Filter by type" class="flex flex-wrap gap-2">
@@ -27,9 +27,9 @@
 
 <% if @activities.empty? %>
   <div class="card card-body flex flex-col items-center gap-3 py-16 text-center">
-    <%= icon :wave, class: "size-10 text-slate-600" %>
-    <h2 class="text-lg font-semibold text-slate-200">No activities yet</h2>
-    <p class="max-w-sm text-sm text-slate-400">Upload a GPX file from your GPS watch or SUP tracker to see your stats and progress here.</p>
+    <%= icon :wave, class: "size-10 text-fg-faint" %>
+    <h2 class="text-lg font-semibold text-fg">No activities yet</h2>
+    <p class="max-w-sm text-sm text-fg-muted">Upload a GPX file from your GPS watch or SUP tracker to see your stats and progress here.</p>
     <%= link_to new_activity_path, class: "btn-primary mt-2" do %>
       <%= icon :upload, class: "size-4" %>
       Upload your first GPX
@@ -76,12 +76,12 @@
           ></canvas>
         </div>
       <% else %>
-        <p class="py-10 text-center text-sm text-slate-400">Not enough analyzed sessions yet to show a trend.</p>
+        <p class="py-10 text-center text-sm text-fg-muted">Not enough analyzed sessions yet to show a trend.</p>
       <% end %>
     </div>
   </div>
 
-  <h2 class="mb-3 text-lg font-semibold text-slate-100">Recent activities</h2>
+  <h2 class="mb-3 text-lg font-semibold text-fg-emphasis">Recent activities</h2>
   <div id="activities" class="flex flex-col gap-3">
     <% @activities.each do |activity| %>
       <%= link_to activity, class: "block" do %>
