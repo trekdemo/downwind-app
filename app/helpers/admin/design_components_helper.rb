@@ -10,7 +10,7 @@ module Admin::DesignComponentsHelper
     {
       group: "Surfaces",
       colors: [
-        { swatch: "bg-canvas", usage: "Page background, sticky header (/80), route preview backdrop (/60), focus-ring offset. Also the theme-color meta tags." },
+        { swatch: "bg-canvas", usage: "Page background, sticky header (/80), route preview backdrop (/60), focus-ring offset. Also the theme-color meta tags and the PWA manifest (theme and splash background)." },
         { swatch: "bg-raised", usage: "Cards, inputs, inactive filter pills, table head (/50), upload dropzone (/50), map loading overlay (/40), chart tooltip." },
         { swatch: "bg-sunken", usage: "Secondary button, ghost/radio hover, table row hover (/50), avatar, skeleton blocks, progress track, dropzone icon circle." }
       ]
