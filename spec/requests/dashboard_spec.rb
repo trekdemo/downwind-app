@@ -5,6 +5,12 @@ RSpec.describe "/dashboard", type: :request do
 
   before { sign_in_as(user, password: 'hunter2') }
 
+  # The labels of the progress chart, which is the canvas without a type
+  def progress_chart_labels
+    canvas = Nokogiri::HTML(response.body).at_css('canvas[data-controller="chart"]:not([data-chart-type-value])')
+    JSON.parse(canvas["data-chart-data-value"])["labels"]
+  end
+
   describe "GET /dashboard" do
     let!(:downwind) { create(:activity, :with_analysis, user: user, kind: 'sup_dw', title: 'Downwind session', started_at: 2.days.ago) }
     let!(:wingfoil) { create(:activity, :with_analysis, user: user, kind: 'wingfoil', title: 'Wingfoil session', started_at: 1.day.ago) }
@@ -31,17 +37,13 @@ RSpec.describe "/dashboard", type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.body).to match(/aria-current="page"[^>]*>#{Activity.human_attribute_name('kind.wingfoil')}</)
       expect(response.body).to include(%(href="#{dashboard_path(kind: 'sup_dw')}"))
-      expect(response.body).to include(I18n.l(wingfoil.started_at, format: "%b %-d"))
-      expect(response.body).not_to include(I18n.l(downwind.started_at, format: "%b %-d"))
+      expect(progress_chart_labels).to eq([ I18n.l(wingfoil.started_at, format: "%b %-d") ])
     end
 
     it "orders chart labels by activity date, oldest to newest" do
       get dashboard_url
 
-      oldest_label = I18n.l(downwind.started_at, format: "%b %-d")
-      newest_label = I18n.l(wingfoil.started_at, format: "%b %-d")
-      body = response.body
-      expect(body.index(oldest_label)).to be < body.index(newest_label)
+      expect(progress_chart_labels).to eq([ downwind, wingfoil ].map { |activity| I18n.l(activity.started_at, format: "%b %-d") })
     end
 
     context "with two analyzed sessions on the same day" do
