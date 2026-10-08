@@ -19,7 +19,7 @@ module Admin::DesignComponentsHelper
       group: "Lines",
       colors: [
         { swatch: "bg-line-card/5", usage: "Hairline ring around cards (ring-line-card/5)." },
-        { swatch: "bg-line-subtle", usage: "Header bottom border, card-header divider, table dividers, inactive filter pill ring, chart grid and tooltip border." },
+        { swatch: "bg-line-subtle", usage: "Header bottom border, card-header divider, table dividers, inactive filter pill ring, chart grid and tooltip border, empty heatmap days." },
         { swatch: "bg-line", usage: "Input and radio rings, secondary button ring and hover background, dashed dropzone border, spinner track, badge-neutral background (/40), base border colour." },
         { swatch: "bg-line-strong", usage: "Map spinner track, badge-neutral ring (/40)." }
       ]
@@ -42,7 +42,7 @@ module Admin::DesignComponentsHelper
       group: "Accent (brand)",
       colors: [
         { swatch: "bg-accent-fg", usage: "Active nav and filter pill, selected radio, chosen file name, link hover." },
-        { swatch: "bg-accent", usage: "Icons, links, focus rings, spinner head, title hover, dropzone hover border, route preview (/80), progress chart line and fill (15%)." },
+        { swatch: "bg-accent", usage: "Icons, links, focus rings, spinner head, title hover, dropzone hover border, route preview (/80), progress chart line and fill (15%), heatmap days (30–100% by time on the water)." },
         { swatch: "bg-accent-solid", usage: "Progress bar fill, foiling doughnut. Tinted backgrounds (/10, /5), rings (/30, /40), auth-page radial glow (/10)." }
       ]
     },

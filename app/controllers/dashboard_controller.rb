@@ -1,4 +1,8 @@
 class DashboardController < ApplicationController
+  HEATMAP_PERIOD = 3.months
+  # Accent strength per intensity level, from the lightest to the busiest day
+  HEATMAP_LEVELS = [ 30, 55, 80, 100 ].freeze
+
   def index
     @kind = params[:kind].presence_in(Activity.kinds.keys)
     @activities = current_user.activities.with_analysis.of_kind(@kind).order(started_at: :desc)
@@ -32,9 +36,53 @@ class DashboardController < ApplicationController
         }
       ]
     }
+
+    @heatmap_data = heatmap_data_for(@activities.select(&:analyzed?))
   end
 
   private
+
+  # One cell per day for the past HEATMAP_PERIOD, laid out like a calendar:
+  # a column per week (labelled with its Monday) and a row per weekday. A
+  # cell's shade is the day's total session time relative to the busiest day.
+  def heatmap_data_for(activities)
+    days = HEATMAP_PERIOD.ago.to_date.beginning_of_week..Date.current
+    seconds_per_day = activities
+      .group_by { |activity| activity.started_at.to_date }
+      .transform_values { |same_day| same_day.sum { |activity| activity.analysis.duration } }
+    busiest_day_seconds = seconds_per_day.values_at(*days).compact.max
+
+    cells = days.map do |day|
+      seconds = seconds_per_day.fetch(day, 0)
+      {
+        x: l(day.beginning_of_week, format: "%b %-d"),
+        y: l(day, format: "%a"),
+        title: l(day, format: "%a, %b %-d"),
+        label: seconds.positive? ? helpers.number_to_duration(seconds) : "No sessions"
+      }
+    end
+
+    {
+      xLabels: days.step(7).map { |monday| l(monday, format: "%b %-d") },
+      yLabels: days.first(7).map { |day| l(day, format: "%a") },
+      datasets: [
+        {
+          label: "Time on the water",
+          data: cells,
+          backgroundColor: days.map { |day| heatmap_color(seconds_per_day.fetch(day, 0), busiest_day_seconds) },
+          borderWidth: 0,
+          borderRadius: 3
+        }
+      ]
+    }
+  end
+
+  def heatmap_color(seconds, busiest_day_seconds)
+    return "var(--color-line-subtle)" unless seconds.positive?
+
+    level = (HEATMAP_LEVELS.size * seconds / busiest_day_seconds).ceil
+    "color-mix(in oklab, var(--color-accent) #{HEATMAP_LEVELS[level - 1]}%, transparent)"
+  end
 
   # Builds unique, unambiguous chart labels: the year is added when the
   # activities span more than one year, and the time is added when several

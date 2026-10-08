@@ -1,8 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
 import { Chart, registerables } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
 
-Chart.register(...registerables, annotationPlugin);
+Chart.register(...registerables, annotationPlugin, MatrixController, MatrixElement);
 
 // Colours are CSS colour strings referencing the theme's semantic roles
 // (e.g. "var(--color-accent)"), resolved for the current colour scheme when
@@ -32,6 +33,20 @@ function deepMerge(target, source) {
   }
 
   return output
+}
+
+// Matrix cells default to a fixed 20px square; fill the chart area instead,
+// leaving a 2px gap, so the grid scales with the canvas. The chart area and
+// the category scales only exist once the chart is laid out.
+function withMatrixCellSize(dataset) {
+  const cellSize = (axis, dimension) => ({ chart }) => {
+    const area = chart.chartArea
+    const scale = chart.scales[axis]
+    if (!area || !scale) return 0
+    return area[dimension] / scale.getLabels().length - 2
+  }
+
+  return { width: cellSize("x", "width"), height: cellSize("y", "height"), ...dataset }
 }
 
 function isPlainObject(value) {
@@ -154,7 +169,10 @@ export default class extends Controller {
       console.warn("[@stimulus-components/chartjs] You need to pass data as JSON to see the chart.")
     }
 
-    return resolveColors(this.dataValue, this.canvasElement.parentElement)
+    const data = resolveColors(this.dataValue, this.canvasElement.parentElement)
+    if (this.typeValue === "matrix") data.datasets = data.datasets.map(withMatrixCellSize)
+
+    return data
   }
 
   get chartOptions() {
@@ -212,6 +230,21 @@ export default class extends Controller {
 
     // Radial charts (doughnut, pie, polarArea) have no cartesian axes.
     if (RADIAL_TYPES.includes(this.typeValue)) delete options.scales
+
+    // Matrix (heatmap) cells sit on two category axes; each data point brings
+    // its own tooltip `title` and `label`, already formatted by the server.
+    if (this.typeValue === "matrix") {
+      options.interaction = { mode: "nearest", intersect: true }
+      options.plugins.legend.display = false
+      options.plugins.tooltip.usePointStyle = false
+      options.plugins.tooltip.callbacks = {
+        title: ([item]) => item.raw.title,
+        label: (item) => item.raw.label,
+      }
+      // The matrix type defaults to linear axes, with y reversed
+      options.scales.x = { ...options.scales.x, type: "category", offset: true, ticks: { ...options.scales.x.ticks, maxRotation: 0 } }
+      options.scales.y = { ...options.scales.y, type: "category", offset: true, reverse: false, grid: { display: false } }
+    }
 
     return options
   }

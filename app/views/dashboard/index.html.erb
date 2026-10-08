@@ -16,6 +16,22 @@
 <% else %>
   <%= render "activities/stats", activities: @activities %>
 
+  <div class="card mb-6">
+    <div class="card-header">
+      <h2 class="card-title">Time on the water</h2>
+      <span class="text-sm text-fg-muted">Past 3 months</span>
+    </div>
+    <div class="card-body">
+      <div class="h-48 sm:h-56">
+        <canvas
+          data-controller="chart"
+          data-chart-type-value="matrix"
+          data-chart-data-value="<%= @heatmap_data.to_json %>"
+        ></canvas>
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-header">
       <h2 class="card-title">Progress</h2>

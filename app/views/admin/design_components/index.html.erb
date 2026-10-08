@@ -490,6 +490,31 @@
           </div>
         <% end %>
       </div>
+
+      <div class="lg:col-span-2">
+        <%= design_example "Heatmap", source: "dashboard/index + DashboardController#heatmap_data_for" do %>
+          <% weeks = %w[Sep\ 8 Sep\ 15 Sep\ 22 Sep\ 29 Oct\ 6] %>
+          <% weekdays = %w[Mon Tue Wed Thu Fri Sat Sun] %>
+          <% levels = [ 0, 2, 0, 0, 1, 4, 3, 0, 0, 1, 0, 0, 2, 0, 3, 0, 0, 2, 0, 4, 1, 0, 1, 0, 0, 3, 0, 2, 0, 0, 2, 0, 0, 0, 0 ] %>
+          <div class="h-48">
+            <canvas
+              data-controller="chart"
+              data-chart-type-value="matrix"
+              data-chart-data-value="<%= {
+                xLabels: weeks,
+                yLabels: weekdays,
+                datasets: [ {
+                  label: "Time on the water",
+                  data: levels.each_index.map { |i| { x: weeks[i / 7], y: weekdays[i % 7], title: "#{weekdays[i % 7]}, #{weeks[i / 7]}", label: levels[i].zero? ? "No sessions" : "#{levels[i]}:00:00" } },
+                  backgroundColor: levels.map { |level| level.zero? ? "var(--color-line-subtle)" : "color-mix(in oklab, var(--color-accent) #{DashboardController::HEATMAP_LEVELS[level - 1]}%, transparent)" },
+                  borderWidth: 0,
+                  borderRadius: 3
+                } ]
+              }.to_json %>"
+            ></canvas>
+          </div>
+        <% end %>
+      </div>
     </div>
   </section>
 
