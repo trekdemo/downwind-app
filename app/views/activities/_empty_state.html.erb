@@ -1,0 +1,9 @@
+<div class="card card-body flex flex-col items-center gap-3 py-16 text-center">
+  <%= icon :wave, class: "size-10 text-fg-faint" %>
+  <h2 class="text-lg font-semibold text-fg">No activities yet</h2>
+  <p class="max-w-sm text-sm text-fg-muted">Upload a GPX file from your GPS watch or SUP tracker to see your stats and progress here.</p>
+  <%= link_to new_activity_path, class: "btn-primary mt-2" do %>
+    <%= icon :upload, class: "size-4" %>
+    Upload your first GPX
+  <% end %>
+</div>

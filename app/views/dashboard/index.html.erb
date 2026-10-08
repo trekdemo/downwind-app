@@ -1,0 +1,42 @@
+<% content_for :title, "Dashboard" %>
+
+<%= turbo_stream_from current_user, :activities %>
+
+<div class="flex flex-col gap-4 pb-6 sm:flex-row sm:items-center sm:justify-between">
+  <div>
+    <h1 class="text-2xl font-semibold tracking-tight text-fg-strong sm:text-3xl">Dashboard</h1>
+    <p class="mt-1 text-sm text-fg-muted"><%= pluralize(@activities.size, "session") %></p>
+  </div>
+
+  <%= render "kind_filter", kind: @kind %>
+</div>
+
+<% if @activities.empty? %>
+  <%= render "activities/empty_state" %>
+<% else %>
+  <%= render "activities/stats", activities: @activities %>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Progress</h2>
+    </div>
+    <div class="card-body">
+      <% if @chart_data[:labels].any? %>
+        <div class="h-64 sm:h-72">
+          <canvas
+            data-controller="chart"
+            data-chart-data-value="<%= @chart_data.to_json %>"
+            data-chart-options-value="<%= {
+              scales: {
+                y: { beginAtZero: true, min: 0, max: 100, position: "left" },
+                y2: { beginAtZero: true, position: "right", grid: { display: false } }
+              }
+            }.to_json %>"
+          ></canvas>
+        </div>
+      <% else %>
+        <p class="py-10 text-center text-sm text-fg-muted">Not enough analyzed sessions yet to show a trend.</p>
+      <% end %>
+    </div>
+  </div>
+<% end %>

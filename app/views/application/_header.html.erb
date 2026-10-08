@@ -10,10 +10,13 @@
 
       <% if signed_in? %>
         <nav class="flex items-center gap-1">
-          <%= link_to activities_path,
-              class: "rounded-full px-3 py-1.5 text-sm font-medium #{controller_name == "activities" && action_name == "index" ? "bg-accent-solid/10 text-accent-fg" : "text-fg-muted hover:text-fg-emphasis"}",
-              "aria-current": (controller_name == "activities" && action_name == "index") ? "page" : nil do %>
-            Dashboard
+          <% [ [ "Dashboard", dashboard_path, current_page?(controller: "dashboard") ],
+               [ "Activities", activities_path, params[:controller] == "activities" ] ].each do |label, path, current| %>
+            <%= link_to label, path,
+                class: class_names("rounded-full px-3 py-1.5 text-sm font-medium",
+                                   "bg-accent-solid/10 text-accent-fg": current,
+                                   "text-fg-muted hover:text-fg-emphasis": !current),
+                "aria-current": current ? "page" : nil %>
           <% end %>
         </nav>
       <% end %>

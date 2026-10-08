@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  root "activities#index"
+  # Declared before root so url_for(kind: ...) on the dashboard generates /dashboard, not /
+  get "dashboard", to: "dashboard#index"
+  root "dashboard#index"
   resources :activities
 
   namespace :admin do

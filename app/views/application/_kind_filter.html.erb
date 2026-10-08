@@ -1,0 +1,18 @@
+<%# locals: (kind:) %>
+<%# Links back to the current page, so the same pills filter any activity list %>
+<% pill_classes = ->(active) {
+     class_names("inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium ring-1 ring-inset transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas",
+                 "bg-accent-solid/10 text-accent-fg ring-accent-solid/30": active,
+                 "bg-raised text-fg-muted ring-line-subtle hover:bg-sunken hover:text-fg": !active)
+   } %>
+
+<nav aria-label="Filter by type" class="flex flex-wrap gap-2">
+  <%= link_to "All", url_for(kind: nil),
+      class: pill_classes.(kind.nil?),
+      aria: { current: kind.nil? ? "page" : nil } %>
+  <% Activity.kinds.each_key do |each_kind| %>
+    <%= link_to Activity.human_attribute_name("kind.#{each_kind}"), url_for(kind: each_kind),
+        class: pill_classes.(kind == each_kind),
+        aria: { current: kind == each_kind ? "page" : nil } %>
+  <% end %>
+</nav>

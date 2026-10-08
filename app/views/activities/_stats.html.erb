@@ -1,0 +1,21 @@
+<%# locals: (activities:) %>
+<% analyzed = activities.select(&:analyzed?) %>
+
+<div class="grid grid-cols-2 gap-3 pb-6 lg:grid-cols-4">
+  <% total_distance_value, total_distance_unit = distance_parts(analyzed.sum { |a| a.analysis.distance_total }) %>
+  <div class="card card-body">
+    <%= render "application/stat", label: "Total distance", value: total_distance_value, unit: total_distance_unit, icon: :ruler %>
+  </div>
+  <% foil_distance_value, foil_distance_unit = distance_parts(analyzed.sum { |a| a.analysis.distance_on_foil }) %>
+  <div class="card card-body">
+    <%= render "application/stat", label: "Distance on foil", value: foil_distance_value, unit: foil_distance_unit, icon: :ruler %>
+  </div>
+  <% total_duration_value, _total_duration_unit = duration_parts(analyzed.sum { |a| a.analysis.duration }) %>
+  <div class="card card-body">
+    <%= render "application/stat", label: "Total time", value: total_duration_value, icon: :clock %>
+  </div>
+  <% foil_duration_value, _foil_duration_unit = duration_parts(analyzed.sum { |a| a.analysis.time_on_foil }) %>
+  <div class="card card-body">
+    <%= render "application/stat", label: "Time on foil", value: foil_duration_value, icon: :clock %>
+  </div>
+</div>

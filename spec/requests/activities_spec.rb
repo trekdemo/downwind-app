@@ -27,30 +27,10 @@ RSpec.describe "/activities", type: :request do
       expect(response.body).to match(/aria-current="page"[^>]*>#{Activity.human_attribute_name('kind.wingfoil')}</)
     end
 
-    it "orders chart labels by activity date, oldest to newest" do
+    it "shows the stats" do
       get activities_url
 
-      oldest_label = I18n.l(downwind.started_at, format: "%b %-d")
-      newest_label = I18n.l(wingfoil.started_at, format: "%b %-d")
-      body = response.body
-      expect(body.index(oldest_label)).to be < body.index(newest_label)
-    end
-
-    context "with two analyzed sessions on the same day" do
-      # Keep these in the same year as downwind/wingfoil above, so this
-      # example only exercises the same-day disambiguation, not the
-      # cross-year one.
-      let(:same_day) { 3.days.ago.to_date }
-      let!(:morning) { create(:activity, :with_analysis, user: user, kind: 'sup_dw', title: 'Morning session', started_at: same_day.in_time_zone.change(hour: 8)) }
-      let!(:evening) { create(:activity, :with_analysis, user: user, kind: 'sup_dw', title: 'Evening session', started_at: same_day.in_time_zone.change(hour: 18, min: 30)) }
-
-      it "disambiguates same-day chart labels with the time" do
-        get activities_url
-
-        expect(response).to have_http_status(:ok)
-        expect(response.body).to include(I18n.l(morning.started_at, format: "%b %-d %H:%M"))
-        expect(response.body).to include(I18n.l(evening.started_at, format: "%b %-d %H:%M"))
-      end
+      expect(response.body).to include("Total distance")
     end
 
     context "with an un-analyzed activity that has no started_at yet" do

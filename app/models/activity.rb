@@ -20,6 +20,8 @@ class Activity < ApplicationRecord
   has_one :analysis, dependent: :delete
 
   scope :with_analysis, -> { includes(:analysis) }
+  # A nil kind leaves the relation unfiltered
+  scope :of_kind, ->(kind) { where(kind:) if kind }
 
   # Set by the ActivityAnalyzerJob, stays nil if analysis fails
   def started_at = super || created_at
