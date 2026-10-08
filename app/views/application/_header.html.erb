@@ -10,7 +10,7 @@
 
       <% if signed_in? %>
         <nav class="flex items-center gap-1">
-          <% [ [ "Dashboard", dashboard_path, current_page?(controller: "dashboard") ],
+          <% [ [ "Dashboard", dashboard_path, params[:controller] == "dashboard" ],
                [ "Activities", activities_path, params[:controller] == "activities" ] ].each do |label, path, current| %>
             <%= link_to label, path,
                 class: class_names("rounded-full px-3 py-1.5 text-sm font-medium",
