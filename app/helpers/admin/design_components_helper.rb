@@ -84,7 +84,7 @@ module Admin::DesignComponentsHelper
     {
       group: "Data visualisation",
       colors: [
-        { swatch: "bg-chart-series-secondary", usage: "Paddle-ups bars in the progress chart (ActivitiesController)." },
+        { swatch: "bg-chart-series-secondary", usage: "Paddle-ups bars in the progress chart (DashboardController)." },
         { swatch: "bg-chart-off-foil", usage: "Off-foil slice of the foiling doughnut." },
         { swatch: "bg-speed-slow", usage: "Map hotline and legend gradient start." },
         { swatch: "bg-speed-medium", usage: "Map hotline and legend gradient middle." },
