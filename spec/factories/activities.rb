@@ -28,5 +28,9 @@ FactoryBot.define do
         content_type: 'application/gpx+xml'
       )
     end
+
+    trait :with_analysis do
+      after(:create) { |activity| create(:analysis, activity:) }
+    end
   end
 end

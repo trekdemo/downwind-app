@@ -6,16 +6,8 @@ RSpec.describe "/activities", type: :request do
   before { sign_in_as(user, password: 'hunter2') }
 
   describe "GET /activities" do
-    let!(:downwind) do
-      activity = create(:activity, user: user, kind: 'sup_dw', title: 'Downwind session', started_at: 2.days.ago)
-      create(:analysis, activity: activity)
-      activity
-    end
-    let!(:wingfoil) do
-      activity = create(:activity, user: user, kind: 'wingfoil', title: 'Wingfoil session', started_at: 1.day.ago)
-      create(:analysis, activity: activity)
-      activity
-    end
+    let!(:downwind) { create(:activity, :with_analysis, user: user, kind: 'sup_dw', title: 'Downwind session', started_at: 2.days.ago) }
+    let!(:wingfoil) { create(:activity, :with_analysis, user: user, kind: 'wingfoil', title: 'Wingfoil session', started_at: 1.day.ago) }
 
     it "lists the user's activities and marks the All filter active" do
       get activities_url
@@ -49,16 +41,8 @@ RSpec.describe "/activities", type: :request do
       # example only exercises the same-day disambiguation, not the
       # cross-year one.
       let(:same_day) { 3.days.ago.to_date }
-      let!(:morning) do
-        activity = create(:activity, user: user, kind: 'sup_dw', title: 'Morning session', started_at: same_day.in_time_zone.change(hour: 8))
-        create(:analysis, activity: activity)
-        activity
-      end
-      let!(:evening) do
-        activity = create(:activity, user: user, kind: 'sup_dw', title: 'Evening session', started_at: same_day.in_time_zone.change(hour: 18, min: 30))
-        create(:analysis, activity: activity)
-        activity
-      end
+      let!(:morning) { create(:activity, :with_analysis, user: user, kind: 'sup_dw', title: 'Morning session', started_at: same_day.in_time_zone.change(hour: 8)) }
+      let!(:evening) { create(:activity, :with_analysis, user: user, kind: 'sup_dw', title: 'Evening session', started_at: same_day.in_time_zone.change(hour: 18, min: 30)) }
 
       it "disambiguates same-day chart labels with the time" do
         get activities_url
@@ -82,11 +66,7 @@ RSpec.describe "/activities", type: :request do
     end
 
     context "with an analyzed activity whose GPX had no timestamps" do
-      let!(:timeless_activity) do
-        activity = create(:activity, user: user, kind: 'sup_dw', title: 'Timeless session', started_at: nil)
-        create(:analysis, activity: activity)
-        activity
-      end
+      let!(:timeless_activity) { create(:activity, :with_analysis, user: user, kind: 'sup_dw', title: 'Timeless session', started_at: nil) }
 
       it "returns 200" do
         get activities_url
